@@ -44,7 +44,7 @@ public class Stock {
 
     //조인
 
-    //선생님
+    //교사
     @ManyToOne(targetEntity = Teacher.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "teacher_id") // 외래 키(Foreign Key) 설정
     private Teacher teacher;
