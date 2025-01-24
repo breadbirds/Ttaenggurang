@@ -14,22 +14,19 @@ public class News {
     private Long id;
 
     @Column
-    private String title; // 주식 이름
+    private String title; // 뉴스 제목
 
     @Column
-    private String content;  // 한 주 가격
+    private String content;  // 뉴스 내용
 
     @Column
-    private float impact; //총 수량
+    private float impact; // 영향 비율
+
+    @Column
+    private Timestamp created_by;  //생성자
 
     @Column
     private Timestamp created_at;  //생성일
-
-    @Column
-    private Timestamp updated_at;  // 수정일
-
-    @Column
-    private String category;  //카테고리
 
 
     @Enumerated(EnumType.STRING)  // Enum 값을 문자열로 저장
