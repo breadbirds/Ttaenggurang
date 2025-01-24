@@ -23,7 +23,7 @@ public class Item {
 
 //    @ManyToOne // Many: Item, One: Student
 //    @JoinColumn(name = "sellerId") // FK
-//    private Student student;
+//    private Student student; // DB는 오브젝트를 저장할 수 없다. FK, 자바는 오브젝트를 저장할 수 있다. // 참조 할 테이블
 
     @Column(nullable = false, length = 100) // Column과 반대로 테이블에 컬럼으로 생성되지 않는 필드의 경우엔 @Transient 어노테이션을 적용
     private String name;
@@ -40,10 +40,10 @@ public class Item {
     @Column(nullable = false)
     private int quantity;
 
-    @Column(nullable = true)
+    @Column
     private boolean isApproved;
 
-    @CreationTimestamp // 값이 입력될때 혹은 업데이트될때 자동으로 시간이 들어간다.
+    @CreationTimestamp // 값이 입력될 때 혹은 업데이트될 때 자동으로 시간이 들어간다.
     private Timestamp createAt;
 
     @UpdateTimestamp
