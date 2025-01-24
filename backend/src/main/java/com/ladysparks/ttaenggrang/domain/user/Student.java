@@ -1,8 +1,11 @@
 package com.ladysparks.ttaenggrang.domain.user;
 
+import com.ladysparks.ttaenggrang.domain.etf.EtfTransaction;
+import com.ladysparks.ttaenggrang.domain.stock.StockTransaction;
 import jakarta.persistence.*;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 @Entity
 public class Student {
@@ -24,4 +27,15 @@ public class Student {
 
     @Column
     private Timestamp created_at;
+
+
+    // 조인
+
+    //주식
+    @OneToMany(mappedBy = "student", fetch = FetchType.LAZY)
+    private List<StockTransaction> transactions;
+
+    //ETF
+    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL)
+    private List<EtfTransaction> etfTransactions;
 }
