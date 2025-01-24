@@ -1,6 +1,6 @@
 package com.ladysparks.ttaenggrang.service;
 
-import com.ladysparks.ttaenggrang.domain.Item;
+import com.ladysparks.ttaenggrang.domain.item.Item;
 import com.ladysparks.ttaenggrang.repository.ItemRespository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

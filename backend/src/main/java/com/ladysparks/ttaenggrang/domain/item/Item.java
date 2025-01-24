@@ -1,4 +1,4 @@
-package com.ladysparks.ttaenggrang.domain;
+package com.ladysparks.ttaenggrang.domain.item;
 
 import jakarta.persistence.*;
 import lombok.*;

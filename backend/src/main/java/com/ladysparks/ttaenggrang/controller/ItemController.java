@@ -1,7 +1,7 @@
 package com.ladysparks.ttaenggrang.controller;
 
 import com.ladysparks.ttaenggrang.docs.ItemApiSpecification;
-import com.ladysparks.ttaenggrang.domain.Item;
+import com.ladysparks.ttaenggrang.domain.item.Item;
 import com.ladysparks.ttaenggrang.service.ItemService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
