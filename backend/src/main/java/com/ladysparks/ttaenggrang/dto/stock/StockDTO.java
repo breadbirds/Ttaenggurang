@@ -1,4 +1,4 @@
-package com.ladysparks.ttaenggrang.dto;
+package com.ladysparks.ttaenggrang.dto.stock;
 
 import com.ladysparks.ttaenggrang.domain.stock.Button;
 import lombok.*;
