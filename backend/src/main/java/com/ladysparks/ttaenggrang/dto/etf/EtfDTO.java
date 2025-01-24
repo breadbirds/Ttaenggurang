@@ -1,4 +1,4 @@
-package com.ladysparks.ttaenggrang.dto;
+package com.ladysparks.ttaenggrang.dto.etf;
 
 import lombok.Getter;
 import lombok.Setter;
