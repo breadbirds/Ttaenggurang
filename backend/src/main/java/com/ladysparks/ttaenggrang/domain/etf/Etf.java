@@ -1,4 +1,4 @@
-package com.ladysparks.ttaenggrang.domain;
+package com.ladysparks.ttaenggrang.domain.etf;
 
 //import jakarta.persistence.Entity;
 
