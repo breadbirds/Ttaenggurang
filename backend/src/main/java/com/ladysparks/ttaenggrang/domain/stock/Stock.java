@@ -1,5 +1,6 @@
-package com.ladysparks.ttaenggrang.domain;
+package com.ladysparks.ttaenggrang.domain.stock;
 
+import com.ladysparks.ttaenggrang.domain.user.Teacher;
 import jakarta.persistence.*;
 
 import java.sql.Timestamp;

@@ -1,6 +1,6 @@
 package com.ladysparks.ttaenggrang.docs;
 
-import com.ladysparks.ttaenggrang.domain.Item;
+import com.ladysparks.ttaenggrang.domain.item.Item;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
