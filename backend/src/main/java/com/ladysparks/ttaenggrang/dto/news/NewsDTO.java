@@ -1,4 +1,4 @@
-package com.ladysparks.ttaenggrang.dto;
+package com.ladysparks.ttaenggrang.dto.news;
 
 import com.ladysparks.ttaenggrang.domain.news.NewsType;
 import lombok.Getter;
