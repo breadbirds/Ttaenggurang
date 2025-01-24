@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -32,6 +33,21 @@ public class ItemController implements ItemApiSpecification {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
+    // 아이템 전체 조회
+    @GetMapping
+    public ResponseEntity<List<Item>> getItems() {
+        List<Item> result = itemService.findItems();
+
+        if (!result.isEmpty()) {
+            logger.info("Items found: {}", result);
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        }
+
+        logger.warn("Items not found");
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    // 아이템 상세 조회
     @GetMapping("/{itemId}")
     public ResponseEntity<Item> getItem(@PathVariable("itemId") int itemId) {
         Optional<Item> result = itemService.findItem(itemId);
@@ -45,6 +61,7 @@ public class ItemController implements ItemApiSpecification {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
+    // 아이템 등록
     @PostMapping
     public ResponseEntity<Item> postItem(@RequestBody Item item) {
         int itemId = itemService.saveItem(item);

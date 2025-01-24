@@ -23,12 +23,12 @@ public class ItemService {
         return item.getId();
     }
 
-    public Optional<Item> findItem(int itemId) {
-        return itemRepository.findById(itemId);
-    }
-
     public List<Item> findItems() {
         return itemRepository.findAll();
+    }
+
+    public Optional<Item> findItem(int itemId) {
+        return itemRepository.findById(itemId);
     }
 
 }
