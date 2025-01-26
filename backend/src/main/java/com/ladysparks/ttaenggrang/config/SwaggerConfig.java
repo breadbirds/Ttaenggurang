@@ -3,9 +3,6 @@ package com.ladysparks.ttaenggrang.config;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
-import io.swagger.v3.oas.models.security.SecurityRequirement;
-import io.swagger.v3.oas.models.security.SecurityScheme;
-import io.swagger.v3.oas.models.servers.Server;
 import org.springdoc.core.models.GroupedOpenApi;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -57,7 +54,15 @@ public class SwaggerConfig {
     public GroupedOpenApi itemApi() {
         return GroupedOpenApi.builder()
                 .group("items")
-                .pathsToMatch("/items/**")
+                .pathsToMatch("/items/**", "/item-transactions/**")
+                .build();
+    }
+
+    @Bean
+    public GroupedOpenApi bankAccountApi() {
+        return GroupedOpenApi.builder()
+                .group("bank-account")
+                .pathsToMatch("/bank-account/**")
                 .build();
     }
 
