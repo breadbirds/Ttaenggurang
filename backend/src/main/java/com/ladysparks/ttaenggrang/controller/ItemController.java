@@ -1,21 +1,17 @@
 package com.ladysparks.ttaenggrang.controller;
 
 import com.ladysparks.ttaenggrang.docs.ItemApiSpecification;
-import com.ladysparks.ttaenggrang.domain.item.Item;
 import com.ladysparks.ttaenggrang.dto.ItemDTO;
 import com.ladysparks.ttaenggrang.service.ItemService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
-@Controller
+@RestController
 @RequestMapping("/items")
 public class ItemController implements ItemApiSpecification {
 
@@ -28,59 +24,37 @@ public class ItemController implements ItemApiSpecification {
         this.itemService = itemService;
     }
 
-    @GetMapping("/test")
-    public ResponseEntity<Object> test() {
-        String result = "TEST";
-        return new ResponseEntity<>(result, HttpStatus.OK);
-    }
-
-    // 아이템 전체 조회
+    // 아이템 상품 내역 [전체 조회]
     @GetMapping
-    public ResponseEntity<List<ItemDTO>> getItems() {
-        List<ItemDTO> result = itemService.findItems();
-
-        if (!result.isEmpty()) {
-            logger.info("Items found: {}", result);
-            return new ResponseEntity<>(result, HttpStatus.OK);
-        }
-
-        logger.warn("Items not found");
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    public ResponseEntity<List<ItemDTO>> itemList(@RequestParam Long teacherId) {
+        List<ItemDTO> items = itemService.findProductList(teacherId);
+        return items.isEmpty()
+                ? ResponseEntity.notFound().build()
+                : ResponseEntity.ok(items);
     }
 
-    // 아이템 상세 조회
+    // 아이템 상품 내역 [상세 조회]
     @GetMapping("/{itemId}")
-    public ResponseEntity<ItemDTO> getItem(@PathVariable("itemId") int itemId) {
-        Optional<ItemDTO> result = itemService.findItem(itemId);
-
-        if (result.isPresent()) {
-            logger.info("Item found: {}", result.get());
-            return new ResponseEntity<>(result.get(), HttpStatus.OK);
-        }
-
-        logger.warn("Item not found for id: {}", itemId);
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-
-//        return itemService.findItem(itemId)
-//                .map(ResponseEntity::ok)
-//                .orElseGet(() -> ResponseEntity.notFound().build());
+    public ResponseEntity<ItemDTO> itemDetails(@PathVariable("itemId") Long itemId) {
+        return itemService.findProduct(itemId)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    // 아이템 등록
-    @PostMapping
-    public ResponseEntity<ItemDTO> postItem(@RequestBody ItemDTO itemDto) {
-        int itemId = itemService.saveItem(itemDto);
-        itemDto.setId(itemId);
-        if (itemId > 0) {
-            logger.info("Item ID: {}", itemId);
-            return new ResponseEntity<>(itemDto, HttpStatus.OK);
-        }
-
-        logger.warn("Item not saved: {}", itemId);
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    // 아이템 판매 [등록]
+    @PostMapping("/sale")
+    public ResponseEntity<ItemDTO> itemAdd(@RequestBody ItemDTO itemDto) {
+        return ResponseEntity.ok(itemService.addItem(itemDto));
     }
 
-    // 아이템 거래 내역
+    // 아이템 판매 [조회]
+    @GetMapping("/sale")
+    public ResponseEntity<List<ItemDTO>> saleItemList(@RequestParam Long studentId) {
+        List<ItemDTO> itemDtoList = itemService.findSaleItems(studentId);
+        return itemDtoList.isEmpty()
+                ? ResponseEntity.notFound().build()
+                : ResponseEntity.ok(itemDtoList);
+    }
 
 }
 
