@@ -22,17 +22,17 @@ public class BankAccountService {
         this.bankAccountMapper = bankAccountMapper;
     }
 
-    public Optional<BankAccountDTO> findBankAccount(Long bankAccountId) {
-        return bankAccountRepository.findById(bankAccountId)
-                .map(bankAccountMapper::toDto); // ✅ Optional 처리
-        // 만약 값이 존재하면 toDto()가 실행되고, 없으면 Optional.empty()를 반환
-    }
-
     @Transactional
     public BankAccountDTO addBankAccount(BankAccountDTO bankAccountDTO) {
         BankAccount entity = bankAccountMapper.toEntity(bankAccountDTO);
         BankAccount savedEntity = bankAccountRepository.save(entity);
         return bankAccountMapper.toDto(savedEntity);
+    }
+
+    public Optional<BankAccountDTO> findBankAccount(Long bankAccountId) {
+        return bankAccountRepository.findById(bankAccountId)
+                .map(bankAccountMapper::toDto); // ✅ Optional 처리
+        // 만약 값이 존재하면 toDto()가 실행되고, 없으면 Optional.empty()를 반환
     }
 
 }

@@ -20,23 +20,23 @@ public class BankAccountController implements BankAccountApiSpecification {
         this.bankAccountService = bankAccountService;
     }
 
-    //
+    // 은행 계좌 [조회]
     @GetMapping("/{bankAccountId}")
     public ResponseEntity<BankAccountDTO> BankAccountDetails(@PathVariable("bankAccountId") Long bankAccountId) {
-        BankAccountDTO bankAccount = bankAccountService.findBankAccount(bankAccountId)
+        BankAccountDTO bankAccountDTO = bankAccountService.findBankAccount(bankAccountId)
                 .orElseThrow(() -> new EntityNotFoundException("Bank account not found with id: " + bankAccountId));
-
-        return ResponseEntity.ok(bankAccount);
+        return ResponseEntity.ok(bankAccountDTO);
 
 //        return bankAccountService.findById(studentId)
 //                .map(ResponseEntity::ok) // ✅ 값이 있으면 200 OK + DTO 반환
 //                .orElseGet(() -> ResponseEntity.notFound().build()); // ✅ 값이 없으면 404 Not Found 반환
     }
 
+    // 은행 계좌 [등록]
     @PostMapping
     public ResponseEntity<BankAccountDTO> BankAccountAdd(@RequestBody BankAccountDTO bankAccountDto) {
-        BankAccountDTO savedDto = bankAccountService.addBankAccount(bankAccountDto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedDto); // ✅ 201 Created 반환
+        BankAccountDTO savedBankAccountDto = bankAccountService.addBankAccount(bankAccountDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedBankAccountDto); // ✅ 201 Created 반환
     }
 
 }

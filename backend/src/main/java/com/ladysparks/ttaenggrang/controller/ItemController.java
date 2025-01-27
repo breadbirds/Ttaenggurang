@@ -27,10 +27,10 @@ public class ItemController implements ItemApiSpecification {
     // 아이템 상품 내역 [전체 조회]
     @GetMapping
     public ResponseEntity<List<ItemDTO>> itemList(@RequestParam Long teacherId) {
-        List<ItemDTO> items = itemService.findProductList(teacherId);
-        return items.isEmpty()
+        List<ItemDTO> itemDTOList = itemService.findProductList(teacherId);
+        return itemDTOList.isEmpty()
                 ? ResponseEntity.notFound().build()
-                : ResponseEntity.ok(items);
+                : ResponseEntity.ok(itemDTOList);
     }
 
     // 아이템 상품 내역 [상세 조회]
