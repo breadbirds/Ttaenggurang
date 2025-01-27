@@ -67,8 +67,8 @@ public class ItemTransactionService {
 
     // 학생의 모든 판매 내역 조회
     public List<ItemTransactionDTO> findSaleItemTransactions(Long sellerId) {
-        List<ItemTransaction> transactions = itemTransactionRepository.findByItemSellerId(sellerId);
-        return transactions
+        List<ItemTransaction> itemTransactions = itemTransactionRepository.findByItemSellerId(sellerId);
+        return itemTransactions
                 .stream()
                 .map(itemTransactionMapper::toDto)
                 .collect(Collectors.toList());
@@ -76,8 +76,8 @@ public class ItemTransactionService {
 
     // 학생의 모든 구매 내역 조회
     public List<ItemTransactionDTO> findOrderItemTransactions(Long buyerId) {
-        List<ItemTransaction> transactions = itemTransactionRepository.findByBuyerId(buyerId);
-        return transactions
+        List<ItemTransaction> itemTransactions = itemTransactionRepository.findByBuyerId(buyerId);
+        return itemTransactions
                 .stream()
                 .map(itemTransactionMapper::toDto)
                 .collect(Collectors.toList());

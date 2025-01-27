@@ -17,6 +17,6 @@ public interface BankAccountMapper {
 
     // DTO → Entity 변환
     @Mapping(target = "id", ignore = true) // ID는 자동 생성되므로 무시
-    BankAccount toEntity(BankAccountDTO bankAccountDto);
+    BankAccount toEntity(BankAccountDTO bankAccountDTO);
 
 }

@@ -29,19 +29,19 @@ public class ItemTransactionController implements ItemTransactionApiSpecificatio
     // 아이템 판매 내역 [전체 조회]
     @GetMapping("/sale")
     public ResponseEntity<List<ItemTransactionDTO>> saleItemTransactionList(@RequestParam Long studentId) {
-        List<ItemTransactionDTO> itemTransactionDtoList = itemTransactionService.findSaleItemTransactions(studentId);
-        return itemTransactionDtoList.isEmpty()
+        List<ItemTransactionDTO> itemTransactionDTOList = itemTransactionService.findSaleItemTransactions(studentId);
+        return itemTransactionDTOList.isEmpty()
                 ? ResponseEntity.notFound().build()
-                : ResponseEntity.ok(itemTransactionDtoList);
+                : ResponseEntity.ok(itemTransactionDTOList);
     }
 
     // 아이템 구매 내역 [전체 조회]
     @GetMapping("/order")
     public ResponseEntity<List<ItemTransactionDTO>> orderItemTransactionList(@RequestParam Long studentId) {
-        List<ItemTransactionDTO> itemTransactionDtoList = itemTransactionService.findOrderItemTransactions(studentId);
-        return itemTransactionDtoList.isEmpty()
+        List<ItemTransactionDTO> itemTransactionDTOList = itemTransactionService.findOrderItemTransactions(studentId);
+        return itemTransactionDTOList.isEmpty()
                 ? ResponseEntity.notFound().build()
-                : ResponseEntity.ok(itemTransactionDtoList);
+                : ResponseEntity.ok(itemTransactionDTOList);
     }
 
 }

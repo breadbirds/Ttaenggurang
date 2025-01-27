@@ -1,0 +1,12 @@
+package com.ladysparks.ttaenggrang.repository;
+
+import com.ladysparks.ttaenggrang.domain.bank.SavingsGoal;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.List;
+
+public interface SavingsGoalRepository extends JpaRepository<SavingsGoal, Long> {
+
+    List<SavingsGoal> findByStudentId(Long studentId);
+
+}
