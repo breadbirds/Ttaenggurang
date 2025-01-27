@@ -1,6 +1,6 @@
 package com.ladysparks.ttaenggrang.domain.bank;
 
-import com.ladysparks.ttaenggrang.domain.user.Student;
+import com.ladysparks.ttaenggrang.domain.user.Teacher;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -13,34 +13,32 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class SavingsGoal {
+public class SavingsProduct {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "student_id", nullable = false)
-    private Student student;
+    @JoinColumn(name = "teacher_id", nullable = false)
+    private Teacher teacher;
 
     @Column(nullable = false, unique = true)
     private String name;
 
     @Column(nullable = false)
-    private int targetAmount;
+    private float interestRate;
 
-    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private SavingsGoalStatus status;
+    private float earlyInterestRate;
+
+    @Column(nullable = false)
+    private int durationWeeks;
+
+    @Column(nullable = false)
+    private int depositAmount;
 
     @CreationTimestamp
     private Timestamp createdAt;
-
-    @PrePersist
-    public void prePersist() {
-        if (this.status == null) {
-            this.status = SavingsGoalStatus.IN_PROGRESS;
-        }
-    }
 
 }

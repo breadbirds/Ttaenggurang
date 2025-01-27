@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
-@Tag(name = "Item", description = "아이템 관련 API")
+@Tag(name = "Item", description = "아이템 상품 관련 API")
 public interface ItemApiSpecification {
 
     @Operation(summary = "반 내 아이템 [전체 조회]", description = "💡 교사 ID로 반 내 전체 아이템을 조회합니다.")
