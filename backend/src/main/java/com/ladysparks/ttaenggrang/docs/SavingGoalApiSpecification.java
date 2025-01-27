@@ -13,9 +13,9 @@ import java.util.List;
 public interface SavingGoalApiSpecification {
 
     @Operation(summary = "저축 목표 [등록]", description = "학생이 저축 목표를 등록합니다.")
-    public ResponseEntity<SavingsGoalDTO> savingGoalAdd(@RequestBody SavingsGoalDTO savingsGoalDTO);
+    ResponseEntity<SavingsGoalDTO> savingGoalAdd(@RequestBody SavingsGoalDTO savingsGoalDTO);
 
     @Operation(summary = "저축 목표 [전체 조회]", description = "학생의 저축 목표를 조회합니다.")
-    public ResponseEntity<List<SavingsGoalDTO>> savingGoalList(@RequestParam Long studentId);
+    ResponseEntity<List<SavingsGoalDTO>> savingGoalList(@RequestParam Long studentId);
 
 }

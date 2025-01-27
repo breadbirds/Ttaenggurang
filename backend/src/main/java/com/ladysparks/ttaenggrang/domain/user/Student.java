@@ -4,12 +4,16 @@ import com.ladysparks.ttaenggrang.domain.bank.BankAccount;
 import com.ladysparks.ttaenggrang.domain.etf.EtfTransaction;
 import com.ladysparks.ttaenggrang.domain.stock.StockTransaction;
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 
 import java.sql.Timestamp;
 import java.util.List;
 
-@Data
+@Getter
+@ToString
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 public class Student {
     @Id
@@ -18,7 +22,7 @@ public class Student {
 
     @OneToOne
     @JoinColumn(name = "bank_account_id", nullable = false)
-    private BankAccount bank_account_id;
+    private BankAccount bankAccount;
 
     @Column
     private byte[] password;
