@@ -65,5 +65,12 @@ public class SwaggerConfig {
                 .pathsToMatch("/bank-account/**")
                 .build();
     }
+    @Bean
+    public GroupedOpenApi savingsGoalApi() {
+        return GroupedOpenApi.builder()
+                .group("savings-goal")
+                .pathsToMatch("/savings-goals/**")
+                .build();
+    }
 
 }

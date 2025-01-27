@@ -21,6 +21,6 @@ public interface ItemMapper {
     @Mapping(target = "id", ignore = true) // ID는 자동 생성되므로 무시
     @Mapping(source = "sellerId", target = "seller.id")
     @Mapping(source = "teacherId", target = "teacher.id")
-    Item toEntity(ItemDTO itemDto);
+    Item toEntity(ItemDTO itemDTO);
 
 }
