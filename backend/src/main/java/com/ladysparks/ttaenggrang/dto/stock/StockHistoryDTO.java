@@ -1,11 +1,11 @@
 package com.ladysparks.ttaenggrang.dto.stock;
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.sql.Timestamp;
-@Getter
-@Setter
+@Data
 public class StockHistoryDTO {
     private Long id;
     private int price;
