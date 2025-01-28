@@ -19,7 +19,7 @@ public class StockDTO {
     private int remain_qty;     // 주식 재고 수량
     private String description; // 설명
     private Timestamp created_at; // 생성일
-    private Timestamp update_at;  // 수정일
+    private Timestamp updated_at;  // 수정일
     private String category;      // 카테고리
     private Button button;           //버튼
 
@@ -39,7 +39,7 @@ public class StockDTO {
                 .remain_qty(stockDto.getRemain_qty())
                 .description(stockDto.getDescription())
                 .created_at(stockDto.getCreated_at())
-                .update_at(stockDto.getUpdate_at())
+                .update_at(stockDto.getUpdated_at())
                 .category(stockDto.getCategory())
                 .button(stockDto.getButton())
 
@@ -55,7 +55,7 @@ public class StockDTO {
                 .remain_qty(stock.getRemain_qty())
                 .description(stock.getDescription())
                 .created_at(stock.getCreated_at())
-                .update_at(stock.getUpdate_at())
+                .updated_at(stock.getUpdate_at())
                 .category(stock.getCategory())
                 .button(stock.getButton())
                 .build();
