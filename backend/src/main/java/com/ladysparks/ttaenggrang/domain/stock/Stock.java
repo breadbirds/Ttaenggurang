@@ -4,15 +4,21 @@ import com.ladysparks.ttaenggrang.domain.etf.Etf;
 import com.ladysparks.ttaenggrang.domain.news.News;
 import com.ladysparks.ttaenggrang.domain.user.Teacher;
 import jakarta.persistence.*;
+import lombok.*;
+
 
 import java.sql.Timestamp;
 import java.util.List;
-
-@Entity
+@AllArgsConstructor //모든 필드를 매개변수로 받는 생성자를 자동으로 생성
+@NoArgsConstructor //기본 생성자(매개변수가 없는 생성자)를 자동으로 생성 , Entity 사용 하면 사용 해줘야함!
+@Entity  // DB 매핑
+@Builder  //Builder 패턴을 생성하여 객체를 생성
+@Data
+@Table(name = "stock")  //엔티티 클래스가 매핑될 DB 테이블의 이름을 지정
 public class Stock {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;            // 주식 ID
+    private int id;            // 주식 ID
 
     @Column
     private String name;        // 주식 이름
@@ -65,8 +71,6 @@ public class Stock {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "etf_id")
     private Etf etf;
-
-
 
 
 }
