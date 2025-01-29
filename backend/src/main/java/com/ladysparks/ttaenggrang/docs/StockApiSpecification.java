@@ -1,8 +1,7 @@
 package com.ladysparks.ttaenggrang.docs;
 
-import com.ladysparks.ttaenggrang.domain.stock.Stock;
-import com.ladysparks.ttaenggrang.dto.ItemDTO;
 import com.ladysparks.ttaenggrang.dto.stock.StockDTO;
+import com.ladysparks.ttaenggrang.dto.stock.StockTransactionDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
@@ -26,4 +25,6 @@ public interface StockApiSpecification {
             @PathVariable("stockId") int stockId,
             @RequestParam("share_count") int share_count
     );
+
+
 }
