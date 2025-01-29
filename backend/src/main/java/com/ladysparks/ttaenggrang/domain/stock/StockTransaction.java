@@ -1,18 +1,25 @@
 package com.ladysparks.ttaenggrang.domain.stock;
 
 import com.ladysparks.ttaenggrang.domain.user.Student;
-import com.ladysparks.ttaenggrang.domain.user.Teacher;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.util.Set;
 
-@Entity
+@AllArgsConstructor //모든 필드를 매개변수로 받는 생성자를 자동으로 생성
+@NoArgsConstructor //기본 생성자(매개변수가 없는 생성자)를 자동으로 생성 , Entity 사용 하면 사용 해줘야함!
+@Entity  // DB 매핑
+@Builder  //Builder 패턴을 생성하여 객체를 생성
+@Data
+@Table(name = "stock_transaction")  //엔티티 클래스가 매핑될 DB 테이블의 이름을 지정
 public class StockTransaction {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private int id;
 
     @Column
     private int share_count;  // 주식 거래 수량
