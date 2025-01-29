@@ -60,5 +60,19 @@ public class SwaggerConfig {
                 .pathsToMatch("/items/**")
                 .build();
     }
+    @Bean
+    public GroupedOpenApi stockApi() {
+        return GroupedOpenApi.builder()
+                .group("stock")
+                .pathsToMatch("/stocks/**")
+                .build();
+    }
+    @Bean
+    public GroupedOpenApi etfApi() {
+        return GroupedOpenApi.builder()
+                .group("etf")
+                .pathsToMatch("/etfs/**")
+                .build();
+    }
 
 }

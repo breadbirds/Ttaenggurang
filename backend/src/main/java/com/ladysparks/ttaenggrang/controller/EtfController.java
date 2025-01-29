@@ -1,9 +1,9 @@
 package com.ladysparks.ttaenggrang.controller;
 
+import com.ladysparks.ttaenggrang.docs.EtfApiSpecification;
+
 import com.ladysparks.ttaenggrang.dto.etf.EtfDTO;
-import com.ladysparks.ttaenggrang.dto.stock.StockDTO;
 import com.ladysparks.ttaenggrang.service.EtfService;
-import com.ladysparks.ttaenggrang.service.StockService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,7 +17,7 @@ import java.util.Optional;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/etfs")
-public class EtfController {
+public class EtfController  {
     private final EtfService etfService; // StockService 주입
 
     // 주식 목록 전체 조회

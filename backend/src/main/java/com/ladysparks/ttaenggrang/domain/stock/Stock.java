@@ -27,7 +27,7 @@ public class Stock {
     private int price_per;// 한 주당 가격
 
     @Column
-    private int total_qty;      // 총 수량
+    private int total_qty;      // 회사가 보유 한 주식 총 수량
 
     @Column
     private int remain_qty;     // 주식 재고 수량
