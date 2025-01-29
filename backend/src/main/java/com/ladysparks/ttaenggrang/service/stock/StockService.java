@@ -1,11 +1,12 @@
-package com.ladysparks.ttaenggrang.service;
+package com.ladysparks.ttaenggrang.service.stock;
 
 import com.ladysparks.ttaenggrang.domain.stock.Stock;
 import com.ladysparks.ttaenggrang.domain.stock.StockTransaction;
 import com.ladysparks.ttaenggrang.domain.stock.TransType;
+import com.ladysparks.ttaenggrang.domain.user.Student;
 import com.ladysparks.ttaenggrang.dto.stock.StockDTO;
-import com.ladysparks.ttaenggrang.repository.StockRepository;
-import com.ladysparks.ttaenggrang.repository.StockTransactionRepository;
+import com.ladysparks.ttaenggrang.repository.stock.StockRepository;
+import com.ladysparks.ttaenggrang.repository.stock.StockTransactionRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -83,4 +84,9 @@ public class StockService {
 
         return true; // 매수 성공
     }
+
+
+
+
+
 }
