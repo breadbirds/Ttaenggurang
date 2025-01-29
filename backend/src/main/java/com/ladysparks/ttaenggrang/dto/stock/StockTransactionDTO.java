@@ -1,6 +1,7 @@
 package com.ladysparks.ttaenggrang.dto.stock;
 
 import com.ladysparks.ttaenggrang.domain.stock.TransType;
+import jakarta.persistence.Column;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,7 +11,7 @@ import java.sql.Timestamp;
 @Getter
 @Setter
 public class StockTransactionDTO {
-    private Long id;
+    private int id;
     private int share_count;  // 주식 거래 수량
     private Timestamp trans_date;  // 거래 날짜
     private int purchase_prc;   // 거래 당시 1주 가격
