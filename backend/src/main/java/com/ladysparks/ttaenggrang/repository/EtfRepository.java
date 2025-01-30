@@ -1,4 +1,7 @@
 package com.ladysparks.ttaenggrang.repository;
 
-public class EtfRepository {
+import com.ladysparks.ttaenggrang.domain.etf.Etf;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface EtfRepository extends JpaRepository<Etf, Integer>{
 }
