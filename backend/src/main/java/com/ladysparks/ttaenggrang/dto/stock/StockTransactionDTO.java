@@ -14,7 +14,7 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 @Builder
 public class StockTransactionDTO {
-    private int id;
+    private Long id;
     private int share_count;  // 주식 거래 수량
     private Timestamp trans_date;  // 거래 날짜
     private int purchase_prc;   // 거래 당시 1주 가격
@@ -26,7 +26,7 @@ public class StockTransactionDTO {
     //조인
 
     // 학생 관련 (student_id 외래 키를 참조)
-    private int studentId;  // student_id 외래 키 (Student 엔티티 참조)
+    private Long studentId;  // student_id 외래 키 (Student 엔티티 참조)
 
     // 계좌 관련 (bank_account_id 외래 키를 참조)
     private Long bankAccountId; // bank_account_id 외래 키 (BankAccount 엔티티 참조)

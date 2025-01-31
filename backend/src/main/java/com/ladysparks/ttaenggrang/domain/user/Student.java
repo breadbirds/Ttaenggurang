@@ -1,12 +1,10 @@
 package com.ladysparks.ttaenggrang.domain.user;
 
+import com.ladysparks.ttaenggrang.domain.bank.BankAccount;
 import com.ladysparks.ttaenggrang.domain.etf.EtfTransaction;
 import com.ladysparks.ttaenggrang.domain.stock.StockTransaction;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -19,10 +17,11 @@ import java.util.List;
 public class Student {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;            // 학생 ID
+    private Long id;            // 학생 ID
 
-    @Column(length = 20)
-    private String account_id;
+    @OneToOne
+    @JoinColumn(name = "bank_account_id", nullable = false)
+    private BankAccount bankAccount;
 
     @Column
     private byte[] password;
