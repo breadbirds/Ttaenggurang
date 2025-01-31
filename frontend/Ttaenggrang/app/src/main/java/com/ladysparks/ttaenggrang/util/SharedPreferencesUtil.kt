@@ -19,7 +19,7 @@ import android.content.SharedPreferences
  *
  * 삭제
  * - 삭제는 반환 값 true/false 제공
- * - 만약 삭제할 데이터(key) 존재하지 않을 경우 false 를 반환한다.
+ * - 만약 삭제할 데이터(key) 존재하지 않을 경우 false 를 반환한다.gi
  * val isRemoved = SharedPreferencesUtil.removeValue(context, "user_age")
  *
  * 초기화
