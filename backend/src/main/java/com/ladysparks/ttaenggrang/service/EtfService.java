@@ -15,7 +15,7 @@ public class EtfService {
     private final EtfRepository etfRepository; //의존성 주입
 
     //목록 조회
-    public int save(EtfDTO etfDto) {
+    public Long save(EtfDTO etfDto) {
         // EtfDTO를 Etf 엔티티로 변환
         Etf etf = EtfDTO.toEntity(etfDto);
         // 변환된 엔티티를 DB에 저장
