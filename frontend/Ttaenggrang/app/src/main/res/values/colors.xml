@@ -2,4 +2,9 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <!-- Custom Color -->
+    <color name="backgroundGray">#F5F5F5</color>
+    <color name="orange">#FF993A</color>
+    <color name="lightOrange">#FFE3C9</color>
 </resources>
