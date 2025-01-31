@@ -1,20 +1,27 @@
 package com.ladysparks.ttaenggrang.domain.user;
 
+import com.ladysparks.ttaenggrang.domain.bank.BankAccount;
 import com.ladysparks.ttaenggrang.domain.etf.EtfTransaction;
 import com.ladysparks.ttaenggrang.domain.stock.StockTransaction;
 import jakarta.persistence.*;
+import lombok.*;
 
 import java.sql.Timestamp;
 import java.util.List;
 
-@Entity
+@AllArgsConstructor //모든 필드를 매개변수로 받는 생성자를 자동으로 생성
+@NoArgsConstructor //기본 생성자(매개변수가 없는 생성자)를 자동으로 생성 , Entity 사용 하면 사용 해줘야함!
+@Entity  // DB 매핑
+@Builder  //Builder 패턴을 생성하여 객체를 생성
+@Data
 public class Student {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;            // 학생 ID
 
-    @Column(length = 20)
-    private String account_id;
+    @OneToOne
+    @JoinColumn(name = "bank_account_id", nullable = false)
+    private BankAccount bankAccount;
 
     @Column
     private byte[] password;
@@ -31,11 +38,11 @@ public class Student {
 
     // 조인
 
-    //주식
+    //주식 거래내역
     @OneToMany(mappedBy = "student", fetch = FetchType.LAZY)
     private List<StockTransaction> transactions;
 
-    //ETF
+    //ETF 거래내역
     @OneToMany(mappedBy = "student", cascade = CascadeType.ALL)
     private List<EtfTransaction> etfTransactions;
 }
