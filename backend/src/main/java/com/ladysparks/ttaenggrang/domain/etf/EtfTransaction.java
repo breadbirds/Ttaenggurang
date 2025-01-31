@@ -31,7 +31,7 @@ public class EtfTransaction {
     // 거래 유형
     @Enumerated(EnumType.STRING)  // Enum 값을 문자열로 저장
     @Column(name = "trans_type")
-    private TransType transType;
+    private TransType tranTransTypesType;
 
     //조인
 
