@@ -2,6 +2,7 @@ package com.ladysparks.ttaenggrang.controller;
 
 import com.ladysparks.ttaenggrang.docs.BankTransactionApiSpecification;
 import com.ladysparks.ttaenggrang.dto.BankTransactionDTO;
+import com.ladysparks.ttaenggrang.response.ApiResponse;
 import com.ladysparks.ttaenggrang.service.BankTransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -25,11 +26,9 @@ public class BankTransactionController implements BankTransactionApiSpecificatio
 
     // 은행 계좌 거래 내역 [전체 조회]
     @GetMapping
-    public ResponseEntity<List<BankTransactionDTO>> bankTransactionList(@RequestParam Long studentId) {
+    public ResponseEntity<ApiResponse<List<BankTransactionDTO>>> bankTransactionList(@RequestParam Long studentId) {
         List<BankTransactionDTO> bankTransactionDTOList = bankTransactionService.findBankTransactions(studentId);
-        return bankTransactionDTOList.isEmpty()
-                ? ResponseEntity.noContent().build()
-                : ResponseEntity.ok(bankTransactionDTOList);
+        return ResponseEntity.ok(ApiResponse.success(bankTransactionDTOList));
     }
 
 }

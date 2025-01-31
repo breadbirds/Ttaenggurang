@@ -27,15 +27,12 @@ public class BankTransactionService {
     }
 
     public List<BankTransactionDTO> findBankTransactions(Long studentId) {
-        // 1️⃣ StudentId를 기반으로 bankAccountId 찾기
+        // 1. StudentId를 기반으로 bankAccountId 찾기
         Long bankAccountId = studentRepository.findBankAccountIdById(studentId)
-                .orElseThrow(() -> new EntityNotFoundException("Student account not found for ID: " + studentId));
+                .orElseThrow(() -> new EntityNotFoundException("해당 학생의 계좌를 찾을 수 없습니다. ID: " + studentId));
 
-        // 2️⃣ BankAccountId를 기반으로 거래 내역 조회
-        List<BankTransaction> bankTransactions = bankTransactionRepository.findByBankAccountId(bankAccountId);
-
-        // 3️⃣ DTO 변환 후 반환
-        return bankTransactions
+        // 2. BankAccountId를 기반으로 거래 내역 조회 후 DTO 변환
+        return bankTransactionRepository.findByBankAccountId(bankAccountId)
                 .stream()
                 .map(bankTransactionMapper::toDto)
                 .collect(Collectors.toList());
