@@ -10,4 +10,6 @@ public interface SavingsSubscriptionRepository extends JpaRepository<SavingsSubs
     List<SavingsSubscription> findByStudentId(Long studentId);
     List<SavingsSubscription> findBySavingsProductId(Long savingsProductId);
 
+    boolean existsByStudentIdAndSavingsProductId(Long studentId, Long savingsProductId);
+
 }

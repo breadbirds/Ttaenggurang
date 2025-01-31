@@ -1,6 +1,7 @@
 package com.ladysparks.ttaenggrang.docs;
 
 import com.ladysparks.ttaenggrang.dto.SavingsGoalDTO;
+import com.ladysparks.ttaenggrang.response.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
@@ -13,9 +14,9 @@ import java.util.List;
 public interface SavingGoalApiSpecification {
 
     @Operation(summary = "저축 목표 [등록]", description = "학생이 저축 목표를 등록합니다.")
-    ResponseEntity<SavingsGoalDTO> savingGoalAdd(@RequestBody SavingsGoalDTO savingsGoalDTO);
+    ResponseEntity<ApiResponse<SavingsGoalDTO>> savingGoalAdd(@RequestBody SavingsGoalDTO savingsGoalDTO);
 
     @Operation(summary = "저축 목표 [전체 조회]", description = "학생의 저축 목표를 조회합니다.")
-    ResponseEntity<List<SavingsGoalDTO>> savingGoalList(@RequestParam Long studentId);
+    ResponseEntity<ApiResponse<List<SavingsGoalDTO>>> savingGoalList(@RequestParam Long studentId);
 
 }

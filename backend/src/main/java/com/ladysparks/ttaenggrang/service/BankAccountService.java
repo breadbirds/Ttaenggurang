@@ -4,6 +4,7 @@ import com.ladysparks.ttaenggrang.domain.bank.BankAccount;
 import com.ladysparks.ttaenggrang.dto.BankAccountDTO;
 import com.ladysparks.ttaenggrang.mapper.BankAccountMapper;
 import com.ladysparks.ttaenggrang.repository.BankAccountRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,17 +23,33 @@ public class BankAccountService {
         this.bankAccountMapper = bankAccountMapper;
     }
 
+    // 은행 계좌 [등록]
     @Transactional
     public BankAccountDTO addBankAccount(BankAccountDTO bankAccountDTO) {
+        // 1. 입력값 검증
+        if (bankAccountDTO == null) {
+            throw new IllegalArgumentException("요청된 계좌 정보가 유효하지 않습니다.");
+        }
+
+        // 2. 중복 계좌 번호 방지
+        boolean exists = bankAccountRepository.existsByAccountNumber(bankAccountDTO.getAccountNumber());
+        if (exists) {
+            throw new IllegalArgumentException("이미 존재하는 계좌 번호입니다: " + bankAccountDTO.getAccountNumber());
+        }
+
+        // 3. Entity 변환 및 저장
         BankAccount entity = bankAccountMapper.toEntity(bankAccountDTO);
         BankAccount savedEntity = bankAccountRepository.save(entity);
+
+        // 4. DTO 변환 후 반환
         return bankAccountMapper.toDto(savedEntity);
     }
 
-    public Optional<BankAccountDTO> findBankAccount(Long bankAccountId) {
-        return bankAccountRepository.findById(bankAccountId)
-                .map(bankAccountMapper::toDto); // ✅ Optional 처리
-        // 만약 값이 존재하면 toDto()가 실행되고, 없으면 Optional.empty()를 반환
+    // 은행 계좌 [조회]
+    public BankAccountDTO findBankAccount(Long bankAccountId) {
+        BankAccount bankAccount = bankAccountRepository.findById(bankAccountId)
+                .orElseThrow(() -> new EntityNotFoundException("해당 계좌를 찾을 수 없습니다. ID: " + bankAccountId));
+        return bankAccountMapper.toDto(bankAccount);
     }
 
 }
