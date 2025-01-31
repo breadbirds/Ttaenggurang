@@ -1,5 +1,7 @@
 package com.ladysparks.ttaenggrang.domain.item;
 
+import com.ladysparks.ttaenggrang.domain.user.Student;
+import com.ladysparks.ttaenggrang.domain.user.Teacher;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -8,7 +10,6 @@ import org.hibernate.annotations.UpdateTimestamp;
 import java.sql.Timestamp;
 
 @Getter
-@Setter
 @ToString
 @Builder // 객체 생성(@Builder를 이용하기 위해 @AllArgsConstructor와 @NoArgsConstructor를 같이 처리해야 컴파일 에러가 발생하지 않음)
 @AllArgsConstructor
@@ -19,11 +20,15 @@ public class Item {
 
     @Id // PK
     @GeneratedValue(strategy = GenerationType.IDENTITY) // PK의 생성 전략: MySQL의 AUTO_INCREMENT를 사용
-    private int id;
+    private Long id;
 
-//    @ManyToOne // Many: Item, One: Student
-//    @JoinColumn(name = "sellerId") // FK
-//    private Student student; // DB는 오브젝트를 저장할 수 없다. FK, 자바는 오브젝트를 저장할 수 있다. // 참조 할 테이블
+    @ManyToOne // Many: Item, One: Student
+    @JoinColumn(nullable = false, name = "seller_id") // FK
+    private Student seller; // DB는 오브젝트를 저장할 수 없다. FK, 자바는 오브젝트를 저장할 수 있다. // 참조 할 테이블
+
+    @ManyToOne
+    @JoinColumn(name = "teacher_id", nullable = false)
+    private Teacher teacher;
 
     @Column(nullable = false, length = 100) // Column과 반대로 테이블에 컬럼으로 생성되지 않는 필드의 경우엔 @Transient 어노테이션을 적용
     private String name;
@@ -44,9 +49,14 @@ public class Item {
     private boolean isApproved;
 
     @CreationTimestamp // 값이 입력될 때 혹은 업데이트될 때 자동으로 시간이 들어간다.
-    private Timestamp createAt;
+    private Timestamp createdAt;
 
     @UpdateTimestamp
-    private Timestamp updateAt;
+    private Timestamp updatedAt;
+
+    // ✅ 수량 업데이트 메서드 추가
+    public void updateQuantity(int quantity) {
+        this.quantity = quantity;
+    }
 
 }

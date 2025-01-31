@@ -3,10 +3,12 @@ package com.ladysparks.ttaenggrang.domain.user;
 import com.ladysparks.ttaenggrang.domain.etf.Etf;
 import com.ladysparks.ttaenggrang.domain.stock.Stock;
 import jakarta.persistence.*;
+import lombok.Data;
 
 import java.sql.Timestamp;
 import java.util.List;
 
+@Data
 @Entity
 public class Teacher {
     @Id
