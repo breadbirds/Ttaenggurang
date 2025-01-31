@@ -3,14 +3,12 @@ package com.ladysparks.ttaenggrang.domain.user;
 import com.ladysparks.ttaenggrang.domain.etf.Etf;
 import com.ladysparks.ttaenggrang.domain.stock.Stock;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 import java.sql.Timestamp;
 import java.util.List;
 
-@Getter
-@Setter
+@Data
 @Entity
 public class Teacher {
     @Id
@@ -23,7 +21,7 @@ public class Teacher {
     @Column
     private byte[] password;
 
-    @Column(unique = true, length = 50)
+    @Column(length = 100)
     private String email;
 
     @Column(length = 50)

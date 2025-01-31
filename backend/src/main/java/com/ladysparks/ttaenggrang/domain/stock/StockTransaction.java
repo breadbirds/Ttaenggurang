@@ -19,7 +19,7 @@ import java.sql.Timestamp;
 public class StockTransaction {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
     @Column
     private int share_count;  // 주식 거래 수량
