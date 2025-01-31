@@ -6,6 +6,8 @@ import io.swagger.v3.oas.models.info.Info;
 import org.springdoc.core.models.GroupedOpenApi;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 public class SwaggerConfig {
@@ -40,6 +42,11 @@ public class SwaggerConfig {
                 .group("teachers")
                 .pathsToMatch("/teachers/**")
                 .build();
+    }
+
+    @Bean
+    PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 
     @Bean

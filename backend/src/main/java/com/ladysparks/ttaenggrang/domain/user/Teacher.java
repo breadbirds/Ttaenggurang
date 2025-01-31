@@ -3,13 +3,19 @@ package com.ladysparks.ttaenggrang.domain.user;
 import com.ladysparks.ttaenggrang.domain.etf.Etf;
 import com.ladysparks.ttaenggrang.domain.stock.Stock;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.sql.Timestamp;
 import java.util.List;
 
 @Data
 @Entity
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Teacher {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,16 +25,16 @@ public class Teacher {
     private String name;
 
     @Column
-    private byte[] password;
+    private String password;
 
-    @Column(length = 100)
+    @Column(length = 100, unique = true, nullable = false)
     private String email;
 
-    @Column(length = 50)
+    @Column(length = 50, nullable = false)
     private String school;
 
-    @Column
-    private Timestamp created_at;
+    @Column(nullable = false, updatable = false)
+    private Timestamp createdAt;
 
     // 조인
 
