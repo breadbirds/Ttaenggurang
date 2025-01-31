@@ -2,8 +2,10 @@ package com.ladysparks.ttaenggrang.controller;
 
 import com.ladysparks.ttaenggrang.docs.ItemTransactionApiSpecification;
 import com.ladysparks.ttaenggrang.dto.ItemTransactionDTO;
+import com.ladysparks.ttaenggrang.response.ApiResponse;
 import com.ladysparks.ttaenggrang.service.ItemTransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,26 +24,23 @@ public class ItemTransactionController implements ItemTransactionApiSpecificatio
 
     // 아이템 거래 [등록]
     @PostMapping
-    public ResponseEntity<ItemTransactionDTO> itemTransactionAdd(@RequestBody ItemTransactionDTO itemTransactionDTO) {
-        return ResponseEntity.ok(itemTransactionService.addItemTransaction(itemTransactionDTO));
+    public ResponseEntity<ApiResponse<ItemTransactionDTO>> itemTransactionAdd(@RequestBody ItemTransactionDTO itemTransactionDTO) {
+        ItemTransactionDTO savedTransaction = itemTransactionService.addItemTransaction(itemTransactionDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.created(savedTransaction));
     }
 
     // 아이템 판매 내역 [전체 조회]
     @GetMapping("/sale")
-    public ResponseEntity<List<ItemTransactionDTO>> saleItemTransactionList(@RequestParam Long studentId) {
+    public ResponseEntity<ApiResponse<List<ItemTransactionDTO>>> saleItemTransactionList(@RequestParam Long studentId) {
         List<ItemTransactionDTO> itemTransactionDTOList = itemTransactionService.findSaleItemTransactions(studentId);
-        return itemTransactionDTOList.isEmpty()
-                ? ResponseEntity.notFound().build()
-                : ResponseEntity.ok(itemTransactionDTOList);
+        return ResponseEntity.ok(ApiResponse.success(itemTransactionDTOList));
     }
 
     // 아이템 구매 내역 [전체 조회]
     @GetMapping("/order")
-    public ResponseEntity<List<ItemTransactionDTO>> orderItemTransactionList(@RequestParam Long studentId) {
+    public ResponseEntity<ApiResponse<List<ItemTransactionDTO>>> orderItemTransactionList(@RequestParam Long studentId) {
         List<ItemTransactionDTO> itemTransactionDTOList = itemTransactionService.findOrderItemTransactions(studentId);
-        return itemTransactionDTOList.isEmpty()
-                ? ResponseEntity.notFound().build()
-                : ResponseEntity.ok(itemTransactionDTOList);
+        return ResponseEntity.ok(ApiResponse.success(itemTransactionDTOList));
     }
 
 }

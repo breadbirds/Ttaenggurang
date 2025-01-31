@@ -9,4 +9,6 @@ public interface SavingsProductRepository extends JpaRepository<SavingsProduct, 
 
     List<SavingsProduct> findByTeacherId(Long teacherId);
 
+    boolean existsByTeacherIdAndName(Long teacherId, String name);
+
 }
