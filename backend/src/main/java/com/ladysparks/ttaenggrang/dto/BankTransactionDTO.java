@@ -1,5 +1,6 @@
 package com.ladysparks.ttaenggrang.dto;
 
+import com.ladysparks.ttaenggrang.domain.bank.BankTransactionType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,6 +17,7 @@ public class BankTransactionDTO {
     private Long id;
     private Long bankAccountId;
     private Long referenceId;
+    private BankTransactionType type;
     private int amount;
     private int balanceBefore;
     private int balanceAfter;

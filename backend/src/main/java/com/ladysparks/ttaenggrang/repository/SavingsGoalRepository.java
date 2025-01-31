@@ -9,4 +9,6 @@ public interface SavingsGoalRepository extends JpaRepository<SavingsGoal, Long> 
 
     List<SavingsGoal> findByStudentId(Long studentId);
 
+    boolean existsByStudentIdAndName(Long studentId, String name);
+
 }

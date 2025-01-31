@@ -2,8 +2,11 @@ package com.ladysparks.ttaenggrang.controller;
 
 import com.ladysparks.ttaenggrang.docs.SavingsProductApiSpecification;
 import com.ladysparks.ttaenggrang.dto.SavingsProductDTO;
+import com.ladysparks.ttaenggrang.dto.SavingsSubscriptionDTO;
+import com.ladysparks.ttaenggrang.response.ApiResponse;
 import com.ladysparks.ttaenggrang.service.SavingsProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,17 +25,16 @@ public class SavingsProductController implements SavingsProductApiSpecification 
 
     // 적금 상품 [등록]
     @PostMapping
-    public ResponseEntity<SavingsProductDTO> savingsProductAdd(@RequestBody SavingsProductDTO savingsProductDTO) {
-        return ResponseEntity.ok(savingsProductService.addSavingsProducts(savingsProductDTO));
+    public ResponseEntity<ApiResponse<SavingsProductDTO>> savingsProductAdd(@RequestBody SavingsProductDTO savingsProductDTO) {
+        SavingsProductDTO savedSavingProductDTO = savingsProductService.addSavingsProducts(savingsProductDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.created(savedSavingProductDTO)); // 201 Created
     }
 
     // 적금 상품 [조회]
     @GetMapping
-    public ResponseEntity<List<SavingsProductDTO>> savingsProductList(@RequestParam Long teacherId) {
+    public ResponseEntity<ApiResponse<List<SavingsProductDTO>>> savingsProductList(@RequestParam Long teacherId) {
         List<SavingsProductDTO> savingsProductDTOList = savingsProductService.findSavingsProducts(teacherId);
-        return savingsProductDTOList.isEmpty()
-                ? ResponseEntity.noContent().build()
-                : ResponseEntity.ok(savingsProductDTOList);
+        return ResponseEntity.ok(ApiResponse.success(savingsProductDTOList));
     }
 
 }

@@ -1,6 +1,7 @@
 package com.ladysparks.ttaenggrang.docs;
 
 import com.ladysparks.ttaenggrang.dto.SavingsProductDTO;
+import com.ladysparks.ttaenggrang.response.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
@@ -12,9 +13,9 @@ import java.util.List;
 public interface SavingsProductApiSpecification {
 
     @Operation(summary = "적금 상품 [등록]", description = "교사가 적금 상품을 등록합니다.")
-    ResponseEntity<SavingsProductDTO> savingsProductAdd(SavingsProductDTO savingsProductDTO);
+    ResponseEntity<ApiResponse<SavingsProductDTO>> savingsProductAdd(SavingsProductDTO savingsProductDTO);
 
     @Operation(summary = "적금 상품 [조회]", description = "교사 ID로 적금 상품을 조회합니다.")
-    ResponseEntity<List<SavingsProductDTO>> savingsProductList(@RequestParam Long teacherId);
+    ResponseEntity<ApiResponse<List<SavingsProductDTO>>> savingsProductList(@RequestParam Long teacherId);
 
 }
