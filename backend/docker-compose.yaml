@@ -16,6 +16,9 @@ services: # 컨테이너
       - mysql_data:/var/lib/mysql  # MySQL 데이터 디렉터리를 외부로 마운트
 
   spring-boot-app:
+    build: # 빌드 옵션 추가
+      context: ./backend
+      dockerfile: Dockerfile
     image: spring-boot-app
     container_name: ttgr-app
     ports:
