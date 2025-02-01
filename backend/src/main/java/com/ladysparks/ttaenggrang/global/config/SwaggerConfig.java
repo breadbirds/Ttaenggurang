@@ -3,6 +3,7 @@ package com.ladysparks.ttaenggrang.global.config;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
+import io.swagger.v3.oas.models.servers.Server;
 import org.springdoc.core.models.GroupedOpenApi;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,7 +21,7 @@ public class SwaggerConfig {
     }
 
     @Bean
-    public OpenAPI customOpenAPI() {
+    public OpenAPI openAPI() {
 //        String jwt = "JWT";
 //        SecurityRequirement securityRequirement = new SecurityRequirement().addList(jwt);
 //        Components components = new Components().addSecuritySchemes(jwt, new SecurityScheme()
@@ -29,9 +30,14 @@ public class SwaggerConfig {
 //                .scheme("bearer")
 //                .bearerFormat("JWT")
 //        );
+
+        Server server = new Server();
+        server.setUrl("https://i12d107.p.ssafy.io");
+
         return new OpenAPI()
                 .components(new Components())
-                .info(apiInfo());
+                .info(apiInfo())
+                .addServersItem(server);
 //                .addSecurityItem(securityRequirement)
 //                .components(components);
     }
