@@ -17,32 +17,26 @@ import java.util.List;
 public class Student {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @Column(unique = true, nullable = false)
-    private String username;  // 학생 계정 (베이스ID + 숫자)
-
-    @Column(nullable = false)
-    private String password;  // 초기 비밀번호 (베이스ID와 동일)
-
-    @Column(length = 50)
-    private String name;  // 학생 이름
-
-    @Column(length = 2083)
-    private byte[] profile_image;  // 이미지 파일 경로
-
-    @Column(nullable = false, updatable = false)
-    private Timestamp createdAt;
-
-    // <조인>
-    // 교사
-    @ManyToOne
-    @JoinColumn(name = "teacherId", nullable = false)
-    private Teacher teacher;
+    private Long id;            // 학생 ID
 
     @OneToOne
     @JoinColumn(name = "bank_account_id", nullable = false)
     private BankAccount bankAccount;
+
+    @Column
+    private byte[] password;
+
+    @Column(length = 100)
+    private String name;
+
+    @Column(length = 2083)
+    private byte[] profile_image;  // 이미지 파일 경로
+
+    @Column
+    private Timestamp created_at;
+
+
+    // 조인
 
     //주식 거래내역
     @OneToMany(mappedBy = "student", fetch = FetchType.LAZY)

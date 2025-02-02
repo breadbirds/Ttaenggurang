@@ -9,35 +9,32 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
-import java.util.concurrent.TimeUnit;
 
 @Component
 public class JwtTokenProvider {
 
     private final SecretKey secretKey;
-    private final long validityInMilliseconds = TimeUnit.HOURS.toMillis(1); // ✅ 1시간 유효기간
 
-    // ✅ SecretKey를 애플리케이션 시작 시 한 번만 생성
     public JwtTokenProvider() {
-        this.secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+        this.secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS256);  // ✅ 안전한 랜덤 키 자동 생성
     }
 
-    // ✅ 로그인할 때마다 새로운 JWT 토큰 발급
+    private final long validityInMilliseconds = 3600000; // ✅ 1시간 유효 기간
+
     public String createToken(String email) {
-        Claims claims = Jwts.claims().setSubject(email); // 사용자 이메일 저장
+        Claims claims = Jwts.claims().setSubject(email);
 
         Date now = new Date();
         Date validity = new Date(now.getTime() + validityInMilliseconds);
 
         return Jwts.builder()
                 .setClaims(claims)
-                .setIssuedAt(now) // ✅ 토큰 발급 시간
-                .setExpiration(validity) // ✅ 만료 시간 설정
-                .signWith(secretKey)  // ✅ SecretKey를 사용하여 서명
+                .setIssuedAt(now)
+                .setExpiration(validity)
+                .signWith(secretKey)  // ✅ 안전한 키 사용
                 .compact();
     }
 
-    // ✅ JWT 토큰에서 이메일(사용자 정보) 추출
     public String getEmailFromToken(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(secretKey)
@@ -47,7 +44,6 @@ public class JwtTokenProvider {
                 .getSubject();
     }
 
-    // ✅ JWT 토큰 검증
     public boolean validateToken(String token) {
         try {
             Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(token);
