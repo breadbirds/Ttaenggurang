@@ -16,4 +16,6 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
     @Query("SELECT s.bankAccount.id FROM Student s WHERE s.id = :studentId")
     Optional<Long> findBankAccountIdById(@Param("studentId") Long studentId);
 
+    // username으로 학생 계정 조회하는 메서드
+    Optional<Student> findByUsername(String username);
 }
