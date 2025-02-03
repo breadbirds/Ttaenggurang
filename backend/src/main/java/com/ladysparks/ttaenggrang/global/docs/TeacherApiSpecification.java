@@ -1,6 +1,7 @@
 package com.ladysparks.ttaenggrang.global.docs;
 
 import com.ladysparks.ttaenggrang.domain.user.dto.JobCreateDTO;
+import com.ladysparks.ttaenggrang.domain.user.dto.NationCreateDTO;
 import com.ladysparks.ttaenggrang.domain.user.dto.TeacherLoginDTO;
 import com.ladysparks.ttaenggrang.domain.user.dto.TeacherSignupDTO;
 import com.ladysparks.ttaenggrang.global.response.ApiResponse;
@@ -28,4 +29,7 @@ public interface TeacherApiSpecification {
     @PostMapping("/jobs/create")
     ResponseEntity<ApiResponse<?>> createJob(@RequestBody @Valid JobCreateDTO jobCreateDTO);
 
+    @Operation(summary = "국가 [등록]", description = "💡 교사가 국가 정보를 등록합니다.")
+    @PostMapping("/nations/create")
+    ResponseEntity<ApiResponse<?>> createNation(@RequestBody @Valid NationCreateDTO nationCreateDTO);
 }
