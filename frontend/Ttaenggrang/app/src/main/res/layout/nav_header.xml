@@ -6,43 +6,51 @@
     android:layout_height="wrap_content"
     android:gravity="center_horizontal"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:paddingHorizontal="@dimen/spacing_10"
+    android:paddingTop="@dimen/spacing_20"
+    android:paddingBottom="@dimen/spacing_40">
+
+    <ImageView
+        android:id="@+id/imgUser"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/ic_launcher_background"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 
     <TextView
+        app:layout_constraintBottom_toTopOf="@+id/navHeaderEmail"
+        android:id="@+id/navHeaderName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Name"
+        style="@style/body1"
+        android:layout_marginStart="@dimen/spacing_10"
+        app:layout_constraintStart_toEndOf="@+id/imgUser"
+        app:layout_constraintTop_toTopOf="@+id/imgUser" />
+
+    <TextView
+        app:layout_constraintBottom_toBottomOf="@+id/navHeaderName"
+        android:id="@+id/navHeaderUserRole"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spacing_10"
+        android:text="교사"
+        style="@style/caption"
+        android:background="@color/lightOrange"
+        app:layout_constraintStart_toEndOf="@+id/navHeaderName"
+        app:layout_constraintTop_toTopOf="@+id/navHeaderName" />
+
+    <TextView
+        app:layout_constraintTop_toBottomOf="@+id/navHeaderName"
         android:id="@+id/navHeaderEmail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="test@naver.com"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/navHeaderName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@color/white"
-        android:text="Name"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/navHeaderEmail" />
-
-    <TextView
-        android:id="@+id/navHeaderUserRole"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="교사"
-        app:layout_constraintStart_toEndOf="@+id/navHeaderName"
-        app:layout_constraintTop_toTopOf="@+id/navHeaderName" />
-
-    <ImageButton
-        android:id="@+id/navHeaderSetting"
-        android:layout_width="25dp"
-        android:layout_height="25dp"
-        android:background="@drawable/ic_setting"
-        app:layout_constraintBottom_toBottomOf="@+id/navHeaderName"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/navHeaderEmail" />
-
+        style="@style/body2"
+        android:textColor="@color/lightGray"
+        app:layout_constraintBottom_toBottomOf="@+id/imgUser"
+        app:layout_constraintStart_toStartOf="@+id/navHeaderName"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
