@@ -36,9 +36,5 @@ import org.springframework.http.HttpEntity;
 //        // 응답에서 생성된 뉴스 기사 추출
 //        return response.getBody(); // 실제 구현 시, 필요한 데이터만 추출
 //    }
-<<<<<<< HEAD
-=======
-//
->>>>>>> 7744444f198afaadb33462f269bb594f1c927206
 //}
 

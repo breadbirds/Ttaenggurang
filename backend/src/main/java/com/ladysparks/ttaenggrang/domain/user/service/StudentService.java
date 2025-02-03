@@ -6,19 +6,23 @@ import com.ladysparks.ttaenggrang.domain.bank.mapper.BankAccountMapper;
 import com.ladysparks.ttaenggrang.domain.bank.repository.BankAccountRepository;
 import com.ladysparks.ttaenggrang.domain.bank.service.BankAccountService;
 import com.ladysparks.ttaenggrang.domain.user.dto.StudentCreateDTO;
+import com.ladysparks.ttaenggrang.domain.user.dto.StudentLoginRequestDTO;
+import com.ladysparks.ttaenggrang.domain.user.dto.StudentLoginResponseDTO;
 import com.ladysparks.ttaenggrang.domain.user.dto.StudentResponseDTO;
 import com.ladysparks.ttaenggrang.domain.user.entity.Student;
 import com.ladysparks.ttaenggrang.domain.user.entity.Teacher;
 import com.ladysparks.ttaenggrang.domain.user.repository.StudentRepository;
 import com.ladysparks.ttaenggrang.domain.user.repository.TeacherRepository;
+import com.ladysparks.ttaenggrang.global.config.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.boot.model.naming.IllegalIdentifierException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -30,6 +34,7 @@ public class StudentService {
     private final PasswordEncoder passwordEncoder;
     private final BankAccountService bankAccountService;
     private final BankAccountRepository bankAccountRepository; // ✅ 추가
+    private final JwtTokenProvider jwtTokenProvider;
 
     //    // 학생 계정 생성 (토큰 문제 해결 후 다시 사용하기)
 //    public List<StudentResponseDTO> createStudentAccounts(Long teacher_id, StudentCreateDTO studentCreateDTO) {
@@ -115,4 +120,28 @@ public class StudentService {
         return "110-" + (int) (Math.random() * 1_000_000_000);
     }
 
+    // 학생 로그인
+    public StudentLoginResponseDTO loginStudent(StudentLoginRequestDTO studentLoginRequestDTO) {
+        Student student = studentRepository.findByUsername(studentLoginRequestDTO.getUsername())
+                .orElseThrow(() -> new IllegalIdentifierException("아이디를 찾을 수 없습니다."));
+
+        if (!passwordEncoder.matches(studentLoginRequestDTO.getPassword(), student.getPassword())) {
+            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+        }
+
+        // JMT 토큰 생성
+        String token = jwtTokenProvider.createToken(student.getUsername());
+
+        // 응답을 위한 DTO 생성
+        return new StudentLoginResponseDTO(
+                student.getUsername(),
+                student.getName(),
+                student.getProfileImage() != null && student.getProfileImage().length > 0
+                        ? Base64.getEncoder().encodeToString(student.getProfileImage())
+                        : null,  // 빈 값 처리 추가
+                student.getTeacher(),  // teacher 정보 추가
+                student.getBankAccount(),  // bankAccount 정보 추가
+                token
+        );
+    }
 }
