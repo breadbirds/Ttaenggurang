@@ -2,10 +2,15 @@ package com.ladysparks.ttaenggrang.global.config;
 
 import io.jsonwebtoken.*;
 import javax.crypto.SecretKey;
+import java.util.ArrayList;
 import java.util.Base64;
 
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
@@ -63,4 +68,14 @@ public class JwtTokenProvider {
         }
         return false;
     }
+
+    // JWT 토큰에서 인증 객체 추출
+    public Authentication getAuthentication(String token) {
+        Claims claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody();
+        String email = claims.getSubject();
+
+        UserDetails userDetails = new User(email, "", new ArrayList<>());
+        return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
+    }
+
 }
