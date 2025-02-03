@@ -29,26 +29,31 @@ public class Student {
     private String name;  // 학생 이름
 
     @Column(length = 2083)
-    private byte[] profile_image;  // 이미지 파일 경로
+    private byte[] profileImage;  // 이미지 파일 경로
 
     @Column(nullable = false, updatable = false)
     private Timestamp createdAt;
 
+    @PrePersist
+    protected void onCreate() {
+        this.createdAt = new Timestamp(System.currentTimeMillis());
+    }
+
     // <조인>
     // 교사
     @ManyToOne
-    @JoinColumn(name = "teacherId", nullable = false)
+    @JoinColumn(name = "teacher_id", nullable = false)
     private Teacher teacher;
 
     @OneToOne
-    @JoinColumn(name = "bank_account_id", nullable = false)
+    @JoinColumn(name = "bank_account_id")  // nullable = false
     private BankAccount bankAccount;
 
     //주식 거래내역
-    @OneToMany(mappedBy = "student", fetch = FetchType.LAZY)
-    private List<StockTransaction> transactions;
+//    @OneToMany(mappedBy = "student", fetch = FetchType.LAZY)
+//    private List<StockTransaction> transactions;
 
     //ETF 거래내역
-    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL)
-    private List<EtfTransaction> etfTransactions;
+//    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL)
+//    private List<EtfTransaction> etfTransactions;
 }

@@ -30,7 +30,7 @@ public class StudentController implements StudentApiSpecification {
     private final StudentService studentService;
     private final TeacherRepository teacherRepository;
 
-    // 학생 계정 생성 (교사만 가능)
+    // 학생 계정 생성 (교사만 가능)  (토큰 문제 해결 후 다시 사용하기)
     @PostMapping("/create")
     public ResponseEntity<ApiResponse<List<StudentResponseDTO>>> createStudents(
             @RequestBody @Valid StudentCreateDTO studentCreateDTO) {
@@ -66,4 +66,20 @@ public class StudentController implements StudentApiSpecification {
         }
         throw new IllegalArgumentException("현재 인증된 사용자를 찾을 수 없습니다.");
     }
+
+    // 학생 계정 생성 (로그인 없이)
+//    @PostMapping("/create")
+//    public ResponseEntity<ApiResponse<List<StudentResponseDTO>>> createStudents(
+//            @RequestBody @Valid StudentCreateDTO studentCreateDTO) {
+//
+//        // ✅ 현재 로그인한 교사의 ID 가져오기
+//        Long teacherId = getTeacherIdFromSecurityContext();
+//
+//        // ✅ 학생 계정 생성 서비스 호출
+//        List<StudentResponseDTO> createdStudents = studentService.createStudentAccounts(teacherId, studentCreateDTO);
+//
+//        // ✅ ApiResponse.success() 사용
+//        return ResponseEntity.ok(ApiResponse.success(createdStudents));
+//    }
+
 }
