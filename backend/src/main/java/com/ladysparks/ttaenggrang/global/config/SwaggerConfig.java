@@ -1,0 +1,117 @@
+package com.ladysparks.ttaenggrang.global.config;
+
+import io.swagger.v3.oas.models.Components;
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.info.Contact;
+import io.swagger.v3.oas.models.info.Info;
+import io.swagger.v3.oas.models.info.License;
+import io.swagger.v3.oas.models.security.SecurityRequirement;
+import io.swagger.v3.oas.models.security.SecurityScheme;
+import io.swagger.v3.oas.models.servers.Server;
+import org.springdoc.core.models.GroupedOpenApi;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
+import java.util.Arrays;
+
+@Configuration
+public class SwaggerConfig {
+    private Info apiInfo() {
+        return new Info()
+                    .title("땡그랑 API")
+                    .version("v1")
+                    .description("땡그랑 API 명세서");
+    }
+
+    private SecurityScheme createAPIKeyScheme() {
+        return new SecurityScheme().type(SecurityScheme.Type.HTTP)
+                .bearerFormat("JWT")
+                .scheme("bearer");
+    }
+
+    @Bean
+    public OpenAPI openAPI() {
+//        String jwt = "JWT";
+//        SecurityRequirement securityRequirement = new SecurityRequirement().addList(jwt);
+//        Components components = new Components().addSecuritySchemes(jwt, new SecurityScheme()
+//                .name(jwt)
+//                .type(SecurityScheme.Type.HTTP)
+//                .scheme("bearer")
+//                .bearerFormat("JWT")
+//        );
+
+//        return new OpenAPI()
+//                .components(new Components())
+//                .info(apiInfo())
+//                .addServersItem(new Server().url("/api"));
+//                .addSecurityItem(securityRequirement)
+//                .components(components);
+        return new OpenAPI().addSecurityItem(new SecurityRequirement().
+                        addList("Bearer Authentication"))
+                .components(new Components().addSecuritySchemes
+                        ("Bearer Authentication", createAPIKeyScheme()))
+                .info(new Info().title("My REST API")
+                        .description("Some custom description of API.")
+                        .version("1.0").contact(new Contact().name("Sallo Szrajbman")
+                                .email( "www.baeldung.com").url("salloszraj@gmail.com"))
+                        .license(new License().name("License of API")
+                                .url("API license URL")));
+    }
+
+    @Bean
+    public GroupedOpenApi teacherApi() {
+        return GroupedOpenApi.builder()
+                .group("teachers")
+                .pathsToMatch("/teachers/**")
+                .build();
+    }
+
+    @Bean
+    public GroupedOpenApi studentApi() {
+        return GroupedOpenApi.builder()
+                .group("students")
+                .pathsToMatch("/students/**")
+                .build();
+    }
+
+    @Bean
+    public GroupedOpenApi itemApi() {
+        return GroupedOpenApi.builder()
+                .group("items")
+                .pathsToMatch("/items/**", "/item-transactions/**")
+                .build();
+    }
+
+    @Bean
+    public GroupedOpenApi savingsGoalApi() {
+        return GroupedOpenApi.builder()
+                .group("savings-goal")
+                .pathsToMatch("/savings-goals/**")
+                .build();
+    }
+
+    @Bean
+    public GroupedOpenApi bankApi() {
+        return GroupedOpenApi.builder()
+                .group("bank")
+                .pathsToMatch("/bank-account/**", "/bank-transactions/**", "/savings-products/**", "/savings-subscriptions/**")
+                .build();
+    }
+    @Bean
+    public GroupedOpenApi stockApi() {
+        return GroupedOpenApi.builder()
+                .group("stock")
+                .pathsToMatch("/stocks/**")
+                .build();
+    }
+    @Bean
+    public GroupedOpenApi etfApi() {
+        return GroupedOpenApi.builder()
+                .group("etf")
+                .pathsToMatch("/etfs/**")
+                .build();
+    }
+}

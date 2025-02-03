@@ -1,0 +1,66 @@
+version: '3'
+services: # 컨테이너
+  db:
+    image: mysql
+    container_name: ttgr-db
+    environment:
+      - MYSQL_DATABASE=ttgr
+      - MYSQL_ROOT_PASSWORD=ssafy
+    ports:
+      - "3306:3306"
+    networks:
+      - app-network
+    volumes:
+      # 데이터 베이스 초기화(init.sql)
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+      - mysql_data:/var/lib/mysql  # MySQL 데이터 디렉터리를 외부로 마운트
+
+  spring-boot-app:
+    build: # 빌드 옵션 추가
+      context: ./backend
+      dockerfile: Dockerfile
+    image: spring-boot-app
+    container_name: ttgr-app
+    ports:
+      - "8080:8080"
+    links:
+      - db
+    depends_on:
+      - db # spring-boot-app
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/ttgr?useSSL=false&useUnicode=true&allowPublicKeyRetrieval=true&serverTimezone=Asia/Seoul
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=ssafy
+    restart: always
+    networks:
+      - app-network
+
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro  # nginx.conf 마운트
+      - ./data/certbot/conf:/etc/letsencrypt
+      - ./data/certbot/www:/var/www/certbot
+    depends_on:
+      - spring-boot-app
+    networks:
+      - app-network
+
+  certbot:
+      image: certbot/certbot
+      volumes:
+        - ./data/certbot/conf:/etc/letsencrypt
+        - ./data/certbot/www:/var/www/certbot
+      entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  mysql_data: # Docker 볼륨 선언
