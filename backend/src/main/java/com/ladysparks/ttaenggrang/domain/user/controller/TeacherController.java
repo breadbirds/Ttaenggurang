@@ -1,7 +1,9 @@
 package com.ladysparks.ttaenggrang.domain.user.controller;
 
 import com.ladysparks.ttaenggrang.domain.user.dto.JobCreateDTO;
+import com.ladysparks.ttaenggrang.domain.user.dto.NationCreateDTO;
 import com.ladysparks.ttaenggrang.domain.user.service.JobService;
+import com.ladysparks.ttaenggrang.domain.user.service.NationService;
 import com.ladysparks.ttaenggrang.global.docs.TeacherApiSpecification;
 import com.ladysparks.ttaenggrang.domain.user.dto.TeacherLoginDTO;
 import com.ladysparks.ttaenggrang.domain.user.dto.TeacherSignupDTO;
@@ -9,6 +11,7 @@ import com.ladysparks.ttaenggrang.global.response.ApiResponse;
 import com.ladysparks.ttaenggrang.domain.user.service.TeacherService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.boot.model.internal.OptionalDeterminationSecondPass;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,6 +22,7 @@ public class TeacherController implements TeacherApiSpecification {
 
     private final TeacherService teacherService;
     private final JobService jobService;
+    private final NationService nationService;
 
     // 교사 회원가입
     @PostMapping("/signup")
@@ -46,6 +50,13 @@ public class TeacherController implements TeacherApiSpecification {
     @Override
     public ResponseEntity<ApiResponse<?>> createJob(@RequestBody @Valid JobCreateDTO jobCreateDTO) {
         ApiResponse<?> response = jobService.createJob(jobCreateDTO);
+        return ResponseEntity.status(response.getStatusCode()).body(response);
+    }
+
+    // 국가 정보 등록
+    @PostMapping("/nations/create")
+    public ResponseEntity<ApiResponse<?>> createNation(@RequestBody @Valid NationCreateDTO nationCreateDTO) {
+        ApiResponse<?> response = nationService.createNation(nationCreateDTO);
         return ResponseEntity.status(response.getStatusCode()).body(response);
     }
 }
