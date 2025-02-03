@@ -1,0 +1,15 @@
+data 패키지 구조 설명
+
+1. model
+    1-1. dto
+        -  앱 내부에서 가공된 데이터
+        - ViewModel 또는 UI 에서 사용하기 위함
+
+    1-2. response
+        - API 응답을 위한 데이터
+        - 서버에서 내려주는 JSON 응답을 매핑하는 '응답 모델'을 관리하는 영역
+
+2. reemote
+    - API 요청을 정의하는 Retrofit 인터페이스를 제공하는 영역
+    - @GET, @POST 등의 어노테이션을 사용해 API 요청을 선언
+
