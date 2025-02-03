@@ -50,10 +50,10 @@ public class Student {
     private BankAccount bankAccount;
 
     //주식 거래내역
-    @OneToMany(mappedBy = "student", fetch = FetchType.LAZY)
-    private List<StockTransaction> transactions;
+//    @OneToMany(mappedBy = "student", fetch = FetchType.LAZY)
+//    private List<StockTransaction> transactions;
 
     //ETF 거래내역
-    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL)
-    private List<EtfTransaction> etfTransactions;
+//    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL)
+//    private List<EtfTransaction> etfTransactions;
 }
