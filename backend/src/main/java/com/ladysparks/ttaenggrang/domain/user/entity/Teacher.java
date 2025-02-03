@@ -7,8 +7,12 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.Collection;
 import java.util.List;
 
 @Data
@@ -16,7 +20,8 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Teacher {
+@Table(name = "teacher")
+public class Teacher{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;            // 선생님 ID
@@ -39,7 +44,7 @@ public class Teacher {
     // <조인>
     // 학생
     @OneToMany
-    @JoinColumn(name = "studentId", nullable = false)
+    @JoinColumn(name = "student_id", nullable = false)
     private List<Student> student;
 
     //주식
