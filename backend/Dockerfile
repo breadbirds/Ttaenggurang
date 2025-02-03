@@ -7,9 +7,6 @@ ENV LC_ALL=ko_KR.UTF-8
 
 WORKDIR /app
 
-# 캐시 방지를 위해 빌드 시간 추가
-ARG CACHE_BUSTER=1
-
 # 애플리케이션 복사 및 실행 설정
 COPY build/libs/*SNAPSHOT.jar ttgr.jar
 
