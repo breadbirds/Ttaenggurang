@@ -46,10 +46,12 @@ public class SwaggerConfig {
 //        return new OpenAPI()
 //                .components(new Components())
 //                .info(apiInfo())
-//                .addServersItem(new Server().url("/api"));
+//                .addServersItem(new Server().url("/api"))
 //                .addSecurityItem(securityRequirement)
 //                .components(components);
-        return new OpenAPI().addSecurityItem(new SecurityRequirement().
+        return new OpenAPI()
+                .addServersItem(new Server().url("/api"))
+                .addSecurityItem(new SecurityRequirement().
                         addList("Bearer Authentication"))
                 .components(new Components().addSecuritySchemes
                         ("Bearer Authentication", createAPIKeyScheme()))
