@@ -1,9 +1,9 @@
 package com.ladysparks.ttaenggrang.domain.user.controller;
 
 import com.ladysparks.ttaenggrang.domain.user.dto.StudentCreateDTO;
+import com.ladysparks.ttaenggrang.domain.user.dto.StudentLoginRequestDTO;
+import com.ladysparks.ttaenggrang.domain.user.dto.StudentLoginResponseDTO;
 import com.ladysparks.ttaenggrang.domain.user.dto.StudentResponseDTO;
-import com.ladysparks.ttaenggrang.domain.user.entity.Student;
-import com.ladysparks.ttaenggrang.domain.user.entity.Teacher;
 import com.ladysparks.ttaenggrang.domain.user.repository.TeacherRepository;
 import com.ladysparks.ttaenggrang.domain.user.service.StudentService;
 import com.ladysparks.ttaenggrang.global.docs.StudentApiSpecification;
@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -67,19 +66,10 @@ public class StudentController implements StudentApiSpecification {
         throw new IllegalArgumentException("현재 인증된 사용자를 찾을 수 없습니다.");
     }
 
-    // 학생 계정 생성 (로그인 없이)
-//    @PostMapping("/create")
-//    public ResponseEntity<ApiResponse<List<StudentResponseDTO>>> createStudents(
-//            @RequestBody @Valid StudentCreateDTO studentCreateDTO) {
-//
-//        // ✅ 현재 로그인한 교사의 ID 가져오기
-//        Long teacherId = getTeacherIdFromSecurityContext();
-//
-//        // ✅ 학생 계정 생성 서비스 호출
-//        List<StudentResponseDTO> createdStudents = studentService.createStudentAccounts(teacherId, studentCreateDTO);
-//
-//        // ✅ ApiResponse.success() 사용
-//        return ResponseEntity.ok(ApiResponse.success(createdStudents));
-//    }
-
+    // 학생 로그인
+    @PostMapping("/login")
+    public ResponseEntity<ApiResponse<StudentLoginResponseDTO>> loginStudents(@RequestBody @Valid StudentLoginRequestDTO studentLoginDTO) {
+        StudentLoginResponseDTO responseDTO = studentService.loginStudent(studentLoginDTO);
+        return ResponseEntity.ok(ApiResponse.success(responseDTO));
+    }
 }
