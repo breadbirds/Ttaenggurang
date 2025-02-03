@@ -38,16 +38,16 @@ public class Teacher {
 
     // <조인>
     // 학생
-    @OneToMany
-    @JoinColumn(name = "studentId", nullable = false)
-    private List<Student> student;
+//    @OneToMany
+//    @JoinColumn(name = "studentId", nullable = false)
+//    private List<Student> student;
 
     //주식
-    @OneToMany(mappedBy = "teacher", fetch = FetchType.LAZY)
-    private List<Stock> stocks; // 선생님이 관리하는 주식 목록
+//    @OneToMany(mappedBy = "teacher", fetch = FetchType.LAZY)
+//    private List<Stock> stocks; // 선생님이 관리하는 주식 목록
 
     //주식
-    @OneToMany(mappedBy = "teacher", fetch = FetchType.LAZY)
-    private List<Etf> etfs; // 선생님이 관리하는 주식 목록
+//    @OneToMany(mappedBy = "teacher", fetch = FetchType.LAZY)
+//    private List<Etf> etfs; // 선생님이 관리하는 주식 목록
 
 }
