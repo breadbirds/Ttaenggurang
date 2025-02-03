@@ -35,7 +35,9 @@ public class SecurityConfig {
                                 "/swagger-ui/**",
                                 "/swagger-ui.html",
                                 "/swagger-resources/**",
-                                "/webjars/**"
+                                "/webjars/**",
+                                "/students/login",
+                                "/students/create"
                         ).permitAll()
 
                         // ✅ 인증 필요 없는 경로

@@ -57,5 +57,4 @@ public class Teacher{
 
 //    @OneToMany(mappedBy = "teacher", fetch = FetchType.LAZY)
 //    private List<Etf> etfs; // 선생님이 관리하는 주식 목록
-
 }
