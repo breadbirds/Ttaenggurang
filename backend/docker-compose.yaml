@@ -19,6 +19,8 @@ services: # 컨테이너
     build: # 빌드 옵션 추가
       context: ./backend
       dockerfile: Dockerfile
+      args:
+        - CACHE_BUSTER=${CACHE_BUSTER}gi
     image: spring-boot-app
     container_name: ttgr-app
     ports:
