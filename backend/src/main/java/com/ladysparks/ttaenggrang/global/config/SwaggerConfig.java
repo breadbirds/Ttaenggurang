@@ -111,4 +111,13 @@ public class SwaggerConfig {
                 .pathsToMatch("/etfs/**")
                 .build();
     }
+    @Bean
+    public GroupedOpenApi newsApi() {
+        return GroupedOpenApi.builder()
+                .group("news")
+                .pathsToMatch("/news/**")
+                .build();
+    }
+
+
 }

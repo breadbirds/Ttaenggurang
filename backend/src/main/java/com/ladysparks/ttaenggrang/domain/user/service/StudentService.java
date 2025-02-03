@@ -26,9 +26,44 @@ public class StudentService {
 
     private final StudentRepository studentRepository;
     private final TeacherRepository teacherRepository;
+    private final TeacherService teacherService;
     private final PasswordEncoder passwordEncoder;
     private final BankAccountService bankAccountService;
     private final BankAccountRepository bankAccountRepository; // ✅ 추가
+
+    //    // 학생 계정 생성 (토큰 문제 해결 후 다시 사용하기)
+//    public List<StudentResponseDTO> createStudentAccounts(Long teacher_id, StudentCreateDTO studentCreateDTO) {
+//        // 1. 교사 ID 확인
+//        Teacher teacher = teacherRepository.findById(teacher_id)
+//                .orElseThrow(() -> new IllegalArgumentException("교사를 찾을 수 없습니다."));
+//
+//        List<StudentResponseDTO> createStudents = new ArrayList<>();
+//
+//        // 2. 학생 계정 자동 생성
+//        for (int i = 1; i <= studentCreateDTO.getStudentCount(); i++) {
+//            String username = studentCreateDTO.getBaseId() + i;  // 베이스ID + 숫자
+//            String password = studentCreateDTO.getBaseId() + i;  // 비밀번호는 username과 동일
+//
+//            // 3. 중복 확인
+//            Optional<Student> existingStudent = studentRepository.findByUsername(username);
+//            if (existingStudent.isPresent()) {
+//                throw new IllegalArgumentException("이미 존재하는 학생 계정: " + username);
+//            }
+//
+//            // 4. 학생 계정 저장
+//            Student student = Student.builder()
+//                    .username(username)
+//                    .password(passwordEncoder.encode(password))  // 비밀번호 암호화
+//                    .teacher(teacher)
+//                    .build();
+//            studentRepository.save(student);
+//
+//            // 5. 생성된 계정 리스트에 추가
+//            createStudents.add(new StudentResponseDTO(username, password));
+//        }
+//
+//        return createStudents;  // 생성된 계정 반환
+//    }
 
     @Transactional
     public List<StudentResponseDTO> createStudentAccounts(Long teacherId, StudentCreateDTO studentCreateDTO) {
