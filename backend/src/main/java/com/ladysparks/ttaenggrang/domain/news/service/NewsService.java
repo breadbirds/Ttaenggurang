@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Random;
 
+
 //@Service
 //public class NewsService {
 //
@@ -16,6 +17,7 @@ import java.util.Random;
 //
 //    @Autowired
 //    private StockRepository stockRepository;
+
 //
 //    public void generateAndPublishNews() {
 //        // 주식 리스트 가져오기
@@ -41,4 +43,8 @@ import java.util.Random;
 //        // 추가적으로, 뉴스 객체를 DB에 저장할 수 있습니다.
 //        // 예: newsRepository.save(new News(positiveNews, negativeNews, selectedStock));
 //    }
+
 //}
+
+
+

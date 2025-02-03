@@ -3,7 +3,6 @@ package com.ladysparks.ttaenggrang.domain.etf.entity;
 import com.ladysparks.ttaenggrang.domain.stock.entity.Stock;
 import com.ladysparks.ttaenggrang.domain.stock.entity.StockHistory;
 import com.ladysparks.ttaenggrang.domain.user.entity.Teacher;
-import com.ladysparks.ttaenggrang.domain.news.entity.News;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -70,8 +69,8 @@ public class Etf {
     private List<EtfTransaction> etfTransaction;
 
     //뉴스
-    @ManyToMany(mappedBy = "etfs")
-    private List<News> news;
+//    @ManyToMany(mappedBy = "etfs")
+//    private List<News> news;
 
 
 }

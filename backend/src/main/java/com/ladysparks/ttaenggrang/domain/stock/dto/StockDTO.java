@@ -15,6 +15,7 @@ public class StockDTO {
     private int id;            // 주식 ID
     private String name;        // 주식 이름
     private int price_per;// 한 주당 가격
+    private int current_pre;  // 현재 주식 가격 (변동된 가격)
     private int total_qty;      // 총 수량
     private int remain_qty;     // 주식 재고 수량
     private String description; // 설명
@@ -39,7 +40,7 @@ public class StockDTO {
                 .remain_qty(stockDto.getRemain_qty())
                 .description(stockDto.getDescription())
                 .created_at(stockDto.getCreated_at())
-                .update_at(stockDto.getUpdated_at())
+                .updated_at(stockDto.getUpdated_at())
                 .category(stockDto.getCategory())
                 .button(stockDto.getButton())
 
@@ -55,7 +56,7 @@ public class StockDTO {
                 .remain_qty(stock.getRemain_qty())
                 .description(stock.getDescription())
                 .created_at(stock.getCreated_at())
-                .updated_at(stock.getUpdate_at())
+                .updated_at(stock.getUpdated_at())
                 .category(stock.getCategory())
                 .button(stock.getButton())
                 .build();

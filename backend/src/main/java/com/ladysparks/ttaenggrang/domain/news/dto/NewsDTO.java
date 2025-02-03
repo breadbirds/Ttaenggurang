@@ -10,7 +10,7 @@ import java.util.List;
 @Getter
 @Setter
 public class NewsDTO {
-    private Long id;            // 뉴스 ID
+    private int id;            // 뉴스 ID
     private String title;       // 뉴스 제목
     private String content;     // 뉴스 내용
     private float impact;       // 영향 비율
@@ -20,10 +20,10 @@ public class NewsDTO {
 
 
     // 주식 관련 리스트 (주식과의 관계를 나타내는 리스트)
-    private List<Long> stockIds; // 뉴스에 연결된 주식들의 ID 리스트
+    private List<Integer> stockIds; // 뉴스에 연결된 주식들의 ID 리스트
 
     // ETF 관련 리스트 (ETF와의 관계를 나타내는 리스트)
-    private List<Long> etfIds;   // 뉴스에 연결된 ETF들의 ID 리스트
+    private List<Integer> etfIds;   // 뉴스에 연결된 ETF들의 ID 리스트
 
 
 }

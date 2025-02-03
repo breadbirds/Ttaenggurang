@@ -1,7 +1,6 @@
 package com.ladysparks.ttaenggrang.domain.stock.entity;
 
 import com.ladysparks.ttaenggrang.domain.etf.entity.Etf;
-import com.ladysparks.ttaenggrang.domain.news.entity.News;
 import com.ladysparks.ttaenggrang.domain.user.entity.Teacher;
 import jakarta.persistence.*;
 import lombok.*;
@@ -24,7 +23,10 @@ public class Stock {
     private String name;        // 주식 이름
 
     @Column
-    private int price_per;// 한 주당 가격
+    private int price_per;// 한 주당 가격(기본 가격)
+
+    @Column
+    private int current_price;  // 현재 주식 가격 (변동된 가격)
 
     @Column
     private int total_qty;      // 회사가 보유 한 주식 총 수량
@@ -39,7 +41,7 @@ public class Stock {
     private Timestamp created_at; // 생성일
 
     @Column
-    private Timestamp update_at;  // 수정일
+    private Timestamp updated_at;  // 수정일
 
     @Column
     private String category;      // 카테고리
@@ -59,18 +61,15 @@ public class Stock {
     @OneToMany(mappedBy = "stock", fetch = FetchType.LAZY)
     private List<StockHistory> stockHistories; // 여러 과거 추이 기록
 
-    //뉴스
-    @ManyToMany(mappedBy = "stocks")
-    private List<News> news;
+//    @ManyToMany(mappedBy = "stocks")
+//    private List<News> news;
 
-    //주식 거래 내역
+    // 주식 거래 내역
     @OneToMany(mappedBy = "stock", fetch = FetchType.LAZY)
     private List<StockTransaction> stockTransaction;
 
-    //ETF
+    // ETF와 다대일 관계
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "etf_id")
     private Etf etf;
-
-
 }

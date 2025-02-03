@@ -1,11 +1,15 @@
 package com.ladysparks.ttaenggrang.domain.stock.service;
 
+import com.ladysparks.ttaenggrang.domain.stock.dto.StockTransactionDTO;
 import com.ladysparks.ttaenggrang.domain.stock.entity.Stock;
 import com.ladysparks.ttaenggrang.domain.stock.entity.StockTransaction;
 import com.ladysparks.ttaenggrang.domain.stock.entity.TransType;
 import com.ladysparks.ttaenggrang.domain.stock.dto.StockDTO;
 import com.ladysparks.ttaenggrang.domain.stock.repository.StockRepository;
 import com.ladysparks.ttaenggrang.domain.stock.repository.StockTransactionRepository;
+import com.ladysparks.ttaenggrang.domain.user.entity.Student;
+import com.ladysparks.ttaenggrang.domain.user.repository.StudentRepository;
+import com.ladysparks.ttaenggrang.global.exception.GlobalExceptionHandler;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,6 +25,9 @@ public class StockService {
     private final StockRepository stockRepository; //의존성 주입
 
     private final StockTransactionRepository stockTransactionRepository;
+    //학생
+    private final StudentRepository studentRepository;
+
 
     //목록 조회
     public int saveStock(StockDTO stockDto) {
@@ -49,43 +56,46 @@ public class StockService {
 
     // 주식 매수 로직
     @Transactional
-    public boolean buyStock(int stockId, int share_count) {
+    public StockTransactionDTO buyStock(int stockId, int shareCount, Long studentId) {
         // 주식 정보 가져오기
         Optional<Stock> stockOptional = stockRepository.findById(stockId);
         if (stockOptional.isEmpty()) {
-            return false; // 주식이 존재하지 않으면 실패
+            throw new IllegalArgumentException("주식이 존재하지 않습니다.");
         }
-
         Stock stock = stockOptional.get();
 
-        // 구매 가능한 수량이 있는지 확인
-        if (share_count <= 0) {
-            return false; // 0 이하 수량은 매수할 수 없음
+        // 학생 정보 가져오기
+        Optional<Student> studentOptional = studentRepository.findById(studentId);
+        if (studentOptional.isEmpty()) {
+            throw new IllegalArgumentException("학생이 존재하지 않습니다.");
+        }
+        Student student = studentOptional.get();
+
+        // 구매 가능한 수량 확인
+        if (shareCount <= 0) {
+            throw new IllegalArgumentException("0 이하 수량은 매수할 수 없습니다.");
         }
 
         // 남은 수량 확인
-        if (stock.getRemain_qty() < share_count) {
-            return false; // 남은 수량이 부족하면 매수 불가능
+        if (stock.getRemain_qty() < shareCount) {
+            throw new IllegalArgumentException("남은 수량이 부족합니다.");
         }
 
-        // 주식의 재고 수량을 차감
-        stock.setRemain_qty(stock.getRemain_qty() - share_count);
-
-        // 재고 업데이트 저장
+        // 주식의 재고 수량 차감
+        stock.setRemain_qty(stock.getRemain_qty() - shareCount);
         stockRepository.save(stock);
 
         // 주식 거래 내역 저장 (매수)
         StockTransaction transaction = new StockTransaction();
         transaction.setStock(stock);
-        transaction.setShare_count(share_count);
+        transaction.setStudent(student);
+        transaction.setShare_count(shareCount);
         transaction.setTransType(TransType.BUY); // BUY 거래로 설정
         stockTransactionRepository.save(transaction);
 
-        return true; // 매수 성공
+        // StockTransactionDTO 반환
+        StockTransactionDTO dto = StockTransactionDTO.fromEntity(transaction);
+
+        return dto; // StockTransactionDTO 반환
     }
-
-
-
-
-
 }
