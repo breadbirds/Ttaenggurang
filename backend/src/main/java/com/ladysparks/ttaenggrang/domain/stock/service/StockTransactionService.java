@@ -17,11 +17,11 @@ public class StockTransactionService {
         this.stockTransactionRepository = transactionRepository;
     }
 
-    public List<StockTransactionDTO> findTransactionsByStudentId(int studentId) {
-        List<StockTransaction> transactions = stockTransactionRepository.findByStudentId(studentId);
-        return transactions.stream()
-                .map(StockTransactionDTO::fromEntity)
-                .collect(Collectors.toList());
+//    public List<StockTransactionDTO> findTransactionsByStudentId(Long studentId) {
+//        List<StockTransaction> transactions = stockTransactionRepository.findByStudentId(studentId);
+//        return transactions.stream()
+//                .map(StockTransactionDTO::fromEntity)
+//                .collect(Collectors.toList());
     }
 //    public List<StockTransaction> getTransactionsForTestUser(int testStudentId) {
 //        int testStudentId = 1; // 테스트용 학생 ID
@@ -32,4 +32,3 @@ public class StockTransactionService {
 //    public List<StockTransaction> getTransactionsByStudent(int studentId) {
 //        return transactionRepository.findByStudentId(studentId);
 //    }
-}

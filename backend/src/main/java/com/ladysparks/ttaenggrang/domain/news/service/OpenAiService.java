@@ -12,6 +12,7 @@ import org.springframework.http.HttpEntity;
 //@Service
 //public class OpenAiService {
 //
+
 //    @Value("${openai.api.key}")
 //    private String apiKey;
 //
@@ -36,6 +37,8 @@ import org.springframework.http.HttpEntity;
 //        // 응답에서 생성된 뉴스 기사 추출
 //        return response.getBody(); // 실제 구현 시, 필요한 데이터만 추출
 //    }
+
 //
 //}
+
 
