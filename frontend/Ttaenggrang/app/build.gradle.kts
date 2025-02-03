@@ -5,7 +5,7 @@ plugins {
 
 android {
     namespace = "com.ladysparks.ttaenggrang"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.ladysparks.ttaenggrang"
