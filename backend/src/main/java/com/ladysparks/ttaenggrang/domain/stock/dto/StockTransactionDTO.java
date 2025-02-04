@@ -20,6 +20,7 @@ public class StockTransactionDTO {
     private int return_amt;   // 현재 주가
     private BigDecimal returnRate;  // 손익/손실 금액
     private TransType transType; // 거래 유형
+    private int owned_qty;      // 학생이 보유한 주식 수량
 
     //조인
 
@@ -32,7 +33,7 @@ public class StockTransactionDTO {
     // 주식 관련 (stock_id 외래 키를 참조)
     private Long stockId;     // stock_id 외래 키 (Stock 엔티티 참조)
 
-    public static StockTransactionDTO fromEntity(StockTransaction stockTransaction) {
+    public static StockTransactionDTO fromEntity(StockTransaction stockTransaction, int updatedOwnedQty) {
         return StockTransactionDTO.builder()
                 .id(stockTransaction.getId())
                 .share_count(stockTransaction.getShare_count())
@@ -42,6 +43,7 @@ public class StockTransactionDTO {
                 .return_amt(stockTransaction.getReturn_amt())  // 현재 주가
                 .returnRate(stockTransaction.getReturnRate())  // 손익/손실 금액
                 .transType(stockTransaction.getTransType())  // 거래 유형
+                .owned_qty(stockTransaction.getOwned_qty())   // 학생이 보유한 주식 수량
                 .studentId(stockTransaction.getStudent() != null ? stockTransaction.getStudent().getId() : null)  // 조인된 Student 엔티티에서 ID 가져오기
 //                .bankAccountId(stockTransaction.getBankAccount() != null ? stockTransaction.getBankAccount().getId() : null)  // 조인된 BankAccount 엔티티에서 ID 가져오기
                 .stockId(Long.valueOf(stockTransaction.getStock() != null ? stockTransaction.getStock().getId() : null))
