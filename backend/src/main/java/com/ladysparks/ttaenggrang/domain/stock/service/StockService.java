@@ -2,19 +2,22 @@ package com.ladysparks.ttaenggrang.domain.stock.service;
 
 import com.ladysparks.ttaenggrang.domain.stock.dto.StockTransactionDTO;
 import com.ladysparks.ttaenggrang.domain.stock.entity.Stock;
+import com.ladysparks.ttaenggrang.domain.stock.entity.StockHistory;
 import com.ladysparks.ttaenggrang.domain.stock.entity.StockTransaction;
 import com.ladysparks.ttaenggrang.domain.stock.entity.TransType;
 import com.ladysparks.ttaenggrang.domain.stock.dto.StockDTO;
+import com.ladysparks.ttaenggrang.domain.stock.repository.StockHistoryRepository;
 import com.ladysparks.ttaenggrang.domain.stock.repository.StockRepository;
 import com.ladysparks.ttaenggrang.domain.stock.repository.StockTransactionRepository;
 import com.ladysparks.ttaenggrang.domain.user.entity.Student;
 import com.ladysparks.ttaenggrang.domain.user.repository.StudentRepository;
-import com.ladysparks.ttaenggrang.global.exception.GlobalExceptionHandler;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -25,10 +28,11 @@ public class StockService {
 
     private final StockRepository stockRepository; //의존성 주입
 
+    private final StockHistoryRepository stockHistoryRepository;
+
     private final StockTransactionRepository stockTransactionRepository;
     //학생
     private final StudentRepository studentRepository;
-
 
 
     //목록 조회
@@ -49,6 +53,7 @@ public class StockService {
                 .map(StockDTO::fromEntity) // 엔티티를 DTO로 변환
                 .collect(Collectors.toList()); // 변환된 DTO를 리스트로 반환
     }
+
     public Optional<StockDTO> findStock(int stockId) {
         // ID로 주식 조회 후, StockDTO로 변환하여 반환
         return stockRepository.findById(stockId)
@@ -113,7 +118,6 @@ public class StockService {
         int updatedOwnedQty = owned_qty + shareCount;
 
 
-
         // 새로운 매수 거래 생성
         StockTransaction transaction = new StockTransaction();
         transaction.setStock(stock);
@@ -127,7 +131,7 @@ public class StockService {
 
         stockTransactionRepository.save(transaction);
 
-    // 🟢 주식의 현재 가격을 업데이트
+        // 🟢 주식의 현재 가격을 업데이트
         stock.setPrice_per(price_per);
         stockRepository.save(stock);
 
@@ -204,5 +208,70 @@ public class StockService {
         return StockTransactionDTO.fromEntity(transaction, updatedOwnedQty);
     }
 
+    //가격 변동
+    @Transactional
+    public StockDTO updateStockPrice(int stockId) {
+        Stock stock = stockRepository.findById(stockId)
+                .orElseThrow(() -> new RuntimeException("주식이 존재하지 않습니다."));
+
+        // 주식장이 활성화된 경우에만 가격 변동이 가능
+//        if (!stock.isMarketActive()) {
+//            throw new RuntimeException("주식장이 활성화되지 않았습니다.");
+//        }
+
+        // 전날 날짜 계산
+        LocalDate yesterday = LocalDate.now().minusDays(1);
+
+        // LocalDate를 Timestamp로 변환 (00:00:00로 설정)
+        Timestamp startTimestamp = Timestamp.valueOf(yesterday.atStartOfDay());
+        // LocalDate를 Timestamp로 변환 (23:59:59로 설정)
+        Timestamp endTimestamp = Timestamp.valueOf(yesterday.atTime(23, 59, 59));
+
+        // 전날 매수, 매도 수량 가져오기 (날짜 범위 추가)
+        int totalBought = stockTransactionRepository.getTotalSharesByType(stockId, TransType.BUY, startTimestamp, endTimestamp);
+        int totalSold = stockTransactionRepository.getTotalSharesByType(stockId, TransType.SELL, startTimestamp, endTimestamp);
+
+        // 매수, 매도 수량 평균 계산
+        int totalTransactions = totalBought + totalSold;
+        double calculatedChangeRate = 0.0;
+
+        if (totalTransactions > 0) {
+            double buyRatio = (double) totalBought / totalTransactions;
+            double sellRatio = (double) totalSold / totalTransactions;
+            calculatedChangeRate = (buyRatio - sellRatio) * 0.05; // 최대 ±5% 변동
+        }
+
+        // 새로운 가격 계산
+        int currentPrice = stock.getPrice_per();
+        int newPrice = (int) (currentPrice * (1 + calculatedChangeRate));
+
+        // 최소 가격 제한
+        if (newPrice < 1000) {
+            newPrice = 1000;
+        }
+
+        // 가격 업데이트
+        stock.setPrice_per(newPrice);
+        stock.setChangeRate((int) (calculatedChangeRate * 100));
+        stockRepository.save(stock);
+
+        System.out.println(stock.getName() + "의 새 가격: " + newPrice);
+
+        // 변동된 가격을 stock_history 테이블에 기록
+        StockHistory history = new StockHistory();
+        history.setStock(stock);
+        history.setPrice(newPrice);
+        history.setVolume(totalTransactions);
+        history.setDate(Timestamp.valueOf(LocalDateTime.now()));
+        stockHistoryRepository.save(history);
+
+        // DTO 변환 및 반환
+        return StockDTO.fromEntity(stock);
+    }
+
 }
+
+
+
+
 
