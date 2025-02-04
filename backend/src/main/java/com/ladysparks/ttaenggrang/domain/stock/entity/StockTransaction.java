@@ -31,6 +31,9 @@ public class StockTransaction {
     private int purchase_prc;   // 거래 당시 1주 가격
 
     @Column
+    private int owned_qty;      // 학생이 보유한 주식 수량
+
+    @Column
     private int total_amt;  // 총 거래 금액
 
     @Column

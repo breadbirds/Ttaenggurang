@@ -29,4 +29,11 @@ public interface StockApiSpecification {
                                                                      @RequestParam("share_count") int shareCount,
                                                                      @RequestParam("studentId") Long studentId);
 
+    @Operation(summary = "주식 매도", description = "💡 주식 ID와 수량으로 주식을 매도합니다.")
+    @PostMapping("/{stockId}/sell")
+    public ResponseEntity<ApiResponse<StockTransactionDTO>> sellStock(@PathVariable("stockId") int stockId,
+                                                                     @RequestParam("share_count") int shareCount,
+                                                                     @RequestParam("studentId") Long studentId);
+
+
 }
