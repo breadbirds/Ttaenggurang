@@ -4,7 +4,6 @@ import com.ladysparks.ttaenggrang.domain.stock.dto.StockTransactionDTO;
 import com.ladysparks.ttaenggrang.global.docs.StockApiSpecification;
 import com.ladysparks.ttaenggrang.domain.stock.dto.StockDTO;
 import com.ladysparks.ttaenggrang.domain.stock.service.StockService;
-import com.ladysparks.ttaenggrang.domain.stock.service.StockTransactionService;
 import com.ladysparks.ttaenggrang.global.response.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -19,7 +18,7 @@ import java.util.Optional;
 @RequestMapping("/stocks")
 public class StockController implements StockApiSpecification {
     private final StockService stockService; // StockService 주입
-    private final StockTransactionService transactionService;
+
 
     // 주식 목록 전체 조회
     @GetMapping
