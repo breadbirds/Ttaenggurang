@@ -30,4 +30,10 @@ public interface EtfApiSpecification {
                                                                    @RequestParam("share_count") int shareCount,
                                                                    @RequestParam("studentId") Long studentId);
 
+    @Operation(summary = "ETF 매도", description = "💡 ETF ID와 수량으로 주식을 매도합니다.")
+    @PostMapping("/{etfId}/sell")
+    public ResponseEntity<ApiResponse<EtfTransactionDTO>> sellEtf(@PathVariable("etfId") int etfId,
+                                                                      @RequestParam("share_count") int shareCount,
+                                                                      @RequestParam("studentId") Long studentId);
+
 }
