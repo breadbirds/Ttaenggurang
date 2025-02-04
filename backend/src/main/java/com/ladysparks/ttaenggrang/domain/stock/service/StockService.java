@@ -14,6 +14,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -27,6 +28,7 @@ public class StockService {
     private final StockTransactionRepository stockTransactionRepository;
     //학생
     private final StudentRepository studentRepository;
+
 
 
     //목록 조회
@@ -81,14 +83,25 @@ public class StockService {
             throw new IllegalArgumentException("남은 수량이 부족합니다.");
         }
 
+
+        // 주식 현재 가격 가져오기
+        int price_per = stock.getPrice_per();
+        if (price_per <= 0) {
+            throw new IllegalStateException("주식 가격이 설정되지 않았습니다.");
+        }
+
+        // 총 금액 계산
+        int totalAmount = price_per * shareCount;
+
+        // 로그로 값 확인
+        System.out.println("현재 주식 가격: " + price_per);
+        System.out.println("총 구매 금액: " + totalAmount);
+
+
         // 주식의 재고 수량 차감
         stock.setRemain_qty(stock.getRemain_qty() - shareCount);
         stockRepository.save(stock);
 
-
-        // 주식 재고 차감
-        stock.setRemain_qty(stock.getRemain_qty() - shareCount);
-        stockRepository.save(stock);
 
         // 학생이 현재 보유한 해당 주식 수량 조회
         Integer owned_qty = stockTransactionRepository.findTotalSharesByStudentAndStock(studentId, stockId, TransType.BUY);
@@ -99,14 +112,24 @@ public class StockService {
         // 기존 보유량 + 새로 매수한 수량
         int updatedOwnedQty = owned_qty + shareCount;
 
+
+
         // 새로운 매수 거래 생성
         StockTransaction transaction = new StockTransaction();
         transaction.setStock(stock);
         transaction.setStudent(student);
         transaction.setShare_count(shareCount);
         transaction.setTransType(TransType.BUY);
-        transaction.setOwned_qty(updatedOwnedQty);
+        transaction.setTrans_date(new Timestamp(System.currentTimeMillis()));  //날짜
+        transaction.setOwned_qty(updatedOwnedQty); // 기존 보유량 + 새로 매수한 수량
+        transaction.setTotal_amt(totalAmount);
+        transaction.setPurchase_prc(price_per); // 현재 가격을 그대로 저장
+
         stockTransactionRepository.save(transaction);
+
+    // 🟢 주식의 현재 가격을 업데이트
+        stock.setPrice_per(price_per);
+        stockRepository.save(stock);
 
         return StockTransactionDTO.fromEntity(transaction, updatedOwnedQty);
     }
