@@ -41,24 +41,7 @@ public class StockController implements StockApiSpecification {
         }
     }
 
-    // 주식 매수
-//    @PostMapping("/{stockId}/buy")
-//    public ResponseEntity<String> buyStock(@PathVariable("stockId") int stockId,
-//                                           @RequestParam("share_count") int share_count) {
-//        try {
-//            // 주식 매수 서비스 호출
-//            boolean success = stockService.buyStock(stockId, share_count);
-//
-//            if (success) {
-//                return ResponseEntity.ok("주식 매수 성공");
-//            } else {
-//                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("주식 매수 실패");
-//            }
-//        } catch (Exception e) {
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("서버 오류 발생");
-//        }
-//    }
-
+    //주식 매수
     @PostMapping("/{stockId}/buy")
     public ResponseEntity<ApiResponse<StockTransactionDTO>> buyStock(@PathVariable("stockId") int stockId,
                                                                      @RequestParam("share_count") int shareCount,
@@ -70,16 +53,17 @@ public class StockController implements StockApiSpecification {
         return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.created(dto));
     }
 
+    //주식 매도
+    @PostMapping("/{stockId}/sell")
+    public ResponseEntity<ApiResponse<StockTransactionDTO>> sellStock(@PathVariable("stockId") int stockId,
+                                                                     @RequestParam("share_count") int shareCount,
+                                                                     @RequestParam("studentId") Long studentId) {
 
-//    @GetMapping("/transactions/{studentId}")
-//    public ResponseEntity<List<StockTransactionDTO>> getTransactionsByStudentId(@PathVariable("studentId") Long studentId) {
-//        List<StockTransactionDTO> transactions = transactionService.findTransactionsByStudentId(studentId);
-//        if (transactions.isEmpty()) {
-//            return ResponseEntity.notFound().build();
-//        } else {
-//            return ResponseEntity.ok(transactions);
-//        }
-//    }
+        // 주식 매수 서비스 호출
+        StockTransactionDTO dto = stockService.buyStock(stockId, shareCount, studentId);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.created(dto));
+    }
 
 
 

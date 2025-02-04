@@ -26,9 +26,6 @@ public class Stock {
     private int price_per;// 한 주당 가격(기본 가격)
 
     @Column
-    private int current_price;  // 현재 주식 가격 (변동된 가격)
-
-    @Column
     private int total_qty;      // 회사가 보유 한 주식 총 수량
 
     @Column

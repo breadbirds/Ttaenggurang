@@ -85,17 +85,74 @@ public class StockService {
         stock.setRemain_qty(stock.getRemain_qty() - shareCount);
         stockRepository.save(stock);
 
-        // 주식 거래 내역 저장 (매수)
+
+        // 주식 재고 차감
+        stock.setRemain_qty(stock.getRemain_qty() - shareCount);
+        stockRepository.save(stock);
+
+        // 학생이 현재 보유한 해당 주식 수량 조회
+        Integer owned_qty = stockTransactionRepository.findTotalSharesByStudentAndStock(studentId, stockId, TransType.BUY);
+        if (owned_qty == null) {
+            owned_qty = 0; // 처음 구매라면 0으로 설정
+        }
+
+        // 기존 보유량 + 새로 매수한 수량
+        int updatedOwnedQty = owned_qty + shareCount;
+
+        // 새로운 매수 거래 생성
         StockTransaction transaction = new StockTransaction();
         transaction.setStock(stock);
         transaction.setStudent(student);
         transaction.setShare_count(shareCount);
-        transaction.setTransType(TransType.BUY); // BUY 거래로 설정
+        transaction.setTransType(TransType.BUY);
+        transaction.setOwned_qty(updatedOwnedQty);
         stockTransactionRepository.save(transaction);
 
-        // StockTransactionDTO 반환
-        StockTransactionDTO dto = StockTransactionDTO.fromEntity(transaction);
-
-        return dto; // StockTransactionDTO 반환
+        return StockTransactionDTO.fromEntity(transaction, updatedOwnedQty);
     }
-}
+
+    // 주식 매도 로직
+//    @Transactional
+//    public StockTransactionDTO sellStock(int stockId, int shareCount, Long studentId) {
+//        // 주식 정보 가져오기
+//        Optional<Stock> stockOptional = stockRepository.findById(stockId);
+//        if (stockOptional.isEmpty()) {
+//            throw new IllegalArgumentException("주식이 존재하지 않습니다.");
+//        }
+//        Stock stock = stockOptional.get();
+//
+//        // 학생 정보 가져오기
+//        Optional<Student> studentOptional = studentRepository.findById(studentId);
+//        if (studentOptional.isEmpty()) {
+//            throw new IllegalArgumentException("학생이 존재하지 않습니다.");
+//        }
+//        Student student = studentOptional.get();
+//
+////        // 학생이 보유한 주식 수량 확인
+////        int ownedShares = stockTransactionRepository.countByStockAndStudentAndTransType(stock, student, TransType.BUY);
+////        if (ownedShares < shareCount) {
+////            throw new IllegalArgumentException("보유한 주식 수량이 부족합니다.");
+////        }
+////
+////        // 매도 가능한 수량 확인 (0 이하 수량은 매도할 수 없음)
+////        if (shareCount <= 0) {
+////            throw new IllegalArgumentException("0 이하 수량은 매도할 수 없습니다.");
+////        }
+//
+//        // 주식의 재고 수량 증가 (매도)
+//        stock.setRemain_qty(stock.getRemain_qty() + shareCount);
+//        stockRepository.save(stock);
+//
+//        // 주식 거래 내역 저장 (매도)
+//        StockTransaction transaction = new StockTransaction();
+//        transaction.setStock(stock);
+//        transaction.setStudent(student);
+//        transaction.setShare_count(shareCount);
+//        transaction.setTransType(TransType.SELL); // SELL 거래로 설정
+//        stockTransactionRepository.save(transaction);
+//
+//        // StockTransactionDTO 반환
+//        StockTransactionDTO dto = StockTransactionDTO.fromEntity(transaction);
+//
+//        return dto; // StockTransactionDTO 반환
+    }
