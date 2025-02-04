@@ -60,7 +60,7 @@ public class StockController implements StockApiSpecification {
                                                                      @RequestParam("studentId") Long studentId) {
 
         // 주식 매수 서비스 호출
-        StockTransactionDTO dto = stockService.buyStock(stockId, shareCount, studentId);
+        StockTransactionDTO dto = stockService.sellStock(stockId, shareCount, studentId);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.created(dto));
     }
