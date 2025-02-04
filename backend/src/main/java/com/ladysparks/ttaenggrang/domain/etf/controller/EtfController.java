@@ -3,6 +3,7 @@ package com.ladysparks.ttaenggrang.domain.etf.controller;
 import com.ladysparks.ttaenggrang.domain.etf.dto.EtfDTO;
 import com.ladysparks.ttaenggrang.domain.etf.dto.EtfTransactionDTO;
 import com.ladysparks.ttaenggrang.domain.etf.service.EtfService;
+import com.ladysparks.ttaenggrang.domain.stock.dto.StockTransactionDTO;
 import com.ladysparks.ttaenggrang.global.response.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -45,6 +46,18 @@ public class EtfController  {
 
         // 주식 매수 서비스 호출
         EtfTransactionDTO dto = etfService.buyEtf(etfId, shareCount, studentId);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.created(dto));
+    }
+
+    //ETF 매도
+    @PostMapping("/{etfId}/sell")
+    public ResponseEntity<ApiResponse<EtfTransactionDTO>> sellEtf(@PathVariable("etfId") int etfId,
+                                                                      @RequestParam("share_count") int shareCount,
+                                                                      @RequestParam("studentId") Long studentId) {
+
+        // 주식 매수 서비스 호출
+        EtfTransactionDTO dto = etfService.sellEtf(etfId, shareCount, studentId);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.created(dto));
     }

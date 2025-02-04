@@ -130,4 +130,74 @@ public class EtfService {
 
         return EtfTransactionDTO.fromEntity(transaction, updatedOwnedQty);
     }
+
+    //ETF 매도
+    @Transactional
+    public EtfTransactionDTO sellEtf(int etfId, int shareCount, Long studentId) {
+        // 주식 정보 가져오기
+        Etf etf = etfRepository.findById(etfId)
+                .orElseThrow(() -> new IllegalArgumentException("주식이 존재하지 않습니다."));
+
+        // 학생 정보 가져오기
+        Student student = studentRepository.findById(studentId)
+                .orElseThrow(() -> new IllegalArgumentException("학생이 존재하지 않습니다."));
+
+        // 매도 가능한 수량 확인
+        if (shareCount <= 0) {
+            throw new IllegalArgumentException("0 이하 수량은 매도할 수 없습니다.");
+        }
+
+        // 🟢 (수정) 학생의 총 매수량(BUY)과 총 매도량(SELL) 조회
+        Integer totalBought = etfTransactionRepository.findTotalSharesByStudentAndEtf(studentId, etfId, TransType.BUY);
+        Integer totalSold = etfTransactionRepository.findTotalSharesByStudentAndEtf(studentId, etfId, TransType.SELL);
+
+        // NULL 방지 처리
+        totalBought = (totalBought == null) ? 0 : totalBought;
+        totalSold = (totalSold == null) ? 0 : totalSold;
+
+        // 현재 보유량 = 총 매수량 - 총 매도량
+        int owned_qty = totalBought - totalSold;
+
+        // 보유량보다 더 많이 매도하려는 경우 예외 발생
+        if (owned_qty < shareCount) {
+            throw new IllegalArgumentException("보유한 주식 수량이 부족합니다.");
+        }
+
+        // 주식 현재 가격 가져오기
+        int price_per = etf.getPrice_per();
+        if (price_per <= 0) {
+            throw new IllegalStateException("주식 가격이 설정되지 않았습니다.");
+        }
+
+        // 총 매도 금액 계산
+        int totalAmount = price_per * shareCount;
+
+        // 로그 확인
+        System.out.println("현재 주식 가격: " + price_per);
+        System.out.println("총 매도 금액: " + totalAmount);
+
+
+        etf.setRemain_qty(etf.getRemain_qty() + shareCount);
+        etfRepository.save(etf);
+
+
+        int updatedOwnedQty = owned_qty - shareCount;
+
+
+        EtfTransaction transaction = new EtfTransaction();
+        transaction.setEtf(etf);
+        transaction.setStudent(student);
+        transaction.setShare_count(shareCount);
+        transaction.setTransType(TransType.SELL); // 매도 타입
+        transaction.setTrans_date(new Timestamp(System.currentTimeMillis())); // 거래 날짜
+        transaction.setOwned_qty(updatedOwnedQty); // 매도 후 남은 보유량 저장
+        transaction.setTotal_amt(totalAmount);
+        transaction.setPurchase_prc(price_per); // 현재 가격 저장
+
+        // 매도 거래 저장
+        etfTransactionRepository.save(transaction);
+
+        // DTO 변환 후 반환
+        return EtfTransactionDTO.fromEntity(transaction, updatedOwnedQty);
+    }
 }
