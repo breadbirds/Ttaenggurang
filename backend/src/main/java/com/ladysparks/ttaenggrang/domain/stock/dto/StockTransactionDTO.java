@@ -1,5 +1,6 @@
 package com.ladysparks.ttaenggrang.domain.stock.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ladysparks.ttaenggrang.domain.stock.entity.StockTransaction;
 import com.ladysparks.ttaenggrang.domain.stock.entity.TransType;
 import lombok.*;
@@ -18,6 +19,7 @@ public class StockTransactionDTO {
     private int purchase_prc;   // 거래 당시 1주 가격
     private int total_amt;  // 총 거래 금액
     private int return_amt;   // 현재 주가
+    @JsonIgnore  //  응답에서 숨김
     private BigDecimal returnRate;  // 손익/손실 금액
     private TransType transType; // 거래 유형
     private int owned_qty;      // 학생이 보유한 주식 수량
@@ -28,6 +30,7 @@ public class StockTransactionDTO {
     private Long studentId;  // student_id 외래 키 (Student 엔티티 참조)
 
     // 계좌 관련 (bank_account_id 외래 키를 참조)
+    @JsonIgnore  // 응답에서 숨김
     private Long bankAccountId; // bank_account_id 외래 키 (BankAccount 엔티티 참조)
 
     // 주식 관련 (stock_id 외래 키를 참조)
