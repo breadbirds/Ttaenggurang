@@ -15,14 +15,14 @@
         <!-- ✅ 앱 실행 시 기본적으로 LoginActivity가 실행되도록 수정 -->
         <activity
             android:name=".LoginActivity"
-            android:exported="true"></activity>
+            android:exported="true"/>
         <activity
             android:name=".SignupActivity"
             android:exported="true">
         </activity>
         <activity
             android:name=".MainActivity"
-            android:exported="true" >
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
