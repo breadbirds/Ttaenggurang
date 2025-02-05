@@ -34,8 +34,6 @@ class HomeTeacherFragment : BaseFragment<FragmentHomeTeacherBinding>(FragmentHom
 
     private lateinit var alarmAdapter: AlarmAdapter
 
-
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 

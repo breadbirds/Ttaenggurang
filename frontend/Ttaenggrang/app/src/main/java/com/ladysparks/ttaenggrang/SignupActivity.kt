@@ -29,12 +29,10 @@ class SignupActivity : AppCompatActivity() {
     }
 
     private fun signUp() {
-//        val apiService = ApplicationClass.retrofit.create(SignupActivity::class.java)
-
         // Test 위한 하드코딩 데이터
         val user = TeacherSignUpRequest(
             id = 0,
-            email = "test3@example.com",
+            email = "test2@example.com",
             password1 = "1234",
             password2 = "1234",
             name = "test3",
@@ -42,10 +40,13 @@ class SignupActivity : AppCompatActivity() {
             createdAt = Date().time
         )
 
-        // 실제 input 데이터 기반으로 하면 ?
+
+        // 1. input Data가져오기
         var email = binding.editEmailSignup.text
         // ...
-        // val user = SignupDto(0, email, ...)
+
+        // 2. TeacherSignUpRequest 객체 생성
+        // val user = TeacherSignUpRequest(0, email, ...)
 
         lifecycleScope.launch {
             runCatching {
