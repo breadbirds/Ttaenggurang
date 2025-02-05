@@ -38,7 +38,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.navRevenue -> showToast("국세청 페이지 준비중")
                 R.id.navBank -> replaceFragment(BankFragment())
                 R.id.navStock -> replaceFragment(StockFragment())
-                R.id.navShop -> showToast("상점 페이지 준비중")
+                R.id.navShop -> replaceFragment(ItemStudentFragment())
             }
             true
         }
