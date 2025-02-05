@@ -1,6 +1,7 @@
 package com.ladysparks.ttaenggrang.domain.stock.entity;
 
 import com.ladysparks.ttaenggrang.domain.etf.entity.Etf;
+import com.ladysparks.ttaenggrang.domain.etf.entity.EtfTransaction;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -40,5 +41,10 @@ public class StockHistory {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "etf_id")
     private Etf etf;  // ETF
+
+    // ETF 거래 기록 (매수/매도 내역)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "etf_transaction_id")
+    private EtfTransaction etfTransaction;
 
 }

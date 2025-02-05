@@ -3,6 +3,7 @@ package com.ladysparks.ttaenggrang.domain.etf.controller;
 import com.ladysparks.ttaenggrang.domain.etf.dto.EtfDTO;
 import com.ladysparks.ttaenggrang.domain.etf.dto.EtfTransactionDTO;
 import com.ladysparks.ttaenggrang.domain.etf.service.EtfService;
+import com.ladysparks.ttaenggrang.domain.stock.dto.StockDTO;
 import com.ladysparks.ttaenggrang.domain.stock.dto.StockTransactionDTO;
 import com.ladysparks.ttaenggrang.global.response.ApiResponse;
 import lombok.RequiredArgsConstructor;
@@ -60,5 +61,15 @@ public class EtfController  {
         EtfTransactionDTO dto = etfService.sellEtf(etfId, shareCount, studentId);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.created(dto));
+    }
+
+    // 가격 변동 (관리자가 호출)
+    @PostMapping("/{etfId}/update-price")
+    public ResponseEntity<ApiResponse<EtfDTO>> updateEtfPrice(
+            @PathVariable("etfId") int etfId) {
+
+        // 주식 가격 업데이트 서비스 호출
+        EtfDTO updatedEtf = etfService.updateEtfPrice(etfId);
+        return ResponseEntity.status(HttpStatus.OK).body(ApiResponse.success(updatedEtf));
     }
 }

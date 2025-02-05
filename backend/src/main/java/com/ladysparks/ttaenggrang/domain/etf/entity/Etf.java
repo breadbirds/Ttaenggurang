@@ -47,6 +47,10 @@ public class Etf {
     @Column(precision = 5, scale = 4)  //비중
     private BigDecimal weight;
 
+    @Column
+    private Integer changeRate; //가격 변동률
+
+
     // 조인
 
     //선생님
