@@ -16,7 +16,7 @@ import java.util.Locale
  * DateUtil.formatToTimestamp(...)
  *
  * - 2. 반환값으로 StringFormat  을 받고 싶은 경우 (주로 UI 에 표현될 때 사용)
- * DateUtil.formatDate(...)
+ * DataUtil.formatDate(...)
  */
 object DataUtil {
 
