@@ -55,4 +55,11 @@ dependencies {
 
     // Gson
     implementation("com.google.code.gson:gson:2.10.1")
+
+    // Coroutin 을 사용하기 위한 lib
+    implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2")
+
+    // chart
+    implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
+
 }
