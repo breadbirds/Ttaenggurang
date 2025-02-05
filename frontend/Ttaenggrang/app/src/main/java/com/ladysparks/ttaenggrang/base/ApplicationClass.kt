@@ -15,35 +15,33 @@ import java.util.concurrent.TimeUnit
 
 class ApplicationClass : Application() {
     companion object {
+
         // SERVER_URL 참조 오류 발생할 경우, import 패키지 경로 확인해 볼 것.
         const val SERVER_URL = BuildConfig.SERVER_URL
         const val IMGS_URL = ""
 
         lateinit var retrofit: Retrofit
-
-        // 🔥 SharedPreferencesUtil 싱글톤을 감싸서 전역으로 제공!
-        val sharedPreferencesUtil: SharedPreferencesUtil
-            get() = SharedPreferencesUtil
     }
 
     override fun onCreate() {
         super.onCreate()
-
+        // SharedPreferencesUtil
         SharedPreferencesUtil.init(this)
 
         val logging = HttpLoggingInterceptor().apply {
             level = HttpLoggingInterceptor.Level.BODY
         }
 
-
         // 레트로핏 인스턴스를 생성하고, 레트로핏에 각종 설정값들을 지정해줍니다.
         // 연결 타임아웃시간은 5초로 지정이 되어있고, HttpLoggingInterceptor를 붙여서 어떤 요청이 나가고 들어오는지를 보여줍니다.
         val okHttpClient = OkHttpClient.Builder()
             .readTimeout(5000, TimeUnit.MILLISECONDS)
             .connectTimeout(5000, TimeUnit.MILLISECONDS)
-            .addInterceptor(logging)  // ✅ 추가된 부분 (로그 확인용)
-            .addInterceptor(AddCookiesInterceptor())
-            .addInterceptor(ReceivedCookiesInterceptor()).build()
+            .addInterceptor(logging) // 로그 확인
+            .addInterceptor(AddAuthInterceptor()) // JWT 토큰 추가
+            .build()
+//            .addInterceptor(AddCookiesInterceptor())
+//            .addInterceptor(ReceivedCookiesInterceptor()).build()
 
         // 앱이 처음 생성되는 순간, retrofit 인스턴스를 생성
         Log.d("TAG", "onCreate: 서버 주소 ${SERVER_URL}")
