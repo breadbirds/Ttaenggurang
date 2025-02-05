@@ -1,6 +1,7 @@
 package com.ladysparks.ttaenggrang.domain.etf.dto;
 
 import com.ladysparks.ttaenggrang.domain.etf.entity.Etf;
+import jakarta.persistence.Column;
 import lombok.*;
 
 import java.sql.Timestamp;
@@ -19,6 +20,8 @@ public class EtfDTO {
     private String description;
     private Timestamp created_at;
     private Timestamp updated_at;
+    private Integer changeRate; //가격 변동률
+
 
 
     // lombok을 사용한 Entity 객체 생성(builder) 방법
@@ -32,6 +35,7 @@ public class EtfDTO {
                 .description(etfDto.getDescription())
                 .created_at(etfDto.getCreated_at())
                 .updated_at(etfDto.getUpdated_at())
+                .changeRate(etfDto.getChangeRate())
                 .build();
     }
 
@@ -45,6 +49,7 @@ public class EtfDTO {
                 .description(etf.getDescription())
                 .created_at(etf.getCreated_at())
                 .updated_at(etf.getUpdated_at())
+                .changeRate(etf.getChangeRate())
                 .build();
     }
 
