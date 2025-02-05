@@ -66,6 +66,8 @@ public class BankTransactionService {
         // 5. 변경된 계좌 정보 저장
         bankAccountRepository.save(bankAccount);
 
+        bankTransactionRepository.save(bankTransaction);
+
         // 6. DTO로 반환
         return bankTransactionMapper.toDto(bankTransaction);
     }
