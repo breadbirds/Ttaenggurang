@@ -21,7 +21,7 @@ import com.ladysparks.ttaenggrang.R
 import com.ladysparks.ttaenggrang.base.BaseFragment
 import com.ladysparks.ttaenggrang.base.BaseTableAdapter
 import com.ladysparks.ttaenggrang.data.model.dto.AlarmDto
-import com.ladysparks.ttaenggrang.data.model.dto.BaseTableRowDto
+import com.ladysparks.ttaenggrang.ui.model.BaseTableRowModel
 import com.ladysparks.ttaenggrang.databinding.FragmentHomeTeacherBinding
 import java.util.Date
 
@@ -157,8 +157,8 @@ class HomeTeacherFragment : BaseFragment<FragmentHomeTeacherBinding>(FragmentHom
         // 컬럼 개수가 5개 일 때 사용 방법
         val header2 = listOf("이름", "아이디", "직업", "월급", "계좌 잔고")
         val data2 = listOf(
-            BaseTableRowDto(listOf("박지성", "user04", "축구선수", "5000만원", "2억")),
-            BaseTableRowDto(listOf("손흥민", "user05", "축구선수", "7억원", "10억"))
+            BaseTableRowModel(listOf("박지성", "user04", "축구선수", "5000만원", "2억")),
+            BaseTableRowModel(listOf("손흥민", "user05", "축구선수", "7억원", "10억"))
         )
 
         // 컬럼 개수가 5개인 테이블

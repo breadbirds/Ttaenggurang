@@ -27,6 +27,30 @@ import android.content.SharedPreferences
  */
 object SharedPreferencesUtil {
     private const val PREFS_NAME = "app_prefs"
+    val COOKIES_KEY_NAME = "cookies"
+
+    private lateinit var preferences: SharedPreferences
+
+    // 🚀 초기화 함수 추가 (ApplicationClass에서 초기화할 예정)
+    fun init(context: Context) {
+        preferences = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+    }
+
+    /**
+     * Cookies 관련 함수 추가 (이전 프로젝트와 동일)
+     */
+    fun addUserCookie(cookies: HashSet<String>) {
+        preferences.edit().putStringSet(COOKIES_KEY_NAME, cookies).apply()
+    }
+
+    fun getUserCookie(): MutableSet<String>? {
+        return preferences.getStringSet(COOKIES_KEY_NAME, HashSet())
+    }
+
+    fun deleteUserCookie() {
+        preferences.edit().remove(COOKIES_KEY_NAME).apply()
+    }
+
 
     private fun getPreferences(context: Context): SharedPreferences {
         return context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
@@ -97,4 +121,6 @@ object SharedPreferencesUtil {
     fun clearAll(context: Context) {
         getPreferences(context).edit().clear().apply()
     }
+
+
 }

@@ -8,11 +8,11 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.ladysparks.ttaenggrang.R
-import com.ladysparks.ttaenggrang.data.model.dto.BaseTableRowDto
+import com.ladysparks.ttaenggrang.ui.model.BaseTableRowModel
 
 class BaseTableAdapter(
     private var header: List<String>, // ✨ 헤더 컬럼 리스트 (동적 설정)
-    private var data: List<BaseTableRowDto> // ✨ 유동적인 데이터 리스트
+    private var data: List<BaseTableRowModel> // ✨ 유동적인 데이터 리스트
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     companion object {
