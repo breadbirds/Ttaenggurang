@@ -112,9 +112,7 @@
                         android:textColor="@color/mainGreen"
                         android:layout_marginTop="80dp"/>
                 </LinearLayout>
-
             </androidx.constraintlayout.widget.ConstraintLayout>
-
             
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/clNationInfo"
@@ -125,6 +123,14 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent">
 
+                <View
+                    android:id="@+id/lineNationInfo"
+                    android:layout_width="2dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/backgroundGray"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
+
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/clFinanceIc"
                     android:layout_width="45dp"
@@ -132,7 +138,8 @@
                     android:background="@drawable/bg_rounded_15"
                     android:backgroundTint="@color/lightOrange"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginStart="@dimen/spacing_20">
 
                     <ImageView
                         android:layout_width="wrap_content"
@@ -141,7 +148,7 @@
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"/>
+                        app:layout_constraintEnd_toEndOf="parent" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
                 <TextView
                     android:id="@+id/textInfo"
@@ -168,7 +175,7 @@
                     android:orientation="vertical"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/clFinanceIc"
-                    android:paddingStart="@dimen/spacing_20"
+                    android:paddingStart="@dimen/spacing_40"
                     android:layout_marginTop="@dimen/spacing_20">
 
                     <TextView
@@ -217,6 +224,14 @@
                 app:layout_constraintStart_toEndOf="@+id/clNationInfo"
                 android:layout_marginStart="40dp">
 
+                <View
+                    android:id="@+id/lineAsset"
+                    android:layout_width="2dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/backgroundGray"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
+
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/clDollarIc"
                     android:layout_width="45dp"
@@ -224,7 +239,8 @@
                     android:background="@drawable/bg_rounded_15"
                     android:backgroundTint="@color/lightOrange"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginStart="@dimen/spacing_20">
 
                     <ImageView
                         android:layout_width="wrap_content"
@@ -261,7 +277,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/clDollarIc"
                     android:layout_marginTop="@dimen/spacing_20"
-                    android:paddingStart="@dimen/spacing_20">
+                    android:paddingStart="@dimen/spacing_40">
 
                     <TextView
                         android:layout_width="wrap_content"
