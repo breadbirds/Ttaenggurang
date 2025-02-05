@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 public interface EtfTransactionRepository extends JpaRepository<EtfTransaction, Integer>{
@@ -18,4 +19,13 @@ public interface EtfTransactionRepository extends JpaRepository<EtfTransaction, 
     Integer findTotalSharesByStudentAndEtf(@Param("studentId") Long studentId,
                                              @Param("etfId") int etfId,
                                              @Param("transType") TransType transType);
+
+    @Query("SELECT COALESCE(SUM(s.share_count), 0) FROM EtfTransaction s " +
+            "WHERE s.etf.id = :etfId " +
+            "AND s.transType = :transType " +
+            "AND s.trans_date BETWEEN :startDate AND :endDate")
+    int getTotalSharesByType(@Param("etfId") int etfId,
+                             @Param("transType") TransType transType,
+                             @Param("startDate") Timestamp startDate,
+                             @Param("endDate") Timestamp endDate);
 }
