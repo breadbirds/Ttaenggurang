@@ -64,6 +64,17 @@ public class StockController implements StockApiSpecification {
         return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.created(dto));
     }
 
+    // 가격 변동 (관리자가 호출)
+    @PostMapping("/{stockId}/update-price")
+    public ResponseEntity<ApiResponse<StockDTO>> updateStockPrice(
+            @PathVariable("stockId") int stockId) {
+
+        // 주식 가격 업데이트 서비스 호출
+        StockDTO updatedStock = stockService.updateStockPrice(stockId);
+        return ResponseEntity.status(HttpStatus.OK).body(ApiResponse.success(updatedStock));
+    }
+
+
 
 
 
