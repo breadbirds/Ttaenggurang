@@ -6,7 +6,7 @@ public enum BankTransactionType {
     TRANSFER,
     PURCHASE,
     SALE,
-    SAVINGS,
     STOCK_BUY,
-    STOCK_SELL
+    STOCK_SELL,
+    SAVINGS_PAYMENT,
 }

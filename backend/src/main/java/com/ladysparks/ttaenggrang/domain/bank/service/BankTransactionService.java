@@ -44,13 +44,24 @@ public class BankTransactionService {
         int transactionAmount = bankTransactionDTO.getAmount();
 
         // 3. 입금 또는 출금 처리
-        if (bankTransactionDTO.getType() == BankTransactionType.DEPOSIT) {
-            bankAccount.updateBalance(balanceBefore + transactionAmount); // 입금
-        } else if (bankTransactionDTO.getType() == BankTransactionType.WITHDRAWAL) {
-            if (balanceBefore < transactionAmount) {
-                throw new IllegalArgumentException("잔액이 부족합니다.");
-            }
-            bankAccount.updateBalance(balanceBefore - transactionAmount); // 출금
+        switch (bankTransactionDTO.getType()) {
+            case DEPOSIT, SALE, STOCK_SELL:
+                bankAccount.updateBalance(balanceBefore + transactionAmount); // 입금
+                break;
+
+            case WITHDRAWAL, PURCHASE, STOCK_BUY:
+                if (balanceBefore < transactionAmount) {
+                    throw new IllegalArgumentException("잔액이 부족합니다.");
+                }
+                bankAccount.updateBalance(balanceBefore - transactionAmount); // 출금
+                break;
+
+            case TRANSFER:
+                System.out.println("송금 거래 처리");
+                break;
+
+            default:
+                throw new IllegalArgumentException("유효하지 않은 거래 유형입니다.");
         }
 
         // 4. 거래 내역 저장

@@ -13,7 +13,19 @@ import java.util.List;
 @Tag(name = "Bank-Transaction", description = "은행 계좌 거래 내역 관련 API")
 public interface BankTransactionApiSpecification {
 
-    @Operation(summary = "은행 계좌 거래 [등록]", description = "은행 계좌 거래를 합니다.(입금, 출금, 아이템 구매, 아이템 판매, 적금 납입, 주식 매수, 주식 매도 -> BankTransactionType 참고)")
+    @Operation(summary = "은행 계좌 거래 [등록]", description = """
+    은행 계좌 거래를 합니다.
+
+    **type(BankTransactionType):**
+    - 입금 → **DEPOSIT**
+    - 출금 → **WITHDRAWAL**
+    - 송금 -> **TRANSFER**
+    - 아이템 구매 → **PURCHASE**
+    - 아이템 판매 → **SALE**
+    - 주식 매수 → **STOCK_BUY**
+    - 주식 매도 → **STOCK_SELL**
+    - 적금 납입 → **SAVINGS_PAYMENT**
+    """)
     ResponseEntity<ApiResponse<BankTransactionDTO>> bankTransactionAdd(@RequestBody BankTransactionDTO bankTransactionDTO);
 
     @Operation(summary = "은행 계좌 거래 내역 [전체 조회]", description = "학생 ID로 은행 계좌 거래 내역을 조회합니다.")
