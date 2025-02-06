@@ -1,5 +1,7 @@
 package com.ladysparks.ttaenggrang.domain.user.entity;
 
+import com.ladysparks.ttaenggrang.domain.bank.entity.BankAccount;
+import com.ladysparks.ttaenggrang.domain.user.dto.StudentCreateDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -7,6 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -38,4 +41,9 @@ public class Job {
     protected void onCreate() {
         this.salaryDate = new Timestamp(System.currentTimeMillis());  // 기본값 설정
     }
+
+    @OneToOne
+    @JoinColumn(name = "job_id")  // nullable = false
+    private Student student;
+
 }
