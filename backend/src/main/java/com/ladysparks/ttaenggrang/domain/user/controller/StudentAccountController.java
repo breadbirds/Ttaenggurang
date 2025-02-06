@@ -1,9 +1,6 @@
 package com.ladysparks.ttaenggrang.domain.user.controller;
 
-import com.ladysparks.ttaenggrang.domain.user.dto.StudentCreateDTO;
-import com.ladysparks.ttaenggrang.domain.user.dto.StudentLoginRequestDTO;
-import com.ladysparks.ttaenggrang.domain.user.dto.StudentLoginResponseDTO;
-import com.ladysparks.ttaenggrang.domain.user.dto.StudentResponseDTO;
+import com.ladysparks.ttaenggrang.domain.user.dto.*;
 import com.ladysparks.ttaenggrang.domain.user.repository.TeacherRepository;
 import com.ladysparks.ttaenggrang.domain.user.service.StudentService;
 import com.ladysparks.ttaenggrang.global.docs.StudentAccountApiSpecification;
@@ -30,5 +27,12 @@ public class StudentAccountController implements StudentAccountApiSpecification 
     public ResponseEntity<ApiResponse<StudentLoginResponseDTO>> loginStudents(@RequestBody @Valid StudentLoginRequestDTO studentLoginDTO) {
         StudentLoginResponseDTO responseDTO = studentService.loginStudent(studentLoginDTO);
         return ResponseEntity.ok(ApiResponse.success(responseDTO));
+    }
+
+    // 학생 전체 목록 조회
+    @GetMapping("/all")
+    public ResponseEntity<ApiResponse<List<StudentResponseDTO>>> getAllStudents() {
+        ApiResponse<List<StudentResponseDTO>> response = studentService.getAllStudents();
+        return ResponseEntity.status(response.getStatusCode()).body(response);
     }
 }
