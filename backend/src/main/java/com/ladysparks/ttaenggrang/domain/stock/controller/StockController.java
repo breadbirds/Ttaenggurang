@@ -4,7 +4,6 @@ import com.ladysparks.ttaenggrang.domain.stock.dto.StockTransactionDTO;
 import com.ladysparks.ttaenggrang.global.docs.StockApiSpecification;
 import com.ladysparks.ttaenggrang.domain.stock.dto.StockDTO;
 import com.ladysparks.ttaenggrang.domain.stock.service.StockService;
-import com.ladysparks.ttaenggrang.domain.stock.service.StockTransactionService;
 import com.ladysparks.ttaenggrang.global.response.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -19,7 +18,7 @@ import java.util.Optional;
 @RequestMapping("/stocks")
 public class StockController implements StockApiSpecification {
     private final StockService stockService; // StockService 주입
-    private final StockTransactionService transactionService;
+
 
     // 주식 목록 전체 조회
     @GetMapping
@@ -41,24 +40,7 @@ public class StockController implements StockApiSpecification {
         }
     }
 
-    // 주식 매수
-//    @PostMapping("/{stockId}/buy")
-//    public ResponseEntity<String> buyStock(@PathVariable("stockId") int stockId,
-//                                           @RequestParam("share_count") int share_count) {
-//        try {
-//            // 주식 매수 서비스 호출
-//            boolean success = stockService.buyStock(stockId, share_count);
-//
-//            if (success) {
-//                return ResponseEntity.ok("주식 매수 성공");
-//            } else {
-//                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("주식 매수 실패");
-//            }
-//        } catch (Exception e) {
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("서버 오류 발생");
-//        }
-//    }
-
+    //주식 매수
     @PostMapping("/{stockId}/buy")
     public ResponseEntity<ApiResponse<StockTransactionDTO>> buyStock(@PathVariable("stockId") int stockId,
                                                                      @RequestParam("share_count") int shareCount,
@@ -70,16 +52,28 @@ public class StockController implements StockApiSpecification {
         return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.created(dto));
     }
 
+    //주식 매도
+    @PostMapping("/{stockId}/sell")
+    public ResponseEntity<ApiResponse<StockTransactionDTO>> sellStock(@PathVariable("stockId") int stockId,
+                                                                     @RequestParam("share_count") int shareCount,
+                                                                     @RequestParam("studentId") Long studentId) {
 
-//    @GetMapping("/transactions/{studentId}")
-//    public ResponseEntity<List<StockTransactionDTO>> getTransactionsByStudentId(@PathVariable("studentId") Long studentId) {
-//        List<StockTransactionDTO> transactions = transactionService.findTransactionsByStudentId(studentId);
-//        if (transactions.isEmpty()) {
-//            return ResponseEntity.notFound().build();
-//        } else {
-//            return ResponseEntity.ok(transactions);
-//        }
-//    }
+        // 주식 매수 서비스 호출
+        StockTransactionDTO dto = stockService.sellStock(stockId, shareCount, studentId);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.created(dto));
+    }
+
+    // 가격 변동 (관리자가 호출)
+    @PostMapping("/{stockId}/update-price")
+    public ResponseEntity<ApiResponse<StockDTO>> updateStockPrice(
+            @PathVariable("stockId") int stockId) {
+
+        // 주식 가격 업데이트 서비스 호출
+        StockDTO updatedStock = stockService.updateStockPrice(stockId);
+        return ResponseEntity.status(HttpStatus.OK).body(ApiResponse.success(updatedStock));
+    }
+
 
 
 

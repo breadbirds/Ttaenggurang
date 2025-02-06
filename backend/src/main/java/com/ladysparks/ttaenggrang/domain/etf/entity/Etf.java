@@ -21,7 +21,7 @@ import java.util.List;
 public class Etf {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private int id;
 
     @Column
     private String name; //ETF 이름
@@ -42,10 +42,14 @@ public class Etf {
     private Timestamp created_at; // 생성일
 
     @Column
-    private Timestamp update_at;  // 수정일
+    private Timestamp updated_at;  // 수정일
 
     @Column(precision = 5, scale = 4)  //비중
     private BigDecimal weight;
+
+    @Column
+    private Integer changeRate; //가격 변동률
+
 
     // 조인
 

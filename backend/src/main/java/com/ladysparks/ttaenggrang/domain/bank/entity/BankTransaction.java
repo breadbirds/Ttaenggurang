@@ -44,4 +44,15 @@ public class BankTransaction {
     @CreationTimestamp
     private Timestamp createdAt;
 
+    public static BankTransaction createTransaction(BankAccount bankAccount, BankTransactionType type, int amount, int balanceBefore, int balanceAfter, String description) {
+        return BankTransaction.builder()
+                .bankAccount(bankAccount)
+                .type(type)
+                .amount(amount)
+                .balanceBefore(balanceBefore)
+                .balanceAfter(balanceAfter)
+                .description(description)
+                .build();
+    }
+
 }
