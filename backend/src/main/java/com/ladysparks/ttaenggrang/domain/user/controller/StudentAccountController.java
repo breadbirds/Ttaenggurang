@@ -3,6 +3,7 @@ package com.ladysparks.ttaenggrang.domain.user.controller;
 import com.ladysparks.ttaenggrang.domain.user.dto.*;
 import com.ladysparks.ttaenggrang.domain.user.repository.TeacherRepository;
 import com.ladysparks.ttaenggrang.domain.user.service.StudentService;
+import com.ladysparks.ttaenggrang.domain.user.service.TokenBlacklistService;
 import com.ladysparks.ttaenggrang.global.docs.StudentAccountApiSpecification;
 import com.ladysparks.ttaenggrang.global.response.ApiResponse;
 import jakarta.servlet.http.HttpServletRequest;
@@ -22,6 +23,7 @@ import java.util.List;
 public class StudentAccountController implements StudentAccountApiSpecification {
 
     private final StudentService studentService;
+    private final TokenBlacklistService tokenBlacklistService;
 
     // 학생 로그인
     @PostMapping("/login")
@@ -35,5 +37,22 @@ public class StudentAccountController implements StudentAccountApiSpecification 
     public ResponseEntity<ApiResponse<List<StudentResponseDTO>>> getAllStudents() {
         ApiResponse<List<StudentResponseDTO>> response = studentService.getAllStudents();
         return ResponseEntity.status(response.getStatusCode()).body(response);
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<ApiResponse<String>> logoutStudent(HttpServletRequest request) {
+        // 1. 클라이언트로부터 Authorization 헤더에서 토큰 추출
+        String authHeader = request.getHeader("Authorization");
+
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+            String token = authHeader.substring(7);
+
+            // 2. (선택) JWT 블랙리스트 처리 또는 토큰 무효화 로직 추가 가능
+            tokenBlacklistService.blicklistToken(token);
+
+            return ResponseEntity.ok(ApiResponse.success("학생 로그아웃 성공"));
+        } else {
+            return ResponseEntity.badRequest().body(ApiResponse.error(400, "유효하지 않은 요청입니다.", null));
+        }
     }
 }
