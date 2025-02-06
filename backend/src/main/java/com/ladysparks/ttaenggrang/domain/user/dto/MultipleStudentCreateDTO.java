@@ -1,12 +1,13 @@
 package com.ladysparks.ttaenggrang.domain.user.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
 
 @Data
-public class StudentCreateDTO {
+@JsonIgnoreProperties(value={"id"}, allowGetters=true)
+public class MultipleStudentCreateDTO {
 
     private Long id;
 

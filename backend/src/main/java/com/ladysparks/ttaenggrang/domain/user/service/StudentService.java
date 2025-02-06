@@ -26,8 +26,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
-
 @Service
 @RequiredArgsConstructor
 public class StudentService {
@@ -41,8 +39,14 @@ public class StudentService {
     private final JwtTokenProvider jwtTokenProvider;
     private final GroupedOpenApi studentApi;
 
+    // ✅ 계좌 번호 생성 메서드
+    private String generateAccountNumber() {
+        return "110-" + (int) (Math.random() * 1_000_000_000);
+    }
+
+    // 여러 학생 계정 생성
     @Transactional
-    public List<StudentResponseDTO> createStudentAccounts(Long teacherId, StudentCreateDTO studentCreateDTO) {
+    public List<StudentResponseDTO> createStudentAccounts(Long teacherId, MultipleStudentCreateDTO multipleStudentCreateDTO) {
         // 1️⃣ 교사 확인
         Teacher teacher = teacherRepository.findById(teacherId)
                 .orElseThrow(() -> new IllegalArgumentException("교사를 찾을 수 없습니다."));
@@ -50,9 +54,9 @@ public class StudentService {
         List<StudentResponseDTO> createdStudents = new ArrayList<>();
 
         // 2️⃣ 학생 계정 자동 생성
-        for (int i = 1; i <= studentCreateDTO.getStudentCount(); i++) {
-            String username = studentCreateDTO.getBaseId() + i;
-            String password = studentCreateDTO.getBaseId() + i;
+        for (int i = 1; i <= multipleStudentCreateDTO.getStudentCount(); i++) {
+            String username = multipleStudentCreateDTO.getBaseId() + i;
+            String password = multipleStudentCreateDTO.getBaseId() + i;
 
             // 3️⃣ 중복 확인
             if (studentRepository.findByUsername(username).isPresent()) {
@@ -80,15 +84,55 @@ public class StudentService {
             studentRepository.save(student); // ✅ **저장된 bankAccount를 참조하는 상태에서 저장**
 
             // 6️⃣ 생성된 계정 리스트에 추가
-            createdStudents.add(new StudentResponseDTO(username, password));
+            createdStudents.add(new StudentResponseDTO(username));
         }
 
         return createdStudents;
     }
 
-    // ✅ 계좌 번호 생성 메서드
-    private String generateAccountNumber() {
-        return "110-" + (int) (Math.random() * 1_000_000_000);
+    // 단일 학생 계정 생성
+    @Transactional
+    public StudentResponseDTO createStudent(Long teacherId, SingleStudentCreateDTO studentCreateDTO) {
+        // 1. 교사 확인
+        Teacher teacher = teacherRepository.findById(teacherId)
+                .orElseThrow(() -> new IllegalArgumentException("교사를 찾을 수 없습니다."));
+
+        String username = studentCreateDTO.getUsername();
+        String password = studentCreateDTO.getPassword();
+
+        // 2. 중복 계정 확인
+        if (studentRepository.findByUsername(username).isPresent()) {
+            throw new IllegalArgumentException("이미 존재하는 학생 계정입니다: " + username);
+        }
+
+        // 3. 은행 계좌 생성 및 저장
+        BankAccountDTO bankAccountDTO = BankAccountDTO.builder()
+                .accountNumber(generateAccountNumber())
+                .balance(0)
+                .build();
+
+        BankAccount bankAccount = BankAccountMapper.INSTANCE.toEntity(bankAccountDTO);
+        bankAccount = bankAccountRepository.save(bankAccount);
+
+        // 4. 학생 계정 생성 (은행 계좌 연결)
+        Student student = Student.builder()
+                .username(username)
+                .password(passwordEncoder.encode(password))
+                .teacher(teacher)
+                .bankAccount(bankAccount)
+                .build();
+
+        studentRepository.save(student);
+
+        // 5. 생성된 학생 정보 반환
+        return new StudentResponseDTO(
+                student.getId(),
+                student.getUsername(),
+                null,  // 프로필 이미지 초기값
+                teacher,
+                bankAccount,
+                null  // 토큰 값은 로그인 후 부여
+        );
     }
 
     // 학생 로그인
@@ -132,7 +176,6 @@ public class StudentService {
                 .map(student -> new StudentResponseDTO(
                         student.getId(),
                         student.getUsername(),
-                        student.getName(),
                         student.getProfileImage(),
                         student.getTeacher(),
                         student.getBankAccount(),
@@ -160,7 +203,6 @@ public class StudentService {
                     return new StudentResponseDTO(
                             student.getId(),
                             student.getUsername(),
-                            student.getName(),
                             student.getProfileImage(),
                             student.getTeacher(),
                             student.getBankAccount(),
@@ -191,7 +233,6 @@ public class StudentService {
         StudentResponseDTO responseDTO = new StudentResponseDTO(
                 student.getId(),
                 student.getUsername(),
-                student.getPassword(), // ✅ 비밀번호 포함
                 student.getProfileImage(),
                 student.getTeacher(),
                 student.getBankAccount(),
@@ -219,7 +260,6 @@ public class StudentService {
                 .map(student -> new StudentResponseDTO(
                         student.getId(),
                         student.getUsername(),
-                        student.getName(),
                         student.getProfileImage(),
                         student.getTeacher(),
                         student.getBankAccount(),

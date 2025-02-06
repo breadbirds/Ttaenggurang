@@ -50,9 +50,9 @@ public class NationService {
         NationCreateDTO responseDTO = new NationCreateDTO(
                 savedNation.getId(),
                 savedNation.getNationName(),
-                savedNation.getEstablishedDate(),
                 savedNation.getPopulation(),
-                savedNation.getCurrency()
+                savedNation.getCurrency(),
+                savedNation.getEstablishedDate()
         );
 
         return ApiResponse.created("국가 정보 등록이 완료되었습니다.", responseDTO);
@@ -69,9 +69,9 @@ public class NationService {
         NationCreateDTO responseDTO = new NationCreateDTO(
                 nation.getId(),
                 nation.getNationName(),
-                nation.getEstablishedDate(),
                 nation.getPopulation(),
-                nation.getCurrency()
+                nation.getCurrency(),
+                nation.getEstablishedDate()
         );
 
         return ApiResponse.success("국가 정보 조회 성공", responseDTO);
