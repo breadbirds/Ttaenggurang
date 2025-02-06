@@ -1,12 +1,9 @@
 package com.ladysparks.ttaenggrang.domain.user.controller;
 
 import com.ladysparks.ttaenggrang.domain.user.dto.*;
-import com.ladysparks.ttaenggrang.domain.user.service.JobService;
-import com.ladysparks.ttaenggrang.domain.user.service.NationService;
-import com.ladysparks.ttaenggrang.domain.user.service.TaxService;
+import com.ladysparks.ttaenggrang.domain.user.service.*;
 import com.ladysparks.ttaenggrang.global.docs.TeacherAccountApiSpecification;
 import com.ladysparks.ttaenggrang.global.response.ApiResponse;
-import com.ladysparks.ttaenggrang.domain.user.service.TeacherService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +19,7 @@ import java.util.List;
 public class TeacherAccountController implements TeacherAccountApiSpecification {
 
     private final TeacherService teacherService;
+    private final TokenBlacklistService tokenBlacklistService;
 
     // 교사 회원가입
     @PostMapping("/signup")
@@ -42,6 +40,24 @@ public class TeacherAccountController implements TeacherAccountApiSpecification 
     public ResponseEntity<ApiResponse<TeacherLoginDTO>> login(@RequestBody @Valid TeacherLoginDTO teacherLoginDTO) {
         TeacherLoginDTO responseDTO = teacherService.loginTeacher(teacherLoginDTO);
         return ResponseEntity.ok(ApiResponse.success(responseDTO));
+    }
+
+    // 교사 로그아웃
+    @PostMapping("/logout")
+    public ResponseEntity<ApiResponse<String>> logoutTeacher(HttpServletRequest request) {
+        // 1. 클라이언트로부터 Authorization 헤더에서 토큰 추출
+        String authHeader = request.getHeader("Authorization");
+
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+            String token = authHeader.substring(7);
+
+            // 2. (선택) JWT 블랙리스트 처리 또는 토큰 무효화 로직 추가 가능
+            tokenBlacklistService.blicklistToken(token);
+
+            return ResponseEntity.ok(ApiResponse.success("교사 로그아웃 성공"));
+        } else {
+            return ResponseEntity.badRequest().body(ApiResponse.error(400, "유효하지 않은 요청입니다.", null));
+        }
     }
 
     // 교사 전체 목록 조회
