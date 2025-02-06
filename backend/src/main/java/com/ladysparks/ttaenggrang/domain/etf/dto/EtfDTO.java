@@ -11,7 +11,7 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 @Builder
 public class EtfDTO {
-    private int id;
+    private Long id;
     private Long teacher_id;
     private String name;
     private int price_per;

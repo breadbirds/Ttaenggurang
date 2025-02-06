@@ -1,7 +1,5 @@
 package com.ladysparks.ttaenggrang.domain.user.entity;
 
-import com.ladysparks.ttaenggrang.domain.bank.entity.BankAccount;
-import com.ladysparks.ttaenggrang.domain.user.dto.StudentCreateDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +7,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.sql.Timestamp;
-import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
