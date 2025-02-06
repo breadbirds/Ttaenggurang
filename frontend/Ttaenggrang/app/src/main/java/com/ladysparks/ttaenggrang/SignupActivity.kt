@@ -2,7 +2,10 @@ package com.ladysparks.ttaenggrang
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.InputType
 import android.util.Log
+import android.widget.EditText
+import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.ladysparks.ttaenggrang.data.model.request.TeacherSignUpRequest
@@ -17,6 +20,9 @@ class SignupActivity : AppCompatActivity() {
     // binding
     private val binding by lazy { ActivitySignupBinding.inflate(layoutInflater) }
 
+    private var isPasswordVisible = false
+    private var isPasswordCheckVisible = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
@@ -26,7 +32,39 @@ class SignupActivity : AppCompatActivity() {
             signUp()
         }
 
+        // 비밀번호 표시.숨김 토글
+        binding.btnInvisiblePasswordSignup.setOnClickListener{
+            isPasswordVisible = !isPasswordVisible
+
+            if(isPasswordVisible) {
+                binding.editPasswordSignup.inputType = InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
+                binding.btnInvisiblePasswordSignup.setImageResource(R.drawable.ic_visible)
+            } else {
+                binding.editPasswordSignup.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
+                binding.btnInvisiblePasswordSignup.setImageResource(R.drawable.ic_invisible)
+            }
+            //커서 위치 유지
+            binding.editPasswordSignup.setSelection(binding.editPasswordSignup.text.length)
+        }
+
+        // 비밀번호 2차 표시/숨김 토글
+        binding.btnInvisiblePasswordcheckSignup.setOnClickListener{
+            isPasswordCheckVisible = !isPasswordCheckVisible
+
+            if(isPasswordCheckVisible) {
+                binding.editPasswordcheckSignup.inputType = InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
+                binding.btnInvisiblePasswordcheckSignup.setImageResource(R.drawable.ic_visible)
+            } else {
+                binding.editPasswordcheckSignup.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
+                binding.btnInvisiblePasswordcheckSignup.setImageResource(R.drawable.ic_invisible)
+            }
+            //커서 위치 유지
+            binding.editPasswordcheckSignup.setSelection(binding.editPasswordcheckSignup.text.length)
+        }
+
     }
+
+
 
     private fun signUp() {
         // Test 위한 하드코딩 데이터

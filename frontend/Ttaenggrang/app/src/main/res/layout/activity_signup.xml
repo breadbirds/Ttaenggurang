@@ -138,7 +138,7 @@
             app:layout_constraintEnd_toEndOf="@+id/editPasswordSignup"
             app:layout_constraintTop_toTopOf="@+id/editPasswordSignup"
             app:layout_constraintBottom_toBottomOf="@+id/editPasswordSignup"
-            android:background="@drawable/btn_password_invisible"
+            android:background="@drawable/ic_invisible"
             android:layout_marginEnd="@dimen/spacing_20"/>
 
         <EditText
@@ -163,7 +163,7 @@
             app:layout_constraintEnd_toEndOf="@+id/editPasswordcheckSignup"
             app:layout_constraintTop_toTopOf="@+id/editPasswordcheckSignup"
             app:layout_constraintBottom_toBottomOf="@+id/editPasswordcheckSignup"
-            android:background="@drawable/btn_password_invisible"
+            android:background="@drawable/ic_invisible"
             android:layout_marginEnd="@dimen/spacing_20"/>
 
         <ImageButton
