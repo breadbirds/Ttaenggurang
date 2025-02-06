@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import com.ladysparks.ttaenggrang.databinding.ActivityMainBinding
 import com.ladysparks.ttaenggrang.ui.bank.BankFragment
 import com.ladysparks.ttaenggrang.ui.home.HomeTeacherFragment
+import com.ladysparks.ttaenggrang.ui.nation.NationFragment
 import com.ladysparks.ttaenggrang.ui.stock.StockFragment
 import com.ladysparks.ttaenggrang.ui.students.StudentsFragment
 import com.ladysparks.ttaenggrang.util.showToast
