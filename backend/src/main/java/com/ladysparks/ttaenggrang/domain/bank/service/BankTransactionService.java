@@ -45,11 +45,11 @@ public class BankTransactionService {
 
         // 3. 입금 또는 출금 처리
         switch (bankTransactionDTO.getType()) {
-            case DEPOSIT, SALE, STOCK_SELL:
+            case DEPOSIT, SALE, STOCK_SELL, ETF_SELL:
                 bankAccount.updateBalance(balanceBefore + transactionAmount); // 입금
                 break;
 
-            case WITHDRAWAL, PURCHASE, STOCK_BUY:
+            case WITHDRAWAL, PURCHASE, STOCK_BUY, ETF_BUY:
                 if (balanceBefore < transactionAmount) {
                     throw new IllegalArgumentException("잔액이 부족합니다.");
                 }
