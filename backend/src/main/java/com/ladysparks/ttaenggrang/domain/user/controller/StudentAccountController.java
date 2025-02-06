@@ -5,6 +5,7 @@ import com.ladysparks.ttaenggrang.domain.user.repository.TeacherRepository;
 import com.ladysparks.ttaenggrang.domain.user.service.StudentService;
 import com.ladysparks.ttaenggrang.global.docs.StudentAccountApiSpecification;
 import com.ladysparks.ttaenggrang.global.response.ApiResponse;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

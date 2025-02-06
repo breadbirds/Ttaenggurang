@@ -1,6 +1,7 @@
 package com.ladysparks.ttaenggrang.domain.user.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
@@ -15,6 +16,7 @@ import java.sql.Timestamp;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@JsonIgnoreProperties(value={"id", "establishedDate"}, allowGetters=true)
 public class NationCreateDTO {
 
     private Long id;
@@ -22,12 +24,11 @@ public class NationCreateDTO {
     @NotBlank(message = "국가 이름은 필수 항목입니다.")
     private String nationName;
 
-    @NotNull(message = "설립일을 입력해야 합니다.")
-    private Timestamp establishedDate;
-
     @Min(value = 1, message = "인구는 양의 정수여야 합니다.")
     private Integer population;
 
     @NotBlank(message = "통화 단위는 필수 항목입니다.")
     private String currency;
+
+    private Timestamp establishedDate;
 }
