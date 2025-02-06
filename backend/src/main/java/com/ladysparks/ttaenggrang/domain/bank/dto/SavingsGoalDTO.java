@@ -1,5 +1,6 @@
 package com.ladysparks.ttaenggrang.domain.bank.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.ladysparks.ttaenggrang.domain.bank.entity.SavingsGoalStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -8,6 +9,7 @@ import lombok.NoArgsConstructor;
 
 import java.sql.Timestamp;
 
+@JsonIgnoreProperties(value = {"id", })
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor

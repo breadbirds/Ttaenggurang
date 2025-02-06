@@ -26,25 +26,30 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        boolean isDevMode = "dev".equals(System.getenv("SPRING_PROFILES_ACTIVE"));
+
         http
-                .csrf(AbstractHttpConfigurer::disable) // ✅ CSRF 비활성화
-                .authorizeHttpRequests(auth -> auth
-                        // ✅ Swagger 경로 허용
-                        .requestMatchers(
-                                "/v3/api-docs/**",
-                                "/swagger-ui/**",
-                                "/swagger-ui.html",
-                                "/swagger-resources/**",
-                                "/webjars/**",
-                                "/students/login",
-                                "/students/create"
-                        ).permitAll()
-
-                        // ✅ 인증 필요 없는 경로
-                        .requestMatchers("/teachers/signup/**", "/teachers/login/**").permitAll()
-
-                        // ✅ 나머지 요청은 인증 필요
-                        .anyRequest().authenticated()
+                .csrf(AbstractHttpConfigurer::disable) // CSRF 비활성화
+                .authorizeHttpRequests(auth -> {
+                        if (isDevMode) {
+                            auth.anyRequest().permitAll(); // 개발 환경에서는 모든 요청 허용
+                        } else {
+                            // Swagger 경로 허용
+                            auth.requestMatchers(
+                                            "/v3/api-docs/**",
+                                            "/swagger-ui/**",
+                                            "/swagger-ui.html",
+                                            "/swagger-resources/**",
+                                            "/webjars/**",
+                                            "/students/login",
+                                            "/students/create"
+                                    ).permitAll()
+                                    // 인증 필요 없는 경로
+                                    .requestMatchers("/teachers/**").permitAll()
+                                    // 나머지 요청은 인증 필요
+                                    .anyRequest().authenticated();
+                        }
+                    }
                 )
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
 
