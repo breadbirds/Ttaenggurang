@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 
 import java.sql.Timestamp;
 
-@JsonIgnoreProperties(value={"id", "referenceId", "balanceBefore", "balanceAfter", "createdAt"}, allowGetters=true)
+@JsonIgnoreProperties(value = {"id", "referenceId", "balanceBefore", "balanceAfter", "createdAt"}, allowGetters = true)
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor

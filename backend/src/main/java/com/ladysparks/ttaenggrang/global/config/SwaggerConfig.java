@@ -75,14 +75,6 @@ public class SwaggerConfig {
     }
 
     @Bean
-    public GroupedOpenApi itemApi() {
-        return GroupedOpenApi.builder()
-                .group("items")
-                .pathsToMatch("/items/**", "/item-transactions/**")
-                .build();
-    }
-
-    @Bean
     public GroupedOpenApi savingsGoalApi() {
         return GroupedOpenApi.builder()
                 .group("savings-goal")
@@ -94,9 +86,18 @@ public class SwaggerConfig {
     public GroupedOpenApi bankApi() {
         return GroupedOpenApi.builder()
                 .group("bank")
-                .pathsToMatch("/bank-account/**", "/bank-transactions/**", "/savings-products/**", "/savings-subscriptions/**")
+                .pathsToMatch("/bank-account/**", "/bank-transactions/**", "/savings-products/**", "/savings-subscriptions/**", "/savings-deposits/**")
                 .build();
     }
+
+    @Bean
+    public GroupedOpenApi itemApi() {
+        return GroupedOpenApi.builder()
+                .group("items")
+                .pathsToMatch("/items/**", "/item-transactions/**")
+                .build();
+    }
+
     @Bean
     public GroupedOpenApi stockApi() {
         return GroupedOpenApi.builder()
