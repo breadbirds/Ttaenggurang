@@ -204,6 +204,22 @@ public class EtfService {
         System.out.println("총 매도 금액: " + totalAmount);
 
 
+        //은행 계좌에서 금액 차감 (API 호출)
+        Long bankAccountId = student.getBankAccount().getId();
+        BankTransactionDTO transactionRequest = new BankTransactionDTO();
+        transactionRequest.setBankAccountId(bankAccountId);
+        transactionRequest.setType(BankTransactionType.ETF_SELL);
+        transactionRequest.setAmount(totalAmount);
+        transactionRequest.setDescription("ETF 매도: " + etf.getName());
+
+        BankTransactionDTO bankTransactionDTO = bankTransactionService.addBankTransaction(transactionRequest);
+
+
+        // 은행 서비스에서 받은 최종 잔액 확인
+        int balanceAfter = bankTransactionDTO.getBalanceAfter();
+        System.out.println("ETF 매도 완료, 남은 잔액: " + balanceAfter);
+
+
         etf.setRemain_qty(etf.getRemain_qty() + shareCount);
         etfRepository.save(etf);
 
