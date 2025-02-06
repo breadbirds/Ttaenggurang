@@ -17,48 +17,26 @@ import java.time.DayOfWeek;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class SavingsSubscription {
+public class SavingsDeposit {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "savings_product_id", nullable = false)
-    private SavingsProduct savingsProduct;
-
-    @ManyToOne
-    @JoinColumn(name = "student_id", nullable = false)
-    private Student student;
+    @JoinColumn(name = "savings_subscription_id", nullable = false)
+    private SavingsSubscription savingsSubscription;
 
     @Column(nullable = false)
     private int depositAmount;
 
     @Column(nullable = false)
-    private int durationWeeks;
+    private Date depositDate;
 
     @Column(nullable = false)
-    private Date startDate;
-
-    @Column(nullable = false)
-    private Date endDate;
-
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private SavingsSubscriptionStatus status;
-
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private DayOfWeek depositDayOfWeek;
+    private Boolean isDeposited;
 
     @CreationTimestamp
     private Timestamp createdAt;
-
-    @PrePersist
-    public void prePersist() {
-        if (this.status == null) {
-            this.status = SavingsSubscriptionStatus.ACTIVE;
-        }
-    }
 
 }

@@ -6,25 +6,21 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.sql.Date;
 import java.sql.Timestamp;
+import java.util.Date;
 
 @JsonIgnoreProperties(value = {"id", "createdAt"}, allowGetters = true)
+@Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
-public class SavingsProductDTO {
+public class SavingsDepositDTO {
 
     private Long id;
-    private Long teacherId;
-    private String name;
-    private float interestRate;
-    private float earlyInterestRate;
-    private int durationWeeks;
+    private Long savingsSubscriptionId;
     private int depositAmount;
-    private Date saleStartDate;  // 판매 시작일
-    private Date saleEndDate;    // 판매 종료일
+    private Date depositDate;
+    private Boolean isDeposited;
     private Timestamp createdAt;
 
 }

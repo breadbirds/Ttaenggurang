@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 
 import java.sql.Timestamp;
 
-@JsonIgnoreProperties(value = {"id", "createdAt"})
+@JsonIgnoreProperties(value = {"id", "createdAt"}, allowGetters = true)
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
