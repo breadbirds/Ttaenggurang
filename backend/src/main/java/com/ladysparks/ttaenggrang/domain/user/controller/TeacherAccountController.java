@@ -7,6 +7,7 @@ import com.ladysparks.ttaenggrang.domain.user.service.TaxService;
 import com.ladysparks.ttaenggrang.global.docs.TeacherAccountApiSpecification;
 import com.ladysparks.ttaenggrang.global.response.ApiResponse;
 import com.ladysparks.ttaenggrang.domain.user.service.TeacherService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.validator.internal.IgnoreForbiddenApisErrors;
