@@ -29,9 +29,6 @@ public class StockTransactionDTO {
     // 학생 관련 (student_id 외래 키를 참조)
     private Long studentId;  // student_id 외래 키 (Student 엔티티 참조)
 
-    // 계좌 관련 (bank_account_id 외래 키를 참조)
-    @JsonIgnore  // 응답에서 숨김
-    private Long bankAccountId; // bank_account_id 외래 키 (BankAccount 엔티티 참조)
 
     // 주식 관련 (stock_id 외래 키를 참조)
     private int stockId;     // stock_id 외래 키 (Stock 엔티티 참조)

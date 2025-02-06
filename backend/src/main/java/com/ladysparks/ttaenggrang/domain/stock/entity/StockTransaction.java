@@ -56,10 +56,7 @@ public class StockTransaction {
     @JoinColumn(name = "student_id", nullable = true)  // 학생 정보가 없을 수도 있음을 나타냄
     private Student student;
 
-//    //계좌
-//    @OneToOne(targetEntity = BankAccount.class, fetch = FetchType.LAZY)
-//    @JoinColumn(name = "bank_account_id")
-//    private BankAccount bankAccount;
+
 
     //주식
     @ManyToOne(targetEntity = Stock.class, fetch = FetchType.LAZY)
