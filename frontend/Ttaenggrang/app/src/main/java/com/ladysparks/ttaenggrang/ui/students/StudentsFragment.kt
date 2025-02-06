@@ -5,56 +5,106 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.ladysparks.ttaenggrang.R
+import com.ladysparks.ttaenggrang.base.BaseFragment
+import com.ladysparks.ttaenggrang.base.BaseTableAdapter
+import com.ladysparks.ttaenggrang.databinding.FragmentHomeTeacherBinding
+import com.ladysparks.ttaenggrang.databinding.FragmentStudentsBinding
+import com.ladysparks.ttaenggrang.ui.home.HomeViewModel
+import com.ladysparks.ttaenggrang.ui.model.BaseTableRowModel
+import com.ladysparks.ttaenggrang.util.showToast
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+class StudentsFragment  : BaseFragment<FragmentStudentsBinding>(FragmentStudentsBinding::bind, R.layout.fragment_students) {
 
-/**
- * A simple [Fragment] subclass.
- * Use the [StudentsFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
-class StudentsFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+        initEvent()
+        initDat()
+
+        sampleDataStudent()
+        binding.recyclerStudents.visibility = View.VISIBLE
+
+    }
+
+
+    private fun initDat() {
+
+    }
+
+    private fun initEvent() {
+        binding.btnTabStudentInfo.setOnClickListener {
+            //
+            selectTab(true)
+            // if 조건 추가. 데이터가 없으면 recyclerview 가리고, 텍스트만 보이도록
+            binding.recyclerStudents.visibility = View.VISIBLE
+            sampleDataStudent()
+        }
+
+        binding.btnTabFincialStatus.setOnClickListener {
+            // if 조건 추가. 데이터가 없으면 recyclerview 가리고, 텍스트만 보이도록
+            binding.recyclerStudents.visibility = View.VISIBLE
+            selectTab(false)
+            sampleDataFinance()
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_students, container, false)
+    private fun sampleDataStudent() {
+
+        // 컬럼 개수가 5개 일 때 사용 방법
+        val header2 = listOf("번호", "이름", "직업(월급)", "아이디", "비밀번호", "설정")
+        val data2 = listOf(
+            BaseTableRowModel(listOf("박지성", "user04", "축구선수", "5000만원", "2억", "관리")),
+            BaseTableRowModel(listOf("손흥민", "user05", "축구선수", "7억원", "10억", "관리"))
+        )
+
+        // 컬럼 개수가 5개인 테이블
+        val adapter2 = BaseTableAdapter(header2, data2)
+        binding.recyclerStudents.layoutManager = LinearLayoutManager(requireContext())
+        binding.recyclerStudents.adapter = adapter2
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment StudentsFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            StudentsFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+    private fun sampleDataFinance() {
+        // 컬럼 개수가 5개 일 때 사용 방법
+        val header2 = listOf("번호", "이름", "계좌 잔액", "은행 가입상품", "보유 주식")
+        val data2 = listOf(
+            BaseTableRowModel(listOf("박지성", "user04", "34,000", "3개", "1개")),
+            BaseTableRowModel(listOf("손흥민", "user05", "23,999", "1개", "2개"))
+        )
+
+        // 컬럼 개수가 5개인 테이블
+        val adapter2 = BaseTableAdapter(header2, data2)
+        binding.recyclerStudents.layoutManager = LinearLayoutManager(requireContext())
+        binding.recyclerStudents.adapter = adapter2
     }
+
+    // Tab 변경 이벤트
+    private fun selectTab(isStudentInfo: Boolean) {
+        val context = context ?: return
+
+        if (isStudentInfo) {
+            // "학생 정보" 활성화
+            binding.tvStudentInfo.setTextAppearance(R.style.heading4)
+            binding.tvStudentInfo.setTextColor(ContextCompat.getColor(context, R.color.mainOrange))
+            binding.underlineStudentInfo.visibility = View.VISIBLE
+
+            // "재정 상태" 비활성화
+            binding.tvFinancialStatus.setTextAppearance(R.style.body2)
+            binding.tvFinancialStatus.setTextColor(ContextCompat.getColor(context, R.color.lightGray))
+            binding.underlineFinancialStatus.visibility = View.INVISIBLE
+        } else {
+            // 학생 정보 비활성화
+            binding.tvStudentInfo.setTextAppearance(R.style.body2)
+            binding.tvStudentInfo.setTextColor(ContextCompat.getColor(context, R.color.lightGray))
+            binding.underlineStudentInfo.visibility = View.INVISIBLE
+
+            // 재정 상태 활성화
+            binding.tvFinancialStatus.setTextAppearance(R.style.heading4)
+            binding.tvFinancialStatus.setTextColor(ContextCompat.getColor(context, R.color.mainOrange))
+            binding.underlineFinancialStatus.visibility = View.VISIBLE
+        }
+    }
+
 }
