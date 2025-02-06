@@ -17,8 +17,14 @@ public class SwaggerConfig {
     private Info apiInfo() {
         return new Info()
                     .title("땡그랑 API")
-                    .version("v1")
-                    .description("땡그랑 API 명세서");
+                    .description("땡그랑 API 명세서")
+                    .version("v1.0")
+                    .contact(new Contact().name("LadySparks")
+                            .email("www.ladysparks.com")
+                            .url("suhmiji@gmail.com"))
+                    .license(new License()
+                            .name("License of API")
+                            .url("API license URL"));
     }
 
     private SecurityScheme createAPIKeyScheme() {
@@ -29,33 +35,13 @@ public class SwaggerConfig {
 
     @Bean
     public OpenAPI openAPI() {
-//        String jwt = "JWT";
-//        SecurityRequirement securityRequirement = new SecurityRequirement().addList(jwt);
-//        Components components = new Components().addSecuritySchemes(jwt, new SecurityScheme()
-//                .name(jwt)
-//                .type(SecurityScheme.Type.HTTP)
-//                .scheme("bearer")
-//                .bearerFormat("JWT")
-//        );
-
-//        return new OpenAPI()
-//                .components(new Components())
-//                .info(apiInfo())
-//                .addServersItem(new Server().url("/api"))
-//                .addSecurityItem(securityRequirement)
-//                .components(components);
         return new OpenAPI()
                 .addServersItem(new Server().url("/api"))
                 .addSecurityItem(new SecurityRequirement().
                         addList("Bearer Authentication"))
                 .components(new Components().addSecuritySchemes
                         ("Bearer Authentication", createAPIKeyScheme()))
-                .info(new Info().title("My REST API")
-                        .description("Some custom description of API.")
-                        .version("1.0").contact(new Contact().name("Sallo Szrajbman")
-                                .email( "www.baeldung.com").url("salloszraj@gmail.com"))
-                        .license(new License().name("License of API")
-                                .url("API license URL")));
+                .info(apiInfo());
     }
 
     @Bean
@@ -105,6 +91,7 @@ public class SwaggerConfig {
                 .pathsToMatch("/stocks/**")
                 .build();
     }
+
     @Bean
     public GroupedOpenApi etfApi() {
         return GroupedOpenApi.builder()
@@ -112,6 +99,7 @@ public class SwaggerConfig {
                 .pathsToMatch("/etfs/**")
                 .build();
     }
+
     @Bean
     public GroupedOpenApi newsApi() {
         return GroupedOpenApi.builder()
@@ -120,5 +108,12 @@ public class SwaggerConfig {
                 .build();
     }
 
+    @Bean
+    public GroupedOpenApi weeklyReportApi() {
+        return GroupedOpenApi.builder()
+                .group("weekly-report")
+                .pathsToMatch("/weekly/**")
+                .build();
+    }
 
 }
