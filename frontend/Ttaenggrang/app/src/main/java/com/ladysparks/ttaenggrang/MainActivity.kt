@@ -31,6 +31,7 @@ class MainActivity : AppCompatActivity() {
         replaceFragment(StudentsFragment())
         binding.navigationView.setCheckedItem(R.id.navHome) // 기본 선택
 
+        //
         binding.navigationView.setNavigationItemSelectedListener { menuItem ->
             menuItem.isChecked = true  // 선택한 아이템 활성화
             when (menuItem.itemId) {
