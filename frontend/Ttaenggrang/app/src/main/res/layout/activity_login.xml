@@ -136,7 +136,7 @@
             app:layout_constraintEnd_toEndOf="@+id/editPasswordLogin"
             app:layout_constraintTop_toTopOf="@+id/editPasswordLogin"
             app:layout_constraintBottom_toBottomOf="@+id/editPasswordLogin"
-            android:background="@drawable/btn_password_invisible"
+            android:background="@drawable/ic_invisible"
             android:layout_marginEnd="@dimen/spacing_20"/>
 
         <TextView
