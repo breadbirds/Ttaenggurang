@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".NationFragment">
+    tools:context=".ui.nation.NationFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -161,6 +161,7 @@
                     app:layout_constraintBottom_toBottomOf="@id/clFinanceIc"
                     android:paddingHorizontal="@dimen/spacing_10"/>
                 <ImageView
+                    android:id="@+id/btnNationInfo"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:src="@drawable/ic_setting"
@@ -261,14 +262,16 @@
                     app:layout_constraintTop_toTopOf="@+id/clDollarIc"
                     app:layout_constraintBottom_toBottomOf="@id/clDollarIc"
                     android:paddingHorizontal="@dimen/spacing_10"/>
-                <ImageView
+
+                <ImageButton
+                    android:id="@+id/btnGoalSavings"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:src="@drawable/ic_setting"
-                    android:tint="@color/lightGray"
                     app:layout_constraintStart_toEndOf="@id/textGoal"
                     app:layout_constraintTop_toTopOf="@+id/clDollarIc"
-                    app:layout_constraintBottom_toBottomOf="@+id/clDollarIc"/>
+                    app:layout_constraintBottom_toBottomOf="@+id/clDollarIc"
+                    app:tint="@color/lightGray" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
