@@ -155,7 +155,7 @@ public class StockService {
 
         stockTransactionRepository.save(transaction);
 
-        // 🟢 주식의 현재 가격을 업데이트
+        // 주식의 현재 가격을 업데이트
         stock.setPrice_per(price_per);
         stockRepository.save(stock);
 
@@ -178,7 +178,7 @@ public class StockService {
             throw new IllegalArgumentException("0 이하 수량은 매도할 수 없습니다.");
         }
 
-        // 🟢 (수정) 학생의 총 매수량(BUY)과 총 매도량(SELL) 조회
+        //학생의 총 매수량(BUY)과 총 매도량(SELL) 조회
         Integer totalBought = stockTransactionRepository.findTotalSharesByStudentAndStock(studentId, stockId, TransType.BUY);
         Integer totalSold = stockTransactionRepository.findTotalSharesByStudentAndStock(studentId, stockId, TransType.SELL);
 
@@ -206,6 +206,21 @@ public class StockService {
         // 로그 확인
         System.out.println("현재 주식 가격: " + price_per);
         System.out.println("총 매도 금액: " + totalAmount);
+
+        //은행 계좌에서 금액 차감 (API 호출)
+        Long bankAccountId = student.getBankAccount().getId();
+        BankTransactionDTO transactionRequest = new BankTransactionDTO();
+        transactionRequest.setBankAccountId(bankAccountId);
+        transactionRequest.setType(BankTransactionType.STOCK_SELL);
+        transactionRequest.setAmount(totalAmount);
+        transactionRequest.setDescription("주식 매도: " + stock.getName());
+
+        BankTransactionDTO bankTransactionDTO = bankTransactionService.addBankTransaction(transactionRequest);
+
+        // 은행 서비스에서 받은 최종 잔액 확인
+        int balanceAfter = bankTransactionDTO.getBalanceAfter();
+        System.out.println("주식 매도 완료, 남은 잔액: " + balanceAfter);
+
 
 
         stock.setRemain_qty(stock.getRemain_qty() + shareCount);
