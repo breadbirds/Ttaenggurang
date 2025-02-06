@@ -18,14 +18,12 @@ public class JobService {
 
     private final JobRespository jobRespository;
 
-    public ApiResponse<Map<String, Object>> createJob(JobCreateDTO jobCreateDTO) {
+    public ApiResponse<JobCreateDTO> createJob(JobCreateDTO jobCreateDTO) {
 
         // 1. 직업 중복 체크
         Optional<Job> existingJob = jobRespository.findByJobName(jobCreateDTO.getJobName());
         if (existingJob.isPresent()) {
-            return ApiResponse.error(HttpStatus.BAD_REQUEST.value(), "유효성 검증 실패",
-                    Map.of("errors", List.of(new ErrorResponse.FieldErrorDetail("jobName", "직업 이름이 중복되었습니다.")))
-            );
+            return ApiResponse.error(HttpStatus.BAD_REQUEST.value(), "직업 이름이 이미 존재합니다.", null);
         }
 
         // 2. 직업 저장
@@ -39,15 +37,14 @@ public class JobService {
         Job savedJob = jobRespository.save(job);
 
         // 3. 응답 데이터 생성
-        Map<String, Object> responseData = Map.of(
-                "jobId", savedJob.getId(),
-                "jobName", savedJob.getJobName(),
-                "description", savedJob.getJobDescription(),
-                "baseSalary", savedJob.getBaseSalary(),
-                "maxPeople", savedJob.getMaxPeople(),
-                "salaryDate", savedJob.getSalaryDate()
+        JobCreateDTO responseDTO = new JobCreateDTO(
+                savedJob.getId(),
+                savedJob.getJobName(),
+                savedJob.getJobDescription(),
+                savedJob.getBaseSalary(),
+                savedJob.getMaxPeople()
         );
 
-        return ApiResponse.created("직업 등록이 완료되었습니다.", responseData);
+        return ApiResponse.created("직업 등록이 완료되었습니다.", responseDTO);
     }
 }

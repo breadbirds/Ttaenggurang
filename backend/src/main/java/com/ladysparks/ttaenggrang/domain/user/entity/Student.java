@@ -40,7 +40,6 @@ public class Student {
     }
 
     // <조인>
-    // 교사
     @ManyToOne
     @JoinColumn(name = "teacher_id", nullable = false)
     private Teacher teacher;
@@ -48,6 +47,10 @@ public class Student {
     @OneToOne
     @JoinColumn(name = "bank_account_id")  // nullable = false
     private BankAccount bankAccount;
+
+    @ManyToOne
+    @JoinColumn(name = "job_id")
+    private Job job;
 
     //주식 거래내역
 //    @OneToMany(mappedBy = "student", fetch = FetchType.LAZY)

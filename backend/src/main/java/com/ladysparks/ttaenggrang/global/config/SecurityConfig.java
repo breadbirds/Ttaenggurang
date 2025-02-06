@@ -41,7 +41,7 @@ public class SecurityConfig {
                         ).permitAll()
 
                         // ✅ 인증 필요 없는 경로
-                        .requestMatchers("/teachers/**").permitAll()
+                        .requestMatchers("/teachers/signup/**", "/teachers/login/**").permitAll()
 
                         // ✅ 나머지 요청은 인증 필요
                         .anyRequest().authenticated()
