@@ -27,74 +27,100 @@ import android.content.SharedPreferences
  */
 object SharedPreferencesUtil {
     private const val PREFS_NAME = "app_prefs"
+    private const val COOKIES_KEY_NAME = "cookies"
 
-    private fun getPreferences(context: Context): SharedPreferences {
-        return context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+    // Key 상수 값 모음
+    const val JWT_TOKEN_KEY = "jwt_token"
+
+    private lateinit var preferences: SharedPreferences
+
+    // 🚀 초기화 함수 추가 (ApplicationClass에서 초기화할 예정)
+    fun init(context: Context) {
+        preferences = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
     }
 
     /**
-     * 값 저장 (오버로딩 적용)
+     * Cookies 관련 함수 추가 (이전 프로젝트와 동일)
      */
-    fun putValue(context: Context, key: String, value: String) {
-        getPreferences(context).edit().putString(key, value).apply()
+    fun addUserCookie(cookies: HashSet<String>) {
+        preferences.edit().putStringSet(COOKIES_KEY_NAME, cookies).apply()
     }
 
-    fun putValue(context: Context, key: String, value: Int) {
-        getPreferences(context).edit().putInt(key, value).apply()
+    fun getUserCookie(): MutableSet<String>? {
+        return preferences.getStringSet(COOKIES_KEY_NAME, HashSet())
     }
 
-    fun putValue(context: Context, key: String, value: Boolean) {
-        getPreferences(context).edit().putBoolean(key, value).apply()
+    fun deleteUserCookie() {
+        preferences.edit().remove(COOKIES_KEY_NAME).apply()
+    }
+//    private fun getPreferences(context: Context): SharedPreferences {
+//        return context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+//    }
+
+    /**
+     * 🚀 값 저장 (오버로딩 적용)
+     */
+    fun putValue(key: String, value: String) {
+        preferences.edit().putString(key, value).apply()
     }
 
-    fun putValue(context: Context, key: String, value: Float) {
-        getPreferences(context).edit().putFloat(key, value).apply()
+    fun putValue(key: String, value: Int) {
+        preferences.edit().putInt(key, value).apply()
     }
 
-    fun putValue(context: Context, key: String, value: Long) {
-        getPreferences(context).edit().putLong(key, value).apply()
+    fun putValue(key: String, value: Boolean) {
+        preferences.edit().putBoolean(key, value).apply()
+    }
+
+    fun putValue(key: String, value: Float) {
+        preferences.edit().putFloat(key, value).apply()
+    }
+
+    fun putValue(key: String, value: Long) {
+        preferences.edit().putLong(key, value).apply()
     }
 
     /**
-     * 값 가져오기 (오버로딩 적용, 기본값 설정)
+     * 🚀 값 가져오기 (오버로딩 적용, 기본값 설정)
      */
-    fun getValue(context: Context, key: String, defaultValue: String = ""): String {
-        return getPreferences(context).getString(key, defaultValue) ?: defaultValue
+    fun getValue(key: String, defaultValue: String = ""): String {
+        return preferences.getString(key, defaultValue) ?: defaultValue
     }
 
-    fun getValue(context: Context, key: String, defaultValue: Int = 0): Int {
-        return getPreferences(context).getInt(key, defaultValue)
+    fun getValue(key: String, defaultValue: Int = 0): Int {
+        return preferences.getInt(key, defaultValue)
     }
 
-    fun getValue(context: Context, key: String, defaultValue: Boolean = false): Boolean {
-        return getPreferences(context).getBoolean(key, defaultValue)
+    fun getValue(key: String, defaultValue: Boolean = false): Boolean {
+        return preferences.getBoolean(key, defaultValue)
     }
 
-    fun getValue(context: Context, key: String, defaultValue: Float = 0f): Float {
-        return getPreferences(context).getFloat(key, defaultValue)
+    fun getValue(key: String, defaultValue: Float = 0f): Float {
+        return preferences.getFloat(key, defaultValue)
     }
 
-    fun getValue(context: Context, key: String, defaultValue: Long = 0L): Long {
-        return getPreferences(context).getLong(key, defaultValue)
+    fun getValue(key: String, defaultValue: Long = 0L): Long {
+        return preferences.getLong(key, defaultValue)
     }
 
     /**
      * 특정 값 삭제
      */
-    fun removeValue(context: Context, key: String): Boolean {
-        val prefs = getPreferences(context)
-        return if (prefs.contains(key)) {  // 키가 존재하는지 확인
-            prefs.edit().remove(key).apply()
-            true  // 성공적으로 삭제됨
+    fun removeValue(key: String): Boolean {
+        return if (preferences.contains(key)) {
+            preferences.edit().remove(key).apply()
+            true
         } else {
-            false // 해당 키가 존재하지 않음
+            false
         }
     }
 
     /**
      * SharedPreferences 전체 초기화
      */
-    fun clearAll(context: Context) {
-        getPreferences(context).edit().clear().apply()
+    fun clearAll() {
+        preferences.edit().clear().apply()
     }
+
+
 }

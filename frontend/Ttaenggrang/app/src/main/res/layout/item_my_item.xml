@@ -27,7 +27,7 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/line_dashed_horizental2"
+            android:src="@drawable/line_dashed_horizental"
             android:layout_marginStart="25dp"/>
 
         <LinearLayout

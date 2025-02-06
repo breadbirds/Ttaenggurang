@@ -8,5 +8,9 @@ public enum BankTransactionType {
     SALE,
     STOCK_BUY,
     STOCK_SELL,
+    ETF_BUY,
+    ETF_SELL,
     SAVINGS_PAYMENT,
+    BANK_INTEREST,
+    SALARY
 }
