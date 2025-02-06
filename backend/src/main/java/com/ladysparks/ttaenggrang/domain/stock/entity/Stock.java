@@ -7,6 +7,7 @@ import lombok.*;
 
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 @AllArgsConstructor //모든 필드를 매개변수로 받는 생성자를 자동으로 생성
 @NoArgsConstructor //기본 생성자(매개변수가 없는 생성자)를 자동으로 생성 , Entity 사용 하면 사용 해줘야함!
@@ -26,9 +27,6 @@ public class Stock {
     private int price_per;// 한 주당 가격(기본 가격)
 
     @Column
-    private int current_price;  // 현재 주식 가격 (변동된 가격)
-
-    @Column
     private int total_qty;      // 회사가 보유 한 주식 총 수량
 
     @Column
@@ -46,9 +44,19 @@ public class Stock {
     @Column
     private String category;      // 카테고리
 
-    @Enumerated(EnumType.STRING)  // on/off 버튼
-    @Column(name = "button")
-    private Button button;
+//    @Enumerated(EnumType.STRING)  // on/off 버튼
+//    @Column(name = "button")
+//    private Button button;
+
+    @Column
+    private Integer changeRate; //가격 변동률
+
+    @Column(nullable = false)
+    private Boolean isMarketActive;
+
+    @Column
+    private LocalDateTime priceChangeTime;  // 가격 변동 시간
+
 
     //조인
 
@@ -72,4 +80,17 @@ public class Stock {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "etf_id")
     private Etf etf;
+
+    // 주식장 활성화 메소드
+    public void activateMarket() {
+        this.isMarketActive = true;
+        this.priceChangeTime = LocalDateTime.now().plusMinutes(1); // 예시로 1분 후 가격 변동
+    }
+
+    // 주식장 비활성화 메소드
+    public void deactivateMarket() {
+        this.isMarketActive = false;
+    }
+
+
 }

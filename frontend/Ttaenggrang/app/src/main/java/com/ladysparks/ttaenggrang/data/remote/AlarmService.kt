@@ -1,12 +1,13 @@
 package com.ladysparks.ttaenggrang.data.remote
 
-import com.ladysparks.ttaenggrang.data.model.dto.AlarmDTO
+import com.ladysparks.ttaenggrang.data.model.dto.AlarmDto
 import retrofit2.http.Body
 import retrofit2.http.POST
 
 interface AlarmService {
-    // POST 요청으로 Like 객체를 저장하고 성공 여부를 반환한다.
+
+    // POST 요청으로, teacherName 이 받은 알람 목록을 불러 온다
     @POST("rest/alarm")
-    suspend fun saveAlarm(@Body alarm: AlarmDTO): Boolean
+    suspend fun saveAlarm(@Body teacherName: String): Boolean
 }
 

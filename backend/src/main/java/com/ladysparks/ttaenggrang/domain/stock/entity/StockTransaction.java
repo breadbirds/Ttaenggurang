@@ -31,6 +31,9 @@ public class StockTransaction {
     private int purchase_prc;   // 거래 당시 1주 가격
 
     @Column
+    private int owned_qty;      // 학생이 보유한 주식 수량
+
+    @Column
     private int total_amt;  // 총 거래 금액
 
     @Column
@@ -53,10 +56,7 @@ public class StockTransaction {
     @JoinColumn(name = "student_id", nullable = true)  // 학생 정보가 없을 수도 있음을 나타냄
     private Student student;
 
-//    //계좌
-//    @OneToOne(targetEntity = BankAccount.class, fetch = FetchType.LAZY)
-//    @JoinColumn(name = "bank_account_id")
-//    private BankAccount bankAccount;
+
 
     //주식
     @ManyToOne(targetEntity = Stock.class, fetch = FetchType.LAZY)
