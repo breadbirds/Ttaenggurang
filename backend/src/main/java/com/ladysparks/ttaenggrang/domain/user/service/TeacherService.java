@@ -1,16 +1,20 @@
 package com.ladysparks.ttaenggrang.domain.user.service;
 
+import com.ladysparks.ttaenggrang.domain.user.dto.TeacherResponseDTO;
 import com.ladysparks.ttaenggrang.global.config.JwtTokenProvider;
 import com.ladysparks.ttaenggrang.domain.user.entity.Teacher;
 import com.ladysparks.ttaenggrang.domain.user.dto.TeacherLoginDTO;
 import com.ladysparks.ttaenggrang.domain.user.dto.TeacherSignupDTO;
 import com.ladysparks.ttaenggrang.domain.user.repository.TeacherRepository;
+import com.ladysparks.ttaenggrang.global.response.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.boot.model.naming.IllegalIdentifierException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -65,5 +69,26 @@ public class TeacherService {
 
         // 응답을 위한 DTO 생성 (요청용 DTO와 구별)
         return new TeacherLoginDTO(teacher.getEmail(), teacher.getName(), teacher.getSchool(), token);
+    }
+
+    // ✅ 교사 전체 목록 조회 (조회용)
+    public ApiResponse<List<TeacherResponseDTO>> getAllTeachers() {
+        List<Teacher> teachers = teacherRepository.findAll();
+
+        if (teachers.isEmpty()) {
+            return ApiResponse.error(404, "등록된 교사가 없습니다.", null);
+        }
+
+        List<TeacherResponseDTO> responseDTOs = teachers.stream()
+                .map(teacher -> new TeacherResponseDTO(
+                        teacher.getId(),
+                        teacher.getEmail(),
+                        teacher.getName(),
+                        teacher.getSchool(),
+                        teacher.getCreatedAt()
+                ))
+                .collect(Collectors.toList());
+
+        return ApiResponse.success("교사 목록 조회 성공", responseDTOs);
     }
 }

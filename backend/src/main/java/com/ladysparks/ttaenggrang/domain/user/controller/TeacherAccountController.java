@@ -9,8 +9,11 @@ import com.ladysparks.ttaenggrang.global.response.ApiResponse;
 import com.ladysparks.ttaenggrang.domain.user.service.TeacherService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.validator.internal.IgnoreForbiddenApisErrors;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/teachers")
@@ -38,5 +41,12 @@ public class TeacherAccountController implements TeacherAccountApiSpecification 
     public ResponseEntity<ApiResponse<TeacherLoginDTO>> login(@RequestBody @Valid TeacherLoginDTO teacherLoginDTO) {
         TeacherLoginDTO responseDTO = teacherService.loginTeacher(teacherLoginDTO);
         return ResponseEntity.ok(ApiResponse.success(responseDTO));
+    }
+
+    // 교사 전체 목록 조회
+    @GetMapping("/all")
+    public ResponseEntity<ApiResponse<List<TeacherResponseDTO>>> getAllTeachers() {
+        ApiResponse<List<TeacherResponseDTO>> response = teacherService.getAllTeachers();
+        return ResponseEntity.status(response.getStatusCode()).body(response);
     }
 }
