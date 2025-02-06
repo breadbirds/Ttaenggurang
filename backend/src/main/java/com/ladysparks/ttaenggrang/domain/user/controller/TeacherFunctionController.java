@@ -1,8 +1,6 @@
 package com.ladysparks.ttaenggrang.domain.user.controller;
 
 import com.ladysparks.ttaenggrang.domain.user.dto.*;
-import com.ladysparks.ttaenggrang.domain.user.entity.Nation;
-import com.ladysparks.ttaenggrang.domain.user.repository.NationRepository;
 import com.ladysparks.ttaenggrang.domain.user.repository.TeacherRepository;
 import com.ladysparks.ttaenggrang.domain.user.service.JobService;
 import com.ladysparks.ttaenggrang.domain.user.service.NationService;
@@ -31,21 +29,6 @@ public class TeacherFunctionController implements TeacherFunctionApiSpecificatio
     private final StudentService studentService;
     private final TeacherRepository teacherRepository;
 
-    // 학생 계정 빠른 생성 (교사만 가능)  (토큰 문제 해결 후 다시 사용하기)
-    @PostMapping("/quick-create")
-    public ResponseEntity<ApiResponse<List<StudentResponseDTO>>> createStudents(
-            @RequestBody @Valid StudentCreateDTO studentCreateDTO) {
-
-        // ✅ 현재 로그인한 교사의 ID 가져오기
-        Long teacherId = getTeacherIdFromSecurityContext();
-
-        // ✅ 학생 계정 생성 서비스 호출
-        List<StudentResponseDTO> createdStudents = studentService.createStudentAccounts(teacherId, studentCreateDTO);
-
-        // ✅ ApiResponse.success() 사용
-        return ResponseEntity.ok(ApiResponse.success(createdStudents));
-    }
-
     // (+) 현재 로그인한 교사의 ID 가져오는 메서드
     private long getTeacherIdFromSecurityContext() {
         // 🔥 인증 객체 가져오기
@@ -67,7 +50,6 @@ public class TeacherFunctionController implements TeacherFunctionApiSpecificatio
         }
         throw new IllegalArgumentException("현재 인증된 사용자를 찾을 수 없습니다.");
     }
-
 
     // 직업 [등록]
     @PostMapping("/jobs/create")
@@ -115,22 +97,6 @@ public class TeacherFunctionController implements TeacherFunctionApiSpecificatio
     @GetMapping("/taxes")
     public ResponseEntity<ApiResponse<List<TaxCreateDTO>>> getAllTaxes() {
         ApiResponse<List<TaxCreateDTO>> response = taxService.getAllTaxes();
-        return ResponseEntity.status(response.getStatusCode()).body(response);
-    }
-
-    // 우리반 학생 전체 조회
-    @GetMapping("/students")
-    public ResponseEntity<ApiResponse<List<StudentResponseDTO>>> getMyClassStudents() {
-        Long teacherId = getTeacherIdFromSecurityContext(); // 🔥 로그인한 교사의 ID 가져오기
-        ApiResponse<List<StudentResponseDTO>> response = studentService.getMyClassStudents(teacherId);
-        return ResponseEntity.status(response.getStatusCode()).body(response);
-    }
-
-    // 우리반 특정 학생 상세 조회
-    @GetMapping("/students/{studentId}")
-    public ResponseEntity<ApiResponse<StudentResponseDTO>> getStudentById(@PathVariable Long studentId) {
-        Long teacherId = getTeacherIdFromSecurityContext(); // 🔥 로그인한 교사의 ID 가져오기
-        ApiResponse<StudentResponseDTO> response = studentService.getStudentById(teacherId, studentId);
         return ResponseEntity.status(response.getStatusCode()).body(response);
     }
 }
