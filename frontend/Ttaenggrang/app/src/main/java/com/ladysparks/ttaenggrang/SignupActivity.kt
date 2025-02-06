@@ -115,8 +115,5 @@ class SignupActivity : AppCompatActivity() {
                 Log.e("AlarmViewModel", "Error fetching alarms ${exception}")
             }
         }
-
     }
-
-
 }
