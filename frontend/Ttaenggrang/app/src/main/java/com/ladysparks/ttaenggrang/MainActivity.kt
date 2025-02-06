@@ -34,7 +34,7 @@ class MainActivity : AppCompatActivity() {
             when (menuItem.itemId) {
                 R.id.navHome -> replaceFragment(HomeTeacherFragment())
                 R.id.navStudents -> showToast("학생 관리 페이지 준비중")
-                R.id.navCountryInfo -> showToast("국가 정보 페이지 준비중")
+                R.id.navCountryInfo -> replaceFragment(NationFragment())
                 R.id.navRevenue -> showToast("국세청 페이지 준비중")
                 R.id.navBank -> replaceFragment(BankFragment())
                 R.id.navStock -> replaceFragment(StockFragment())
@@ -43,7 +43,6 @@ class MainActivity : AppCompatActivity() {
             true
         }
     }
-
 
     // Fragment 이동을 위한 함수
     private fun replaceFragment(fragment: Fragment) {

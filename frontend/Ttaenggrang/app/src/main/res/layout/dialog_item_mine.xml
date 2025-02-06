@@ -51,10 +51,10 @@
             android:text="미지미지 교환권입니다"
             style="@style/caption"/>
 
-        <View
+        <ImageView
             android:layout_width="278dp"
             android:layout_height="5dp"
-            android:background="@drawable/line_dashed_horizontal"
+            android:src="@drawable/line_dashed_vertical"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -121,7 +121,7 @@
             app:backgroundTint="@color/mainOrange"
             android:textColor="@color/white"
             style="@style/heading4"
-            android:layout_marginStart="11"/>
+            android:layout_marginStart="11dp"/>
 
 
     </LinearLayout>

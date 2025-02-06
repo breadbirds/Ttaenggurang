@@ -1,5 +1,8 @@
 package com.ladysparks.ttaenggrang.domain.etf.service;
 
+import com.ladysparks.ttaenggrang.domain.bank.dto.BankTransactionDTO;
+import com.ladysparks.ttaenggrang.domain.bank.entity.BankTransactionType;
+import com.ladysparks.ttaenggrang.domain.bank.service.BankTransactionService;
 import com.ladysparks.ttaenggrang.domain.etf.dto.EtfTransactionDTO;
 import com.ladysparks.ttaenggrang.domain.etf.entity.Etf;
 import com.ladysparks.ttaenggrang.domain.etf.dto.EtfDTO;
@@ -36,6 +39,8 @@ public class EtfService {
     private final StudentRepository studentRepository;
 
     private final StockHistoryRepository stockHistoryRepository;
+
+    private final BankTransactionService bankTransactionService;
 
     //목록 조회
     public int saveEtf(EtfDTO etfDto) {
@@ -101,6 +106,21 @@ public class EtfService {
         System.out.println("현재 주식 가격: " + price_per);
         System.out.println("총 구매 금액: " + totalAmount);
 
+        //은행 계좌에서 금액 차감 (API 호출)
+        Long bankAccountId = student.getBankAccount().getId();
+        BankTransactionDTO transactionRequest = new BankTransactionDTO();
+        transactionRequest.setBankAccountId(bankAccountId);
+        transactionRequest.setType(BankTransactionType.ETF_BUY);
+        transactionRequest.setAmount(totalAmount);
+        transactionRequest.setDescription("ETF 매수: " + etf.getName());
+
+        BankTransactionDTO bankTransactionDTO = bankTransactionService.addBankTransaction(transactionRequest);
+
+
+        // 은행 서비스에서 받은 최종 잔액 확인
+        int balanceAfter = bankTransactionDTO.getBalanceAfter();
+        System.out.println("ETF 매수 완료, 남은 잔액: " + balanceAfter);
+
 
         // 주식의 재고 수량 차감
         etf.setRemain_qty(etf.getRemain_qty() - shareCount);
@@ -131,7 +151,7 @@ public class EtfService {
 
         etfTransactionRepository.save(transaction);
 
-        // 🟢 주식의 현재 가격을 업데이트
+        // 주식의 현재 가격을 업데이트
         etf.setPrice_per(price_per);
         etfRepository.save(etf);
 
@@ -182,6 +202,22 @@ public class EtfService {
         // 로그 확인
         System.out.println("현재 주식 가격: " + price_per);
         System.out.println("총 매도 금액: " + totalAmount);
+
+
+        //은행 계좌에서 금액 차감 (API 호출)
+        Long bankAccountId = student.getBankAccount().getId();
+        BankTransactionDTO transactionRequest = new BankTransactionDTO();
+        transactionRequest.setBankAccountId(bankAccountId);
+        transactionRequest.setType(BankTransactionType.ETF_SELL);
+        transactionRequest.setAmount(totalAmount);
+        transactionRequest.setDescription("ETF 매도: " + etf.getName());
+
+        BankTransactionDTO bankTransactionDTO = bankTransactionService.addBankTransaction(transactionRequest);
+
+
+        // 은행 서비스에서 받은 최종 잔액 확인
+        int balanceAfter = bankTransactionDTO.getBalanceAfter();
+        System.out.println("ETF 매도 완료, 남은 잔액: " + balanceAfter);
 
 
         etf.setRemain_qty(etf.getRemain_qty() + shareCount);

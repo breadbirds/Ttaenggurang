@@ -13,9 +13,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="땡그랑"
-        android:textStyle="bold"
         android:textSize="65sp"
-        android:layout_marginTop="220sp"
+        style="@style/heading1"
+        android:layout_marginTop="220dp"
         android:layout_marginStart="155dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
@@ -23,13 +23,14 @@
     <!-- 설명 텍스트 -->
     <TextView
         android:id="@+id/textLoginProductDescription"
-        android:layout_marginStart="10dp"
+        android:layout_marginStart="@dimen/spacing_10"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="똑똑한 경제 놀이"
         android:layout_marginTop="-15dp"
+        style="@style/body1"
         android:textSize="36sp"
-        android:textColor="#767676"
+        android:textColor="@color/lightGray"
         app:layout_constraintTop_toBottomOf="@id/textLoginProductName"
         app:layout_constraintStart_toStartOf="@+id/textLoginProductName"/>
 
@@ -38,8 +39,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="쉽고 재밌는 경제 수업을 원한다면?"
-        android:textSize="15sp"
-        android:textColor="#767676"
+        style="@style/heading4"
+        android:textColor="@color/lightGray"
         app:layout_constraintStart_toStartOf="@+id/textLoginProductName"
         app:layout_constraintTop_toBottomOf="@+id/textLoginProductName"
         android:layout_marginTop="123dp"/>
@@ -49,12 +50,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="회원가입하러 가기!"
-        android:textColor="#FF993A"
-        android:textSize="15sp"
+        android:textColor="@color/mainOrange"
+        style="@style/heading4"
         app:layout_constraintStart_toStartOf="@+id/textLoginProductName"
         app:layout_constraintTop_toBottomOf="@+id/textLoginSignupDescription"
-        android:textStyle="bold"
-        android:layout_marginTop="7dp"/>
+        android:layout_marginTop="@dimen/spacing_10"/>
 
     <ImageView
         android:id="@+id/imgLoginLogo11"
@@ -79,9 +79,8 @@
             android:id="@+id/textLogin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            style="@style/heading1"
             android:text="로그인"
-            android:textSize="38sp"
-            android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"/>
 
@@ -90,12 +89,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="교사입니다"
+            style="@style/caption"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="@+id/textLogin"
             android:checked="false"
             android:scaleX="0.8"
             android:scaleY="0.8"
-            android:textColor="#767676"
             android:button="@null"
             android:drawableLeft="@drawable/custom_checkbox"
             android:drawablePadding="8dp"
@@ -109,11 +108,11 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:hint="아이디를 입력하세요"
-            android:layout_marginTop="22dp"
+            android:layout_marginTop="@dimen/spacing_20"
             android:background="@drawable/input_id"
-            android:textColorHint="#FF993A"
-            android:paddingStart="26sp"
-            android:textSize="10sp"/>
+            android:textColorHint="@color/mainOrange"
+            android:paddingStart="@dimen/spacing_20"
+            style="@style/body2"/>
 
         <EditText
             android:id="@+id/editPasswordLogin"
@@ -123,12 +122,12 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:hint="비밀번호를 입력하세요"
-            android:layout_marginTop="22dp"
+            android:layout_marginTop="@dimen/spacing_20"
             android:background="@drawable/input_id"
-            android:textColorHint="#FF993A"
-            android:paddingStart="26sp"
-            android:textSize="10sp"
-            android:inputType="textPassword"/>
+            android:textColorHint="@color/mainOrange"
+            android:paddingStart="@dimen/spacing_20"
+            style="@style/body2"
+            android:inputType="textPassword" />
 
         <ImageView
             android:id="@+id/btnInvisiblePassword"
@@ -138,18 +137,17 @@
             app:layout_constraintTop_toTopOf="@+id/editPasswordLogin"
             app:layout_constraintBottom_toBottomOf="@+id/editPasswordLogin"
             android:background="@drawable/btn_password_invisible"
-            android:layout_marginEnd="26sp"/>
+            android:layout_marginEnd="@dimen/spacing_20"/>
 
         <TextView
             android:id="@+id/textFindPassword"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="비밀번호 찾기"
-            android:textColor="#767676"
-            android:textSize="12dp"
+            style="@style/caption"
             app:layout_constraintTop_toBottomOf="@+id/editPasswordLogin"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="10dp"/>
+            android:layout_marginTop="@dimen/spacing_10"/>
 
         <ImageButton
             android:id="@+id/btnLogin"
@@ -167,9 +165,9 @@
             app:layout_constraintEnd_toEndOf="@+id/btnLogin"
             app:layout_constraintTop_toTopOf="@id/btnLogin"
             app:layout_constraintBottom_toBottomOf="@id/btnLogin"
-            android:text="Login"
-            android:textColor="#FFFFFFFF"
-            android:textSize="14dp"/>
+            android:text="로그인"
+            android:textColor="@color/white"
+            style="@style/body2"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

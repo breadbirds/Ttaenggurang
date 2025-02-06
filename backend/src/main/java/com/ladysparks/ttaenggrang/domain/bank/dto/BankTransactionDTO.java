@@ -15,27 +15,22 @@ import java.sql.Timestamp;
 @Data
 public class BankTransactionDTO {
 
-    @JsonIgnore
     private Long id;
 
     private Long bankAccountId;
 
-    @JsonIgnore
     private Long referenceId;
 
     private BankTransactionType type;
 
     private int amount;
 
-    @JsonIgnore
     private int balanceBefore;
 
-    @JsonIgnore
     private int balanceAfter;
 
     private String description;
 
-    @JsonIgnore
     private Timestamp createdAt;
 
 }
