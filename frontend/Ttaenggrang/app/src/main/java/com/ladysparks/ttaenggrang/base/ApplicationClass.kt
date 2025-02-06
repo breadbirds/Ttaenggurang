@@ -40,8 +40,6 @@ class ApplicationClass : Application() {
             .addInterceptor(logging) // 로그 확인
             .addInterceptor(AddAuthInterceptor()) // JWT 토큰 추가
             .build()
-//            .addInterceptor(AddCookiesInterceptor())
-//            .addInterceptor(ReceivedCookiesInterceptor()).build()
 
         // 앱이 처음 생성되는 순간, retrofit 인스턴스를 생성
         Log.d("TAG", "onCreate: 서버 주소 ${SERVER_URL}")

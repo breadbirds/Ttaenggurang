@@ -10,9 +10,9 @@ import retrofit2.http.POST
 
 interface AuthService {
 
-    @POST("api/teachers/signup")
+    @POST("teachers/signup")
     suspend fun signupTeacher(@Body teacherName: TeacherSignUpRequest): TeacherSignUpResponse
 
-    @POST("api/teachers/login")
+    @POST("teachers/login")
     suspend fun loginTeacher(@Body teacherInfo: TeacherSignInRequest): ApiResponse<TeacherSignInResponse>
 }
