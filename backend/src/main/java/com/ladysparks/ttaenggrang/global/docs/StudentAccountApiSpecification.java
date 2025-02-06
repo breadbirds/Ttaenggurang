@@ -1,9 +1,6 @@
 package com.ladysparks.ttaenggrang.global.docs;
 
-import com.ladysparks.ttaenggrang.domain.user.dto.StudentCreateDTO;
-import com.ladysparks.ttaenggrang.domain.user.dto.StudentLoginRequestDTO;
-import com.ladysparks.ttaenggrang.domain.user.dto.StudentLoginResponseDTO;
-import com.ladysparks.ttaenggrang.domain.user.dto.StudentResponseDTO;
+import com.ladysparks.ttaenggrang.domain.user.dto.*;
 import com.ladysparks.ttaenggrang.global.response.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -21,4 +18,8 @@ public interface StudentAccountApiSpecification {
     @Operation(summary = "학생 로그인", description = "💡 학생의 로그인을 진행합니다.")
     @PostMapping("/login")
     ResponseEntity<ApiResponse<StudentLoginResponseDTO>> loginStudents(@RequestBody @Valid StudentLoginRequestDTO studentLoginDTO);
+
+    @Operation(summary = "학생 목록 조회 (확인용)", description = "💡 가입한 학생의 목록을 조회합니다.")
+    @PostMapping("/all")
+    ResponseEntity<ApiResponse<List<StudentResponseDTO>>> getAllStudents();
 }

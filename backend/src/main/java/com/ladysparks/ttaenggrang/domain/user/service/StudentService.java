@@ -207,4 +207,26 @@ public class StudentService {
                 .orElseThrow(() -> new IllegalArgumentException("해당 이메일을 가진 교사를 찾을 수 없습니다."))
                 .getId();
     }
+
+    public ApiResponse<List<StudentResponseDTO>> getAllStudents() {
+        List<Student> students = studentRepository.findAll();
+
+        if (students.isEmpty()) {
+            return ApiResponse.error(404, "등록된 학생이 없습니다.", null);
+        }
+
+        List<StudentResponseDTO> responseDTOs = students.stream()
+                .map(student -> new StudentResponseDTO(
+                        student.getId(),
+                        student.getUsername(),
+                        student.getName(),
+                        student.getProfileImage(),
+                        student.getTeacher(),
+                        student.getBankAccount(),
+                        jwtTokenProvider.createToken(student.getUsername())
+                ))
+                .collect(Collectors.toList());
+
+        return ApiResponse.success("학생 목록 조회 성공", responseDTOs);
+    }
 }
