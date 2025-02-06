@@ -1,5 +1,11 @@
 package com.ladysparks.ttaenggrang.domain.stock.service;
 
+import com.ladysparks.ttaenggrang.domain.bank.dto.BankTransactionDTO;
+import com.ladysparks.ttaenggrang.domain.bank.entity.BankAccount;
+import com.ladysparks.ttaenggrang.domain.bank.entity.BankTransaction;
+import com.ladysparks.ttaenggrang.domain.bank.entity.BankTransactionType;
+import com.ladysparks.ttaenggrang.domain.bank.repository.BankAccountRepository;
+import com.ladysparks.ttaenggrang.domain.bank.service.BankTransactionService;
 import com.ladysparks.ttaenggrang.domain.stock.dto.StockTransactionDTO;
 import com.ladysparks.ttaenggrang.domain.stock.entity.Stock;
 import com.ladysparks.ttaenggrang.domain.stock.entity.StockHistory;
@@ -33,6 +39,8 @@ public class StockService {
     private final StockTransactionRepository stockTransactionRepository;
     //학생
     private final StudentRepository studentRepository;
+
+    private final BankTransactionService bankTransactionService;
 
 
     //목록 조회
@@ -78,6 +86,7 @@ public class StockService {
         }
         Student student = studentOptional.get();
 
+
         // 구매 가능한 수량 확인
         if (shareCount <= 0) {
             throw new IllegalArgumentException("0 이하 수량은 매수할 수 없습니다.");
@@ -101,6 +110,21 @@ public class StockService {
         // 로그로 값 확인
         System.out.println("현재 주식 가격: " + price_per);
         System.out.println("총 구매 금액: " + totalAmount);
+
+        //은행 계좌에서 금액 차감 (API 호출)
+        Long bankAccountId = student.getBankAccount().getId();
+        BankTransactionDTO transactionRequest = new BankTransactionDTO();
+        transactionRequest.setBankAccountId(bankAccountId);
+        transactionRequest.setType(BankTransactionType.STOCK_BUY);
+        transactionRequest.setAmount(totalAmount);
+        transactionRequest.setDescription("주식 매수: " + stock.getName());
+
+        BankTransactionDTO bankTransactionDTO = bankTransactionService.addBankTransaction(transactionRequest);
+
+        // 은행 서비스에서 받은 최종 잔액 확인
+        int balanceAfter = bankTransactionDTO.getBalanceAfter();
+        System.out.println("주식 매수 완료, 남은 잔액: " + balanceAfter);
+
 
 
         // 주식의 재고 수량 차감
