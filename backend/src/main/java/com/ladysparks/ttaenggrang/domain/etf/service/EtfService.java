@@ -43,7 +43,7 @@ public class EtfService {
     private final BankTransactionService bankTransactionService;
 
     //목록 조회
-    public int saveEtf(EtfDTO etfDto) {
+    public Long saveEtf(EtfDTO etfDto) {
         // EtfDTO를 Etf 엔티티로 변환
         Etf etf = EtfDTO.toEntity(etfDto);
         // 변환된 엔티티를 DB에 저장
