@@ -22,5 +22,4 @@ public class StockHistoryDTO {
 
     // Etf 관련 (etf_id 외래 키를 참조)
     private int etfId;      // etf_id 외래 키 (Etf 엔티티 참조
-
 }
