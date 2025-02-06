@@ -1,11 +1,14 @@
 package com.ladysparks.ttaenggrang.domain.user.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
 
 @Data
 public class StudentCreateDTO {
+
+    private Long id;
 
     @NotEmpty(message = "베이스 ID를 입력하세요.")
     private String baseId;  // 베이스ID (ex: "student")

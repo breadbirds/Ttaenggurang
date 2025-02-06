@@ -14,6 +14,7 @@ import java.util.Base64;
 @AllArgsConstructor
 public class StudentLoginResponseDTO {
 
+    private Long id;
     private String username;
     private String name;
     private String profileImage;
