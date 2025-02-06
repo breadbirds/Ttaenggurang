@@ -9,6 +9,7 @@ import com.ladysparks.ttaenggrang.databinding.ActivityMainBinding
 import com.ladysparks.ttaenggrang.ui.bank.BankFragment
 import com.ladysparks.ttaenggrang.ui.home.HomeTeacherFragment
 import com.ladysparks.ttaenggrang.ui.stock.StockFragment
+import com.ladysparks.ttaenggrang.ui.students.StudentsFragment
 import com.ladysparks.ttaenggrang.util.showToast
 
 
@@ -26,14 +27,15 @@ class MainActivity : AppCompatActivity() {
         }
 
         // 기본 프래그먼트 로드
-        replaceFragment(HomeTeacherFragment())
+//        replaceFragment(HomeTeacherFragment())
+        replaceFragment(StudentsFragment())
         binding.navigationView.setCheckedItem(R.id.navHome) // 기본 선택
 
         binding.navigationView.setNavigationItemSelectedListener { menuItem ->
             menuItem.isChecked = true  // 선택한 아이템 활성화
             when (menuItem.itemId) {
                 R.id.navHome -> replaceFragment(HomeTeacherFragment())
-                R.id.navStudents -> showToast("학생 관리 페이지 준비중")
+                R.id.navStudents -> replaceFragment(StudentsFragment())
                 R.id.navCountryInfo -> replaceFragment(NationFragment())
                 R.id.navRevenue -> showToast("국세청 페이지 준비중")
                 R.id.navBank -> replaceFragment(BankFragment())
