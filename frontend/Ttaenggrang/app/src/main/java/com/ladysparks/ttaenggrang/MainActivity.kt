@@ -28,8 +28,8 @@ class MainActivity : AppCompatActivity() {
         }
 
         // 기본 프래그먼트 로드
-//        replaceFragment(HomeTeacherFragment())
-        replaceFragment(StudentsFragment())
+        replaceFragment(HomeTeacherFragment())
+//        replaceFragment(StudentsFragment())
         binding.navigationView.setCheckedItem(R.id.navHome) // 기본 선택
 
         //
