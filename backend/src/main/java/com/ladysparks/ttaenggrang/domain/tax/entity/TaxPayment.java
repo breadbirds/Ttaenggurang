@@ -17,6 +17,7 @@ import java.sql.Timestamp;
 public class TaxPayment {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
