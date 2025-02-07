@@ -116,4 +116,12 @@ public class SwaggerConfig {
                 .build();
     }
 
+    @Bean
+    public GroupedOpenApi taxApi() {
+        return GroupedOpenApi.builder()
+                .group("taxes")
+                .pathsToMatch("/taxes/**", "/tax-payments/**")
+                .build();
+    }
+
 }
