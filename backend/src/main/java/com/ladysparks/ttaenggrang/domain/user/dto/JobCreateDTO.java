@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonIgnoreProperties(value={"id"}, allowGetters=true)
+@JsonIgnoreProperties(value={"id", "studentId"}, allowGetters=true)
 public class JobCreateDTO {
 
     private Long id;

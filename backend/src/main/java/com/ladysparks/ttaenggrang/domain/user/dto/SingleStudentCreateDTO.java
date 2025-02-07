@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@JsonIgnoreProperties(value={"id", "teacher", "bankAccount", "token"}, allowGetters=true)
+@JsonIgnoreProperties(value={"id", "profileImage", "teacher", "bankAccount", "token"}, allowGetters=true)
 public class SingleStudentCreateDTO {
     private int id;
 

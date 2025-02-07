@@ -16,7 +16,11 @@ import java.util.List;
 @Tag(name = "Teacher-Account", description = "교사 계정 관련 API")
 public interface TeacherAccountApiSpecification {
 
-    @Operation(summary = "교사 회원가입", description = "💡 회원가입을 진행합니다. (교사만 접근 가능)")
+    @Operation(summary = "교사 회원가입", description = """
+            💡 회원가입을 진행합니다.
+            
+            - 교사만 접근 가능
+            """)
     @PostMapping("/signup")
     ResponseEntity<ApiResponse<TeacherSignupDTO>> signup(@RequestBody TeacherSignupDTO teacherSignupDTO);
 
@@ -24,11 +28,11 @@ public interface TeacherAccountApiSpecification {
     @PostMapping("/login")
     ResponseEntity<ApiResponse<TeacherLoginDTO>> login(@RequestBody TeacherLoginDTO teacherLoginDTO);
 
-    @Operation(summary = "교사 로그아웃", description = "💡 교사 계정을 로그아웃합니다. JWT 토큰을 헤더에서 제거하세요.")
+    @Operation(summary = "교사 로그아웃", description = "💡 교사 계정을 로그아웃합니다.")
     @PostMapping("/logout")
     ResponseEntity<ApiResponse<String>> logoutTeacher(HttpServletRequest request);
 
-    @Operation(summary = "교사 목록 조회 (확인용)", description = "💡 가입한 교사의 목록을 조회합니다.")
+    @Operation(summary = "교사 목록 조회 (확인용)", description = "💡 가입한 교사들의 목록을 조회합니다.")
     @PostMapping("/login")
     ResponseEntity<ApiResponse<List<TeacherResponseDTO>>> getAllTeachers();
 }

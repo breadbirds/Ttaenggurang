@@ -128,6 +128,7 @@ public class StudentService {
         return new StudentResponseDTO(
                 student.getId(),
                 student.getUsername(),
+                student.getName(),
                 null,  // 프로필 이미지 초기값
                 teacher,
                 bankAccount,
@@ -165,8 +166,8 @@ public class StudentService {
     }
 
     // 직업 [해당 직업을 가진 전체 학생 목록 조회]
-    public ApiResponse<List<StudentResponseDTO>> getStudentsByJobId(Long jobId) {
-        List<Student> students = studentRepository.findByJobId(jobId);
+    public ApiResponse<List<StudentResponseDTO>> getStudentsByJobIdAndTeacher(Long teacherId, Long jobId) {
+        List<Student> students = studentRepository.findByTeacherIdAndJobId(teacherId, jobId);
 
         if (students.isEmpty()) {
             return ApiResponse.error(HttpStatus.NOT_FOUND.value(), "해당 직업을 가진 학생이 없습니다.", null);
@@ -176,6 +177,7 @@ public class StudentService {
                 .map(student -> new StudentResponseDTO(
                         student.getId(),
                         student.getUsername(),
+                        student.getName(),
                         student.getProfileImage(),
                         student.getTeacher(),
                         student.getBankAccount(),
@@ -203,6 +205,7 @@ public class StudentService {
                     return new StudentResponseDTO(
                             student.getId(),
                             student.getUsername(),
+                            student.getName(),
                             student.getProfileImage(),
                             student.getTeacher(),
                             student.getBankAccount(),
@@ -214,7 +217,7 @@ public class StudentService {
         return ApiResponse.success("우리반 학생 목록 조회 성공", responseDTOs);
     }
 
-    // ✅ 교사 ID와 학생 ID로 특정 학생 조회
+    // ✅ 교사 ID와 학생 ID로 우리반 학생 상세 조회
     public ApiResponse<StudentResponseDTO> getStudentById(Long teacherId, Long studentId) {
 
         // 1️⃣ 학생 조회 (해당 교사의 반에 속한 학생인지 확인)
@@ -233,6 +236,7 @@ public class StudentService {
         StudentResponseDTO responseDTO = new StudentResponseDTO(
                 student.getId(),
                 student.getUsername(),
+                student.getName(),
                 student.getProfileImage(),
                 student.getTeacher(),
                 student.getBankAccount(),
@@ -260,6 +264,7 @@ public class StudentService {
                 .map(student -> new StudentResponseDTO(
                         student.getId(),
                         student.getUsername(),
+                        student.getName(),
                         student.getProfileImage(),
                         student.getTeacher(),
                         student.getBankAccount(),
