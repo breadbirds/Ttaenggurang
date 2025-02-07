@@ -90,13 +90,13 @@ class SignupActivity : AppCompatActivity() {
 
         // 1-2. 모든 필드가 작성되었는지 확인
         if (email.isEmpty() || name.isEmpty() || school.isEmpty() || password1.isEmpty() || password2.isEmpty()) {
-             showToast("모든 정보를 작성해주세요.")
+             showToast("모든 정보를 작성해주세요")
             return
         }
 
         // 1-3. 비밀번호와 비밀번호 확인이 일치하는지 확인
         if (password1 != password2) {
-             showToast("비밀번호가 일치하지 않습니다.")
+             showToast("비밀번호가 일치하지 않습니다")
             return
         }
 
