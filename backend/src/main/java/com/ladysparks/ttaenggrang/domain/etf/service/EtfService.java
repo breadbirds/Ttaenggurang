@@ -31,7 +31,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
-public class EtfService {
+public class EtfService {//s
     private final EtfRepository etfRepository; //의존성 주입
 
     private final EtfTransactionRepository etfTransactionRepository;
