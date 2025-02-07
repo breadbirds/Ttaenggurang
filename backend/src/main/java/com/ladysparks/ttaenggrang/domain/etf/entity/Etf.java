@@ -1,5 +1,6 @@
 package com.ladysparks.ttaenggrang.domain.etf.entity;
 
+import com.ladysparks.ttaenggrang.domain.stock.dto.StockDTO;
 import com.ladysparks.ttaenggrang.domain.stock.entity.Stock;
 import com.ladysparks.ttaenggrang.domain.stock.entity.StockHistory;
 import com.ladysparks.ttaenggrang.domain.user.entity.Teacher;
@@ -71,6 +72,8 @@ public class Etf {
     @OneToMany(targetEntity = EtfTransaction.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "etfTransaction_id")
     private List<EtfTransaction> etfTransaction;
+
+
 
     //뉴스
 //    @ManyToMany(mappedBy = "etfs")
