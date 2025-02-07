@@ -1,19 +1,18 @@
 package com.ladysparks.ttaenggrang.domain.user.controller;
 
-import com.ladysparks.ttaenggrang.domain.user.dto.*;
+import com.ladysparks.ttaenggrang.domain.user.dto.JobCreateDTO;
+import com.ladysparks.ttaenggrang.domain.user.dto.NationCreateDTO;
+import com.ladysparks.ttaenggrang.domain.user.dto.StudentResponseDTO;
 import com.ladysparks.ttaenggrang.domain.user.repository.TeacherRepository;
 import com.ladysparks.ttaenggrang.domain.user.service.JobService;
 import com.ladysparks.ttaenggrang.domain.user.service.NationService;
 import com.ladysparks.ttaenggrang.domain.user.service.StudentService;
-import com.ladysparks.ttaenggrang.domain.user.service.TaxService;
 import com.ladysparks.ttaenggrang.global.docs.TeacherFunctionApiSpecification;
 import com.ladysparks.ttaenggrang.global.response.ApiResponse;
-import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
@@ -27,7 +26,6 @@ public class TeacherFunctionController implements TeacherFunctionApiSpecificatio
 
     private final JobService jobService;
     private final NationService nationService;
-    private final TaxService taxService;
     private final StudentService studentService;
     private final TeacherRepository teacherRepository;
 
@@ -79,36 +77,13 @@ public class TeacherFunctionController implements TeacherFunctionApiSpecificatio
     }
 
     // 국가 정보 [조회]
-    @Operation(summary = "국가 [조회]", description = "💡 교사가 국가 정보를 조회합니다.")
     @GetMapping("/nations")
     public ResponseEntity<ApiResponse<NationCreateDTO>> getNationByTeacher() {
         // 현재 로그인한 교사 ID 가져오기
-        Long teacherId = getTeacherIdFromSecurityContext();
+        long teacherId = getTeacherIdFromSecurityContext();
 
         ApiResponse<NationCreateDTO> response = nationService.getNationByTeacherId(teacherId);
         return ResponseEntity.status(response.getStatusCode()).body(response);
     }
 
-    // 국가 정보 [삭제]
-    @DeleteMapping("/nations")
-    public ResponseEntity<ApiResponse<Void>> deleteNation() {
-        Long teacherId = getTeacherIdFromSecurityContext();
-
-        ApiResponse<Void> response = nationService.deleteNation(teacherId);
-        return ResponseEntity.status(response.getStatusCode()).body(response);
-    }
-
-    // 세금 항목 [등록]
-    @PostMapping("/taxes/create")
-    public ResponseEntity<ApiResponse<TaxCreateDTO>> createTax(@RequestBody @Valid TaxCreateDTO taxCreateDTO) {
-        ApiResponse<TaxCreateDTO> response = taxService.createTax(taxCreateDTO);
-        return ResponseEntity.status(response.getStatusCode()).body(response);
-    }
-
-    // 세금 항목 [전체 조회]
-    @GetMapping("/taxes")
-    public ResponseEntity<ApiResponse<List<TaxCreateDTO>>> getAllTaxes() {
-        ApiResponse<List<TaxCreateDTO>> response = taxService.getAllTaxes();
-        return ResponseEntity.status(response.getStatusCode()).body(response);
-    }
 }
