@@ -5,6 +5,7 @@ import jakarta.persistence.Column;
 import lombok.*;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -21,6 +22,8 @@ public class EtfDTO {
     private Timestamp created_at;
     private Timestamp updated_at;
     private Integer changeRate; //가격 변동률
+
+    private List<Long> stock_id;  // 주식
 
 
 
@@ -52,6 +55,7 @@ public class EtfDTO {
                 .changeRate(etf.getChangeRate())
                 .build();
     }
+
 
 
 }
