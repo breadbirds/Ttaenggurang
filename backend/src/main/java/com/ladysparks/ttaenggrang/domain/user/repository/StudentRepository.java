@@ -28,4 +28,5 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
 
     // 교사의 ID와 학생 ID를 기준으로 특정 학생 조회 (우리반 특정 학생 조회)
     Optional<Student> findByIdAndTeacherId(Long studentId, Long teacherId);
+
 }
