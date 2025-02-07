@@ -26,7 +26,7 @@
             style="@style/heading2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="20dp"
+            android:layout_marginHorizontal="@dimen/spacing_20"
             android:layout_marginTop="20dp"
             android:text="대한민국"
             android:textColor="@android:color/white"
@@ -186,13 +186,13 @@
     </LinearLayout>
 
     <!-- 판매중 상품 view -->
-    <LinearLayout
+    <LinearLayout            android:padding="@dimen/spacing_10"
+
         android:id="@+id/btnActiveProducts"
         android:layout_width="220dp"
         android:layout_height="0dp"
         android:background="@drawable/bg_rounded_15"
         android:orientation="vertical"
-        android:padding="@dimen/spacing_10"
         android:stateListAnimator="@null"
         app:layout_constraintBottom_toBottomOf="@+id/constraintLayoutReportArea"
         app:layout_constraintEnd_toEndOf="@+id/constraintBannerArea"
@@ -200,7 +200,7 @@
 
 
         <TextView
-            android:layout_marginBottom="@dimen/spacing_20"
+            android:layout_marginBottom="@dimen/spacing_10"
             style="@style/heading4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -209,38 +209,53 @@
 
         <!-- 목표 자산 영역 -->
         <LinearLayout
-
+            android:layout_gravity="center"
+            android:gravity="center"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <Button
+            <com.github.mikephil.charting.charts.PieChart
+                android:id="@+id/pieChartGoal"
+                android:layout_marginEnd="@dimen/spacing_10"
                 android:layout_width="85dp"
                 android:layout_height="85dp"/>
 
+<!--            <View-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="1dp"-->
+<!--                android:layout_weight="1"/>-->
+
 
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:orientation="vertical"
                 android:layout_height="wrap_content">
 
                 <TextView
+                    android:textColor="@color/black200"
+                    style="@style/heading5"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="내 자산"/>
 
                 <TextView
+                    android:layout_marginBottom="@dimen/spacing_10"
+                    style="@style/heading4"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="1,000,000"/>
+                    android:text="100,000"/>
 
 
                 <TextView
+                    android:textColor="@color/black200"
+                    style="@style/heading5"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="목표액"/>
 
                 <TextView
+                    style="@style/heading4"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="32548"/>
@@ -565,10 +580,10 @@
             android:text="100,000"
             app:layout_constraintTop_toBottomOf="@+id/textStudentChart"/>
 
-        <com.github.mikephil.charting.charts.BarChart
+        <com.github.mikephil.charting.charts.PieChart
             android:layout_marginTop="@dimen/spacing_20"
             android:layout_marginHorizontal="@dimen/spacing_20"
-            android:id="@+id/barChart"
+            android:id="@+id/pieChart"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
 
