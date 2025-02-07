@@ -3,13 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/backgroundGray"
-    tools:context=".ui.stock.StockFragment">
+    tools:context=".ui.store.StoreTeacherFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text=" 주식 ! " />
+        android:text="상점. 선생용" />
 
 </FrameLayout>

@@ -1,12 +1,12 @@
-package com.ladysparks.ttaenggrang.ui.stock
+package com.ladysparks.ttaenggrang.ui.bank
 
 import android.os.Bundle
 import android.view.View
 import com.ladysparks.ttaenggrang.R
 import com.ladysparks.ttaenggrang.base.BaseFragment
-import com.ladysparks.ttaenggrang.databinding.FragmentStockBinding
+import com.ladysparks.ttaenggrang.databinding.FragmentBankTeacherBinding
 
-class StockFragment : BaseFragment<FragmentStockBinding>(FragmentStockBinding::bind, R.layout.fragment_stock) {
+class BankTeacherFragment : BaseFragment<FragmentBankTeacherBinding>(FragmentBankTeacherBinding::bind, R.layout.fragment_bank_teacher) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

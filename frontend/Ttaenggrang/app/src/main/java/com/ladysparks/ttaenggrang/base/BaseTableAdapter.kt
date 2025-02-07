@@ -8,7 +8,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.ladysparks.ttaenggrang.R
-import com.ladysparks.ttaenggrang.ui.model.BaseTableRowModel
+import com.ladysparks.ttaenggrang.ui.component.BaseTableRowModel
 
 class BaseTableAdapter(
     private var header: List<String>, // ✨ 헤더 컬럼 리스트 (동적 설정)

@@ -113,8 +113,7 @@
             android:background="@drawable/input_id"
             android:textColorHint="@color/mainOrange"
             android:paddingStart="@dimen/spacing_20"
-            style="@style/body2"
-            android:inputType="textPassword"/>
+            style="@style/body2"/>
 
         <EditText
             android:id="@+id/editPasswordSignup"
