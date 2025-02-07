@@ -129,15 +129,31 @@
             style="@style/body2"
             android:inputType="textPassword" />
 
-        <ImageView
-            android:id="@+id/btnInvisiblePassword"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <FrameLayout
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             app:layout_constraintEnd_toEndOf="@+id/editPasswordLogin"
             app:layout_constraintTop_toTopOf="@+id/editPasswordLogin"
             app:layout_constraintBottom_toBottomOf="@+id/editPasswordLogin"
-            android:background="@drawable/btn_password_invisible"
-            android:layout_marginEnd="@dimen/spacing_20"/>
+            android:paddingEnd="@dimen/spacing_20"
+            android:background="?attr/selectableItemBackgroundBorderless">
+            <ImageView
+                android:id="@+id/btnInvisiblePassword"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/ic_invisible"
+                android:layout_gravity="end|center"/>
+        </FrameLayout>
+
+<!--        <ImageView-->
+<!--            android:id="@+id/btnInvisiblePassword"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            app:layout_constraintEnd_toEndOf="@+id/editPasswordLogin"-->
+<!--            app:layout_constraintTop_toTopOf="@+id/editPasswordLogin"-->
+<!--            app:layout_constraintBottom_toBottomOf="@+id/editPasswordLogin"-->
+<!--            android:background="@drawable/ic_invisible"-->
+<!--            android:layout_marginEnd="@dimen/spacing_20"/>-->
 
         <TextView
             android:id="@+id/textFindPassword"
