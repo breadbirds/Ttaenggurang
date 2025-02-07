@@ -1,11 +1,15 @@
-package com.ladysparks.ttaenggrang.domain.user.repository;
+package com.ladysparks.ttaenggrang.domain.tax.repository;
 
-import com.ladysparks.ttaenggrang.domain.user.entity.Tax;
+import com.ladysparks.ttaenggrang.domain.tax.entity.Tax;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import javax.swing.text.html.Option;
+import java.util.List;
 import java.util.Optional;
 
 public interface TaxRepository  extends JpaRepository<Tax, Long> {
+
     Optional<Tax> findByTaxName(String taxName);
+
+    List<Tax> findByTeacherId(Long teacherId);
+
 }

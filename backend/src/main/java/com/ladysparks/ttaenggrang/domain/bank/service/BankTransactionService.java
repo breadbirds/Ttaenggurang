@@ -1,6 +1,7 @@
 package com.ladysparks.ttaenggrang.domain.bank.service;
 
 import com.ladysparks.ttaenggrang.domain.bank.dto.BankTransactionDTO;
+import com.ladysparks.ttaenggrang.domain.bank.dto.StudentDailyAverageFinancialDTO;
 import com.ladysparks.ttaenggrang.domain.bank.entity.BankAccount;
 import com.ladysparks.ttaenggrang.domain.bank.entity.BankTransaction;
 import com.ladysparks.ttaenggrang.domain.bank.entity.BankTransactionType;
@@ -15,8 +16,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -163,6 +167,69 @@ public class BankTransactionService {
                 totalInvestmentReturn,
                 netBalanceChange
         );
+    }
+
+    // 최근 7일 간 평균 수입, 지출
+    public List<StudentDailyAverageFinancialDTO> getDailyAverageIncomeAndExpense(Long teacherId) {
+        LocalDateTime endDate = LocalDateTime.now();
+        LocalDateTime startDate = endDate.minusDays(7);
+
+        // 1. 교사 ID로 해당 교사가 담당하는 학생 목록 조회
+        List<Student> students = studentRepository.findAllByTeacherId(teacherId);
+        if (students.isEmpty()) {
+            throw new IllegalArgumentException("해당 교사가 담당하는 학생이 없습니다.");
+        }
+
+        // 2. 학생들의 bankAccountId 목록 조회
+        List<Long> bankAccountIds = students.stream()
+                .map(Student::getBankAccount)
+                .map(BankAccount::getId)
+                .collect(Collectors.toList());
+
+        if (bankAccountIds.isEmpty()) {
+            throw new IllegalArgumentException("학생들의 은행 계좌 정보가 없습니다.");
+        }
+
+        // 3. 해당 학생들의 최근 7일간 거래 내역 조회
+        List<BankTransaction> transactions = bankTransactionRepository.findTransactionsByBankAccountsAndDateRange(
+                bankAccountIds, startDate, endDate);
+
+        // 4. 날짜별 그룹화하여 평균 계산
+        Map<LocalDate, List<BankTransaction>> transactionsByDate = transactions.stream()
+                .collect(Collectors.groupingBy(t -> t.getCreatedAt().toLocalDateTime().toLocalDate()));
+
+        List<StudentDailyAverageFinancialDTO> dailyAverages = new ArrayList<>();
+
+        for (int i = 6; i >= 0; i--) {
+            LocalDate date = LocalDate.now().minusDays(i);
+            List<BankTransaction> dailyTransactions = transactionsByDate.getOrDefault(date, new ArrayList<>());
+
+            double totalIncome = dailyTransactions.stream()
+                    .filter(t -> t.getType() == BankTransactionType.DEPOSIT
+                            || t.getType() == BankTransactionType.SALARY
+                            || t.getType() == BankTransactionType.SALE
+                            || t.getType() == BankTransactionType.BANK_INTEREST
+                            || t.getType() == BankTransactionType.ETF_SELL
+                            || t.getType() == BankTransactionType.STOCK_SELL)
+                    .mapToInt(BankTransaction::getAmount)
+                    .sum();
+
+            double totalExpense = dailyTransactions.stream()
+                    .filter(t -> t.getType() == BankTransactionType.WITHDRAWAL
+                            || t.getType() == BankTransactionType.PURCHASE
+                            || t.getType() == BankTransactionType.ETF_BUY
+                            || t.getType() == BankTransactionType.STOCK_BUY)
+                    .mapToInt(BankTransaction::getAmount)
+                    .sum();
+
+            double studentCount = students.size();
+            double averageIncome = studentCount > 0 ? totalIncome / studentCount : 0;
+            double averageExpense = studentCount > 0 ? totalExpense / studentCount : 0;
+
+            dailyAverages.add(new StudentDailyAverageFinancialDTO(date, averageIncome, averageExpense));
+        }
+
+        return dailyAverages;
     }
 
 }
