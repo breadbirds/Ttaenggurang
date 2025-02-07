@@ -6,12 +6,10 @@ import com.ladysparks.ttaenggrang.domain.stock.dto.StockDTO;
 import com.ladysparks.ttaenggrang.domain.stock.dto.StockTransactionDTO;
 import com.ladysparks.ttaenggrang.global.response.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 @Tag(name = "Etf", description = "ETF API")
@@ -39,6 +37,14 @@ public interface EtfApiSpecification {
     @Operation(summary = "변동률", description = "💡 주식 변동률 조회")
     public ResponseEntity<ApiResponse<EtfDTO>> updateEtfPrice(
             @PathVariable("etfId") int etfId);
+
+    @Operation(summary = "ETF 등록", description = "💡 새로운 ETF를 등록합니다.")
+    @PostMapping("/create")
+    public ResponseEntity<EtfDTO> createEtf(
+            @Parameter(description = "ETF 등록에 필요한 정보") @RequestBody EtfDTO etfDTO
+    );
+
+
 
 
 
