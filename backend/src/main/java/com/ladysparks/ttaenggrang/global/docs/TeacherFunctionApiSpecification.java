@@ -24,6 +24,9 @@ public interface TeacherFunctionApiSpecification {
     @Operation(summary = "국가 [조회]", description = "💡 교사가 국가 정보를 조회합니다.")
     ResponseEntity<ApiResponse<NationCreateDTO>> getNationByTeacher();
 
+    @Operation(summary = "국가 [삭제]", description = "💡 교사가 국가 정보를 삭제합니다.")
+    ResponseEntity<ApiResponse<Void>> deleteNation();
+
     @Operation(summary = "세금 [등록]", description = "💡 교사가 세금 정보를 등록합니다. (0 < 세율 < 1 값만 입력 가능합니다.)")
     ResponseEntity<ApiResponse<TaxCreateDTO>> createTax(@RequestBody @Valid TaxCreateDTO taxCreateDTO);
 
