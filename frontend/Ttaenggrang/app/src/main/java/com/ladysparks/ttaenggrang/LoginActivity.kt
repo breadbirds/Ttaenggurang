@@ -2,6 +2,7 @@ package com.ladysparks.ttaenggrang
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.InputType
 import android.util.Log
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -19,6 +20,7 @@ import kotlinx.coroutines.launch
 class LoginActivity : AppCompatActivity() {
 
     private val binding by lazy {ActivityLoginBinding.inflate(layoutInflater)}
+    private var isPasswordVisible = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,6 +28,21 @@ class LoginActivity : AppCompatActivity() {
 
         autoLoginCheck()
         initEvent()
+
+        // 비밀번호 표시.숨김 토글
+        binding.btnInvisiblePassword.setOnClickListener{
+            isPasswordVisible = !isPasswordVisible
+
+            if(isPasswordVisible) {
+                binding.editPasswordLogin.inputType = InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
+                binding.btnInvisiblePassword.setImageResource(R.drawable.ic_visible)
+            } else {
+                binding.editPasswordLogin.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
+                binding.btnInvisiblePassword.setImageResource(R.drawable.ic_invisible)
+            }
+            //커서 위치 유지
+            binding.editPasswordLogin.setSelection(binding.editPasswordLogin.text.length)
+        }
     }
 
     private fun autoLoginCheck() {
@@ -43,7 +60,17 @@ class LoginActivity : AppCompatActivity() {
         binding.btnLogin.setOnClickListener {
 
             // 수정필요 : 현재 로그인 정보 하드코딩 상태
-            var user = TeacherSignInRequest(email = "test2@example.com", password = "1234")
+//            var user = TeacherSignInRequest(email = "test2@example.com", password = "1234")
+            val email = binding.editIdLogin.text.toString().trim()
+            val password = binding.editPasswordLogin.text.toString().trim()
+
+            if(email.isEmpty()||password.isEmpty()) {
+                showToast("모든 정보를 작성해주세요")
+                return@setOnClickListener
+            }
+
+            val user = TeacherSignInRequest(email, password)
+
 
             lifecycleScope.launch {
                 runCatching {
