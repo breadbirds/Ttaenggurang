@@ -19,5 +19,12 @@ public interface BankTransactionRepository extends JpaRepository<BankTransaction
             @Param("endDate") LocalDateTime endDate
     );
 
+    @Query("SELECT t FROM BankTransaction t WHERE t.bankAccount.id IN :bankAccountIds AND t.createdAt BETWEEN :startDate AND :endDate")
+    List<BankTransaction> findTransactionsByBankAccountsAndDateRange(
+            @Param("bankAccountIds") List<Long> bankAccountIds,
+            @Param("startDate") LocalDateTime startDate,
+            @Param("endDate") LocalDateTime endDate
+    );
+
 }
 

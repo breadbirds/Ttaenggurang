@@ -5,6 +5,7 @@ import com.ladysparks.ttaenggrang.global.docs.StockApiSpecification;
 import com.ladysparks.ttaenggrang.domain.stock.dto.StockDTO;
 import com.ladysparks.ttaenggrang.domain.stock.service.StockService;
 import com.ladysparks.ttaenggrang.global.response.ApiResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +20,18 @@ import java.util.Optional;
 public class StockController implements StockApiSpecification {
     private final StockService stockService; // StockService 주입
 
+    //주식 등록
+
+    @PostMapping("/add")
+    public ResponseEntity<ApiResponse<StockDTO>> addStock(@RequestBody StockDTO stockDTO) {
+        // 주식 등록 서비스 호출
+        StockDTO createdStockDTO = stockService.registerStock(stockDTO);
+
+        // 주식 등록 후 성공적인 응답 반환
+        return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.created(createdStockDTO));
+    }
+
+
 
     // 주식 목록 전체 조회
     @GetMapping
@@ -29,7 +42,7 @@ public class StockController implements StockApiSpecification {
 
     // 주식 상세 조회
     @GetMapping("/{stockId}")
-    public ResponseEntity<StockDTO> getStock(@PathVariable("stockId") int stockId) {
+    public ResponseEntity<StockDTO> getStock(@PathVariable("stockId") Long stockId) {
         Optional<StockDTO> result = stockService.findStock(stockId);
 
         // 값이 없으면 404 Not Found 반환
@@ -42,7 +55,7 @@ public class StockController implements StockApiSpecification {
 
     //주식 매수
     @PostMapping("/{stockId}/buy")
-    public ResponseEntity<ApiResponse<StockTransactionDTO>> buyStock(@PathVariable("stockId") int stockId,
+    public ResponseEntity<ApiResponse<StockTransactionDTO>> buyStock(@PathVariable("stockId") Long stockId,
                                                                      @RequestParam("share_count") int shareCount,
                                                                      @RequestParam("studentId") Long studentId) {
 
@@ -54,7 +67,7 @@ public class StockController implements StockApiSpecification {
 
     //주식 매도
     @PostMapping("/{stockId}/sell")
-    public ResponseEntity<ApiResponse<StockTransactionDTO>> sellStock(@PathVariable("stockId") int stockId,
+    public ResponseEntity<ApiResponse<StockTransactionDTO>> sellStock(@PathVariable("stockId") Long stockId,
                                                                      @RequestParam("share_count") int shareCount,
                                                                      @RequestParam("studentId") Long studentId) {
 
@@ -67,7 +80,7 @@ public class StockController implements StockApiSpecification {
     // 가격 변동 (관리자가 호출)
     @PostMapping("/{stockId}/update-price")
     public ResponseEntity<ApiResponse<StockDTO>> updateStockPrice(
-            @PathVariable("stockId") int stockId) {
+            @PathVariable("stockId") Long stockId) {
 
         // 주식 가격 업데이트 서비스 호출
         StockDTO updatedStock = stockService.updateStockPrice(stockId);

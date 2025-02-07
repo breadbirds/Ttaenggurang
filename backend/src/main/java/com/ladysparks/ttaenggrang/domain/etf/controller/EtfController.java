@@ -3,8 +3,6 @@ package com.ladysparks.ttaenggrang.domain.etf.controller;
 import com.ladysparks.ttaenggrang.domain.etf.dto.EtfDTO;
 import com.ladysparks.ttaenggrang.domain.etf.dto.EtfTransactionDTO;
 import com.ladysparks.ttaenggrang.domain.etf.service.EtfService;
-import com.ladysparks.ttaenggrang.domain.stock.dto.StockDTO;
-import com.ladysparks.ttaenggrang.domain.stock.dto.StockTransactionDTO;
 import com.ladysparks.ttaenggrang.global.response.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -19,6 +17,13 @@ import java.util.Optional;
 @RequestMapping("/etfs")
 public class EtfController  {
     private final EtfService etfService; // StockService 주입
+
+//    //ETF 생성
+//    @PostMapping
+//    public ResponseEntity<List<EtfDTO>>createEtfs(@RequestBody EtfDTO etfDTO) {
+//        List<EtfDTO> result = (List<EtfDTO>) etfService.createETF(etfDTO); // 모든 주식 정보를 반환
+//        return ResponseEntity.ok(result); // HTTP 200 OK와 함께 결과 반환
+//    }
 
     // 주식 목록 전체 조회
     @GetMapping
