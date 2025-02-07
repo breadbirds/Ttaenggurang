@@ -16,6 +16,7 @@ import java.util.UUID;
 public class StudentResponseDTO {
     private Long id;
     private String username;  // 생성된 학생 계정
+    private String name;
     private String profileImage;
 
     private Teacher teacher;
@@ -28,9 +29,10 @@ public class StudentResponseDTO {
     }
 
     // ✅ 학생 정보 조회용 생성자
-    public StudentResponseDTO(Long id, String username, byte[] profileImage, Teacher teacher, BankAccount bankAccount, String token) {
+    public StudentResponseDTO(Long id, String username, String name, byte[] profileImage, Teacher teacher, BankAccount bankAccount, String token) {
         this.id = id;
         this.username = username;
+        this.name = name;
         this.profileImage = (profileImage != null && profileImage.length > 0)
                 ? java.util.Base64.getEncoder().encodeToString(profileImage)
                 : null;
