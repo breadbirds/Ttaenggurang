@@ -1,11 +1,12 @@
 package com.ladysparks.ttaenggrang.domain.user.controller;
 
-import com.ladysparks.ttaenggrang.domain.user.dto.*;
+import com.ladysparks.ttaenggrang.domain.user.dto.JobCreateDTO;
+import com.ladysparks.ttaenggrang.domain.user.dto.NationCreateDTO;
+import com.ladysparks.ttaenggrang.domain.user.dto.StudentResponseDTO;
 import com.ladysparks.ttaenggrang.domain.user.repository.TeacherRepository;
 import com.ladysparks.ttaenggrang.domain.user.service.JobService;
 import com.ladysparks.ttaenggrang.domain.user.service.NationService;
 import com.ladysparks.ttaenggrang.domain.user.service.StudentService;
-import com.ladysparks.ttaenggrang.domain.user.service.TaxService;
 import com.ladysparks.ttaenggrang.global.docs.TeacherFunctionApiSpecification;
 import com.ladysparks.ttaenggrang.global.response.ApiResponse;
 import jakarta.validation.Valid;
@@ -25,7 +26,6 @@ public class TeacherFunctionController implements TeacherFunctionApiSpecificatio
 
     private final JobService jobService;
     private final NationService nationService;
-    private final TaxService taxService;
     private final StudentService studentService;
     private final TeacherRepository teacherRepository;
 
@@ -86,17 +86,4 @@ public class TeacherFunctionController implements TeacherFunctionApiSpecificatio
         return ResponseEntity.status(response.getStatusCode()).body(response);
     }
 
-    // 세금 항목 [등록]
-    @PostMapping("/taxes/create")
-    public ResponseEntity<ApiResponse<TaxCreateDTO>> createTax(@RequestBody @Valid TaxCreateDTO taxCreateDTO) {
-        ApiResponse<TaxCreateDTO> response = taxService.createTax(taxCreateDTO);
-        return ResponseEntity.status(response.getStatusCode()).body(response);
-    }
-
-    // 세금 항목 [전체 조회]
-    @GetMapping("/taxes")
-    public ResponseEntity<ApiResponse<List<TaxCreateDTO>>> getAllTaxes() {
-        ApiResponse<List<TaxCreateDTO>> response = taxService.getAllTaxes();
-        return ResponseEntity.status(response.getStatusCode()).body(response);
-    }
 }
