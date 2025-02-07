@@ -31,7 +31,7 @@ public class StockTransactionDTO {
 
 
     // 주식 관련 (stock_id 외래 키를 참조)
-    private int stockId;     // stock_id 외래 키 (Stock 엔티티 참조)
+    private Long stockId;     // stock_id 외래 키 (Stock 엔티티 참조)
 
     public static StockTransactionDTO fromEntity(StockTransaction stockTransaction, int updatedOwnedQty) {
         return StockTransactionDTO.builder()
@@ -46,7 +46,9 @@ public class StockTransactionDTO {
                 .owned_qty(stockTransaction.getOwned_qty())   // 학생이 보유한 주식 수량
                 .studentId(stockTransaction.getStudent() != null ? stockTransaction.getStudent().getId() : null)  // 조인된 Student 엔티티에서 ID 가져오기
 //                .bankAccountId(stockTransaction.getBankAccount() != null ? stockTransaction.getBankAccount().getId() : null)  // 조인된 BankAccount 엔티티에서 ID 가져오기
-                .stockId(Integer.valueOf(stockTransaction.getStock() != null ? stockTransaction.getStock().getId() : null))
+                // stockId를 Long으로 처리할 수 있도록 수정
+                .stockId(stockTransaction.getStock() != null ? Long.valueOf(stockTransaction.getStock().getId()) : null)
+
                 .build();// 조인된 Stock 엔티티에서 ID 가져오기
 
         }
