@@ -31,7 +31,7 @@ public class TeacherSignupDTO {
     @NotEmpty(message="비밀번호 확인을 입력하세요.")
     private String password2;
 
-    @Size(min = 3, max = 25)
+    @Size(min = 2, max = 25)
     @NotEmpty(message="이름을 입력하세요.")
     private String name;
 

@@ -16,7 +16,12 @@ import java.util.List;
 @Tag(name = "Student-Account", description = "학생 계정 관련 API")
 public interface StudentAccountApiSpecification {
 
-    @Operation(summary = "학생 로그인", description = "💡 학생의 로그인을 진행합니다.")
+    @Operation(summary = "학생 로그인", description = """
+            💡 학생의 로그인을 진행합니다.
+            
+            - username : 로그인 시 사용되는 학생 ID (교사가 생성)
+            - name : 학생의 이름 등록
+            """)
     @PostMapping("/login")
     ResponseEntity<ApiResponse<StudentLoginResponseDTO>> loginStudents(@RequestBody @Valid StudentLoginRequestDTO studentLoginDTO);
 
