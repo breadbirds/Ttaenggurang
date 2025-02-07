@@ -40,7 +40,7 @@ public class Job {
     }
 
     @OneToOne
-    @JoinColumn(name = "job_id")  // nullable = false
+    @JoinColumn(name = "student_id")  // nullable = false
     private Student student;
 
 }

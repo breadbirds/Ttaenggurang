@@ -8,10 +8,12 @@ import com.ladysparks.ttaenggrang.domain.user.service.StudentService;
 import com.ladysparks.ttaenggrang.domain.user.service.TaxService;
 import com.ladysparks.ttaenggrang.global.docs.TeacherFunctionApiSpecification;
 import com.ladysparks.ttaenggrang.global.response.ApiResponse;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
@@ -77,12 +79,22 @@ public class TeacherFunctionController implements TeacherFunctionApiSpecificatio
     }
 
     // 국가 정보 [조회]
+    @Operation(summary = "국가 [조회]", description = "💡 교사가 국가 정보를 조회합니다.")
     @GetMapping("/nations")
     public ResponseEntity<ApiResponse<NationCreateDTO>> getNationByTeacher() {
         // 현재 로그인한 교사 ID 가져오기
-        long teacherId = getTeacherIdFromSecurityContext();
+        Long teacherId = getTeacherIdFromSecurityContext();
 
         ApiResponse<NationCreateDTO> response = nationService.getNationByTeacherId(teacherId);
+        return ResponseEntity.status(response.getStatusCode()).body(response);
+    }
+
+    // 국가 정보 [삭제]
+    @DeleteMapping("/nations")
+    public ResponseEntity<ApiResponse<Void>> deleteNation() {
+        Long teacherId = getTeacherIdFromSecurityContext();
+
+        ApiResponse<Void> response = nationService.deleteNation(teacherId);
         return ResponseEntity.status(response.getStatusCode()).body(response);
     }
 
