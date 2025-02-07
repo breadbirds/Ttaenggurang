@@ -1,10 +1,9 @@
 package com.ladysparks.ttaenggrang.domain.stock.service;
 
+import com.ladysparks.ttaenggrang.category.Category;
+import com.ladysparks.ttaenggrang.category.CategoryRepository;
 import com.ladysparks.ttaenggrang.domain.bank.dto.BankTransactionDTO;
-import com.ladysparks.ttaenggrang.domain.bank.entity.BankAccount;
-import com.ladysparks.ttaenggrang.domain.bank.entity.BankTransaction;
 import com.ladysparks.ttaenggrang.domain.bank.entity.BankTransactionType;
-import com.ladysparks.ttaenggrang.domain.bank.repository.BankAccountRepository;
 import com.ladysparks.ttaenggrang.domain.bank.service.BankTransactionService;
 import com.ladysparks.ttaenggrang.domain.stock.dto.StockTransactionDTO;
 import com.ladysparks.ttaenggrang.domain.stock.entity.Stock;
@@ -42,9 +41,54 @@ public class StockService {
 
     private final BankTransactionService bankTransactionService;
 
+    private final CategoryRepository categoryRepository;
+
+
+    @Transactional
+    public StockDTO registerStock(StockDTO stockDTO) {
+        // 카테고리 이름을 가져오거나 새로 생성
+        if (stockDTO.getCategoryName() == null || stockDTO.getCategoryName().isEmpty()) {
+            throw new IllegalArgumentException("카테고리는 필수로 선택해야 합니다.");
+        }
+
+        // 카테고리 찾기 또는 새로 생성
+        Category category = categoryRepository.findByName(stockDTO.getCategoryName())
+                .orElseGet(() -> {
+                    Category newCategory = new Category();
+                    newCategory.setName(stockDTO.getCategoryName());
+                    return categoryRepository.save(newCategory);
+                });
+
+        // 주식 이름 중복 확인
+        if (stockRepository.existsByName(stockDTO.getName())) {
+            throw new IllegalArgumentException("이미 존재하는 주식 이름입니다.");
+        }
+
+        // DTO -> Entity 변환 후 저장
+        Stock stock = Stock.builder()
+                .name(stockDTO.getName())
+                .price_per(stockDTO.getPrice_per())
+                .total_qty(stockDTO.getTotal_qty())
+                .remain_qty(stockDTO.getRemain_qty())
+                .description(stockDTO.getDescription())
+                .created_at(Timestamp.valueOf(LocalDateTime.now()))
+                .updated_at(Timestamp.valueOf(LocalDateTime.now()))
+                .category(category)  // 카테고리 설정
+                .build();
+
+        // 주식 정보 저장
+        Stock savedStock = stockRepository.save(stock);
+
+        // Entity -> DTO 변환 후 반환
+        return StockDTO.fromEntity(savedStock);
+    }
+
+
+
+
 
     //목록 조회
-    public int saveStock(StockDTO stockDto) {
+    public Long saveStock(StockDTO stockDto) {
         // StockDTO를 Stock 엔티티로 변환
         Stock stock = StockDTO.toEntity(stockDto);
         // 변환된 엔티티를 DB에 저장
@@ -62,16 +106,27 @@ public class StockService {
                 .collect(Collectors.toList()); // 변환된 DTO를 리스트로 반환
     }
 
-    public Optional<StockDTO> findStock(int stockId) {
+    public Optional<StockDTO> findStock(Long stockId) {
         // ID로 주식 조회 후, StockDTO로 변환하여 반환
         return stockRepository.findById(stockId)
                 .map(StockDTO::fromEntity); // 엔티티를 DTO로 변환
+    }
+    public List<StockDTO> getFilteredStocks(List<Long> stockId) {
+        // 주식 ID 리스트를 사용하여 해당 주식들을 조회
+        List<Stock> stocks = stockRepository.findAllById(stockId);
+
+        // 조회된 주식들을 StockDTO로 변환하여 반환
+        return stocks.stream()
+                .map(StockDTO::fromEntity) // Stock 엔티티를 StockDTO로 변환
+                .collect(Collectors.toList()); // DTO 리스트 반환
+
+
     }
 
 
     // 주식 매수 로직
     @Transactional
-    public StockTransactionDTO buyStock(int stockId, int shareCount, Long studentId) {
+    public StockTransactionDTO buyStock(Long stockId, int shareCount, Long studentId) {
         // 주식 정보 가져오기
         Optional<Stock> stockOptional = stockRepository.findById(stockId);
         if (stockOptional.isEmpty()) {
@@ -126,14 +181,13 @@ public class StockService {
         System.out.println("주식 매수 완료, 남은 잔액: " + balanceAfter);
 
 
-
         // 주식의 재고 수량 차감
         stock.setRemain_qty(stock.getRemain_qty() - shareCount);
         stockRepository.save(stock);
 
 
         // 학생이 현재 보유한 해당 주식 수량 조회
-        Integer owned_qty = stockTransactionRepository.findTotalSharesByStudentAndStock(studentId, stockId, TransType.BUY);
+        Integer owned_qty = stockTransactionRepository.findTotalSharesByStudentAndStock(studentId, stockId.intValue(), TransType.BUY);
         if (owned_qty == null) {
             owned_qty = 0; // 처음 구매라면 0으로 설정
         }
@@ -164,7 +218,7 @@ public class StockService {
 
     // 주식 매도 로직
     @Transactional
-    public StockTransactionDTO sellStock(int stockId, int shareCount, Long studentId) {
+    public StockTransactionDTO sellStock(Long stockId, int shareCount, Long studentId) {
         // 주식 정보 가져오기
         Stock stock = stockRepository.findById(stockId)
                 .orElseThrow(() -> new IllegalArgumentException("주식이 존재하지 않습니다."));
@@ -179,8 +233,8 @@ public class StockService {
         }
 
         //학생의 총 매수량(BUY)과 총 매도량(SELL) 조회
-        Integer totalBought = stockTransactionRepository.findTotalSharesByStudentAndStock(studentId, stockId, TransType.BUY);
-        Integer totalSold = stockTransactionRepository.findTotalSharesByStudentAndStock(studentId, stockId, TransType.SELL);
+        Integer totalBought = stockTransactionRepository.findTotalSharesByStudentAndStock(studentId, stockId.intValue(), TransType.BUY);
+        Integer totalSold = stockTransactionRepository.findTotalSharesByStudentAndStock(studentId, stockId.intValue(), TransType.SELL);
 
         // NULL 방지 처리
         totalBought = (totalBought == null) ? 0 : totalBought;
@@ -222,7 +276,6 @@ public class StockService {
         System.out.println("주식 매도 완료, 남은 잔액: " + balanceAfter);
 
 
-
         stock.setRemain_qty(stock.getRemain_qty() + shareCount);
         stockRepository.save(stock);
 
@@ -249,7 +302,7 @@ public class StockService {
 
     //가격 변동
     @Transactional
-    public StockDTO updateStockPrice(int stockId) {
+    public StockDTO updateStockPrice(Long stockId) {
         Stock stock = stockRepository.findById(stockId)
                 .orElseThrow(() -> new RuntimeException("주식이 존재하지 않습니다."));
 
@@ -267,8 +320,8 @@ public class StockService {
         Timestamp endTimestamp = Timestamp.valueOf(yesterday.atTime(23, 59, 59));
 
         // 전날 매수, 매도 수량 가져오기 (날짜 범위 추가)
-        int totalBought = stockTransactionRepository.getTotalSharesByType(stockId, TransType.BUY, startTimestamp, endTimestamp);
-        int totalSold = stockTransactionRepository.getTotalSharesByType(stockId, TransType.SELL, startTimestamp, endTimestamp);
+        int totalBought = stockTransactionRepository.getTotalSharesByType(stockId.intValue(), TransType.BUY, startTimestamp, endTimestamp);
+        int totalSold = stockTransactionRepository.getTotalSharesByType(stockId.intValue(), TransType.SELL, startTimestamp, endTimestamp);
 
         // 매수, 매도 수량 평균 계산
         int totalTransactions = totalBought + totalSold;
@@ -307,6 +360,19 @@ public class StockService {
         // DTO 변환 및 반환
         return StockDTO.fromEntity(stock);
     }
+
+    //카테고리 조회
+
+    //    public List<StockDTO> getStocksByCategory(String category) {
+//        return stockRepository.findByCategory(category);
+//    }
+//
+//    // 사용자가 선택한 주식 ID 리스트를 받아 DTO 리스트로 반환하는 메소드
+//    public List<StockDTO> selectStocks(List<Long> selectedStockIds, List<StockDTO> availableStocks) {
+//        return availableStocks.stream()
+//                .filter(stockDTO -> selectedStockIds.contains(stockDTO.getId())) // 선택한 주식만 필터링
+//                .collect(Collectors.toList());
+//    }
 
 }
 

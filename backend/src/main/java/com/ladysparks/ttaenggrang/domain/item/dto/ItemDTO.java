@@ -1,9 +1,11 @@
 package com.ladysparks.ttaenggrang.domain.item.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 
 import java.sql.Timestamp;
 
+@JsonIgnoreProperties(value = {"id", "createdAt", "updatedAt", "approved"}, allowGetters = true)
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor

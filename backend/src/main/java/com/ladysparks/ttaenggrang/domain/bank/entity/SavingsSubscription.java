@@ -35,6 +35,9 @@ public class SavingsSubscription {
     private int depositAmount;
 
     @Column(nullable = false)
+    private int durationWeeks;
+
+    @Column(nullable = false)
     private Date startDate;
 
     @Column(nullable = false)
@@ -44,6 +47,7 @@ public class SavingsSubscription {
     @Column(nullable = false)
     private SavingsSubscriptionStatus status;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private DayOfWeek depositDayOfWeek;
 

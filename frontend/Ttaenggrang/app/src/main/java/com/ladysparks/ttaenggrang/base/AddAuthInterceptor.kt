@@ -1,8 +1,15 @@
 package com.ladysparks.ttaenggrang.base
 
+import com.ladysparks.ttaenggrang.data.model.request.TeacherSignInRequest
+import com.ladysparks.ttaenggrang.data.model.request.TeacherSignUpRequest
+import com.ladysparks.ttaenggrang.data.model.response.ApiResponse
+import com.ladysparks.ttaenggrang.data.model.response.TeacherSignInResponse
+import com.ladysparks.ttaenggrang.data.model.response.TeacherSignUpResponse
 import com.ladysparks.ttaenggrang.util.SharedPreferencesUtil
 import okhttp3.Interceptor
 import okhttp3.Response
+import retrofit2.http.Body
+import retrofit2.http.POST
 import java.io.IOException
 
 class AddAuthInterceptor : Interceptor {
@@ -10,9 +17,11 @@ class AddAuthInterceptor : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         val request = chain.request()
 
-//         로그인 요청일 경우 `Authorization` 헤더 추가하지 않음
-        if (request.url.encodedPath.contains("/teachers/login") ||
-            request.url.encodedPath.contains("/teachers/signup")) {
+
+        //  `Authorization` 헤더 추가하지 않는 경우 : 회원가입, 로그인
+        if (request.url.encodedPath.contains("/teachers/signup") ||
+            request.url.encodedPath.contains("/teachers/login")
+        ) {
             return chain.proceed(request)
         }
 

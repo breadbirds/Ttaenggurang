@@ -1,5 +1,6 @@
 package com.ladysparks.ttaenggrang.domain.user.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
@@ -14,6 +15,7 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
+@JsonIgnoreProperties(value={"id", "createdAt"}, allowGetters=true)
 public class TeacherSignupDTO {
 
     private Long id;
@@ -29,7 +31,7 @@ public class TeacherSignupDTO {
     @NotEmpty(message="비밀번호 확인을 입력하세요.")
     private String password2;
 
-    @Size(min = 3, max = 25)
+    @Size(min = 2, max = 25)
     @NotEmpty(message="이름을 입력하세요.")
     private String name;
 

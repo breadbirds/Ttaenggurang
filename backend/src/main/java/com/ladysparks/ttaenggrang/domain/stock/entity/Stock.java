@@ -1,11 +1,13 @@
 package com.ladysparks.ttaenggrang.domain.stock.entity;
 
+import com.ladysparks.ttaenggrang.category.Category;
 import com.ladysparks.ttaenggrang.domain.etf.entity.Etf;
 import com.ladysparks.ttaenggrang.domain.user.entity.Teacher;
 import jakarta.persistence.*;
 import lombok.*;
 
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -18,7 +20,7 @@ import java.util.List;
 public class Stock {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;            // 주식 ID
+    private Long id;            // 주식 ID
 
     @Column
     private String name;        // 주식 이름
@@ -42,20 +44,24 @@ public class Stock {
     private Timestamp updated_at;  // 수정일
 
     @Column
-    private String category;      // 카테고리
+    private String categoryName;
 
-//    @Enumerated(EnumType.STRING)  // on/off 버튼
-//    @Column(name = "button")
-//    private Button button;
+
+
+
+
 
     @Column
     private Integer changeRate; //가격 변동률
 
-    @Column(nullable = false)
-    private Boolean isMarketActive;
+//    @Column(nullable = false)
+//    private Boolean isMarketActive;
 
     @Column
     private LocalDateTime priceChangeTime;  // 가격 변동 시간
+
+    @Column
+    private BigDecimal weight;  // 주식 비중 (각 주식의 비중을 따로 저장)
 
 
     //조인
@@ -69,8 +75,6 @@ public class Stock {
     @OneToMany(mappedBy = "stock", fetch = FetchType.LAZY)
     private List<StockHistory> stockHistories; // 여러 과거 추이 기록
 
-//    @ManyToMany(mappedBy = "stocks")
-//    private List<News> news;
 
     // 주식 거래 내역
     @OneToMany(mappedBy = "stock", fetch = FetchType.LAZY)
@@ -81,16 +85,24 @@ public class Stock {
     @JoinColumn(name = "etf_id")
     private Etf etf;
 
-    // 주식장 활성화 메소드
-    public void activateMarket() {
-        this.isMarketActive = true;
-        this.priceChangeTime = LocalDateTime.now().plusMinutes(1); // 예시로 1분 후 가격 변동
-    }
+    @ManyToOne
+    @JoinColumn(name = "category_id") // 외래 키 컬럼 설정
+    private Category category; // 카테고리
 
-    // 주식장 비활성화 메소드
-    public void deactivateMarket() {
-        this.isMarketActive = false;
-    }
+//    // 주식장 활성화 메소드
+//    public void activateMarket() {
+//        this.isMarketActive = true;
+//        this.priceChangeTime = LocalDateTime.now().plusMinutes(1); // 예시로 1분 후 가격 변동
+//    }
+//
+//    // 주식장 비활성화 메소드
+//    public void deactivateMarket() {
+//        this.isMarketActive = false;
+//    }
+//
+//    @ManyToOne(fetch = FetchType.LAZY)  // 카테고리와의 관계 설정
+//    @JoinColumn(name = "category_id", nullable = false)  // 외래 키
+//    private Category category;  // 카테고리와의 관계
 
 
 }

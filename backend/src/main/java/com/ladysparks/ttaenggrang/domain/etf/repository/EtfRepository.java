@@ -4,4 +4,5 @@ import com.ladysparks.ttaenggrang.domain.etf.entity.Etf;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface EtfRepository extends JpaRepository<Etf, Integer>{
+    boolean existsByName(String name);
 }

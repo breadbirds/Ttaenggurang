@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
+import java.sql.Date;
 import java.sql.Timestamp;
 
 @Getter
@@ -37,6 +38,12 @@ public class SavingsProduct {
 
     @Column(nullable = false)
     private int depositAmount;
+
+    @Column(nullable = false)
+    private Date saleStartDate;
+
+    @Column(nullable = false)
+    private Date saleEndDate;
 
     @CreationTimestamp
     private Timestamp createdAt;

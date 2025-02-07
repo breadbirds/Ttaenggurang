@@ -102,7 +102,7 @@
             style="@style/body2"/>
 
         <EditText
-            android:id="@+id/editPhoneSignup"
+            android:id="@+id/editSchoolSignup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@+id/editNameSignup"
@@ -113,14 +113,13 @@
             android:background="@drawable/input_id"
             android:textColorHint="@color/mainOrange"
             android:paddingStart="@dimen/spacing_20"
-            style="@style/body2"
-            android:inputType="textPassword"/>
+            style="@style/body2"/>
 
         <EditText
             android:id="@+id/editPasswordSignup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@+id/editPhoneSignup"
+            app:layout_constraintTop_toBottomOf="@+id/editSchoolSignup"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:hint="비밀번호를 입력하세요"
@@ -131,15 +130,21 @@
             style="@style/body2"
             android:inputType="textPassword"/>
 
-        <ImageView
-            android:id="@+id/btnInvisiblePasswordSignup"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <FrameLayout
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             app:layout_constraintEnd_toEndOf="@+id/editPasswordSignup"
             app:layout_constraintTop_toTopOf="@+id/editPasswordSignup"
             app:layout_constraintBottom_toBottomOf="@+id/editPasswordSignup"
-            android:background="@drawable/btn_password_invisible"
-            android:layout_marginEnd="@dimen/spacing_20"/>
+            android:paddingEnd="@dimen/spacing_20"
+            android:background="?attr/selectableItemBackgroundBorderless">
+            <ImageView
+                android:id="@+id/btnInvisiblePasswordSignup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/ic_invisible"
+                android:layout_gravity="end|center"/>
+        </FrameLayout>
 
         <EditText
             android:id="@+id/editPasswordcheckSignup"
@@ -156,15 +161,21 @@
             style="@style/body2"
             android:inputType="textPassword"/>
 
-        <ImageView
-            android:id="@+id/btnInvisiblePasswordcheckSignup"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <FrameLayout
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             app:layout_constraintEnd_toEndOf="@+id/editPasswordcheckSignup"
             app:layout_constraintTop_toTopOf="@+id/editPasswordcheckSignup"
             app:layout_constraintBottom_toBottomOf="@+id/editPasswordcheckSignup"
-            android:background="@drawable/btn_password_invisible"
-            android:layout_marginEnd="@dimen/spacing_20"/>
+            android:paddingEnd="@dimen/spacing_20"
+            android:background="?attr/selectableItemBackgroundBorderless">
+            <ImageView
+                android:id="@+id/btnInvisiblePasswordcheckSignup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/ic_invisible"
+                android:layout_gravity="end|center"/>
+        </FrameLayout>
 
         <ImageButton
             android:id="@+id/btnSignup"
