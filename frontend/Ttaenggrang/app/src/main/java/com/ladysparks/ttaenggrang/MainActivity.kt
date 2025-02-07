@@ -1,15 +1,29 @@
 package com.ladysparks.ttaenggrang
 
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.view.WindowInsets
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
+import com.ladysparks.ttaenggrang.data.remote.RetrofitUtil
 import com.ladysparks.ttaenggrang.databinding.ActivityMainBinding
-import com.ladysparks.ttaenggrang.ui.bank.BankFragment
+import com.ladysparks.ttaenggrang.ui.bank.BankStudentFragment
+import com.ladysparks.ttaenggrang.ui.bank.BankTeacherFragment
+import com.ladysparks.ttaenggrang.ui.home.HomeStudentFragment
 import com.ladysparks.ttaenggrang.ui.home.HomeTeacherFragment
-import com.ladysparks.ttaenggrang.ui.stock.StockFragment
+import com.ladysparks.ttaenggrang.ui.nation.NationFragment
+import com.ladysparks.ttaenggrang.ui.revenue.RevenueStudentFragment
+import com.ladysparks.ttaenggrang.ui.revenue.RevenueTeacherFragment
+import com.ladysparks.ttaenggrang.ui.stock.StockStudentFragment
+import com.ladysparks.ttaenggrang.ui.stock.StockTeacherFragment
+import com.ladysparks.ttaenggrang.ui.store.StoreStudentFragment
+import com.ladysparks.ttaenggrang.ui.store.StoreTeacherFragment
+import com.ladysparks.ttaenggrang.ui.students.StudentsFragment
+import com.ladysparks.ttaenggrang.util.SharedPreferencesUtil
 import com.ladysparks.ttaenggrang.util.showToast
+import kotlinx.coroutines.launch
 
 
 class MainActivity : AppCompatActivity() {
@@ -25,20 +39,42 @@ class MainActivity : AppCompatActivity() {
             window.insetsController?.hide(WindowInsets.Type.statusBars() or WindowInsets.Type.navigationBars())
         }
 
-        // 기본 프래그먼트 로드
-        replaceFragment(HomeTeacherFragment())
-        binding.navigationView.setCheckedItem(R.id.navHome) // 기본 선택
+        initEvent()
+
+//         학생, 교사 구분해서 카테고리 변경
+        val isTeacher = SharedPreferencesUtil.getValue(SharedPreferencesUtil.IS_TEACHER, false)
+        if (isTeacher) {
+            binding.navigationView.menu.clear()
+            binding.navigationView.inflateMenu(R.menu.nav_menu_teacher)
+            binding.navigationView.setCheckedItem(R.id.navHomeTeacher)
+            replaceFragment(HomeTeacherFragment())
+        } else {
+            binding.navigationView.menu.clear()
+            binding.navigationView.inflateMenu(R.menu.nav_menu_student)
+            binding.navigationView.setCheckedItem(R.id.navHomeStudent)
+            replaceFragment(HomeStudentFragment())
+        }
 
         binding.navigationView.setNavigationItemSelectedListener { menuItem ->
             menuItem.isChecked = true  // 선택한 아이템 활성화
             when (menuItem.itemId) {
-                R.id.navHome -> replaceFragment(HomeTeacherFragment())
-                R.id.navStudents -> showToast("학생 관리 페이지 준비중")
+                // Common
                 R.id.navCountryInfo -> replaceFragment(NationFragment())
-                R.id.navRevenue -> showToast("국세청 페이지 준비중")
-                R.id.navBank -> replaceFragment(BankFragment())
-                R.id.navStock -> replaceFragment(StockFragment())
-                R.id.navShop -> replaceFragment(ItemStudentFragment())
+
+                // Teacher
+                R.id.navHomeTeacher -> replaceFragment(HomeTeacherFragment())
+                R.id.navStudentsTeacher -> replaceFragment(StudentsFragment())
+                R.id.navRevenueTeacher -> replaceFragment(RevenueTeacherFragment())
+                R.id.navBankTeacher -> replaceFragment(BankTeacherFragment())
+                R.id.navStockTeacher -> replaceFragment(StockTeacherFragment())
+                R.id.navShopTeacher -> replaceFragment(StoreTeacherFragment())
+
+                // Student
+                R.id.navHomeStudent -> replaceFragment(HomeStudentFragment())
+                R.id.navRevenueStudent -> replaceFragment(RevenueStudentFragment())
+                R.id.navBankStudent -> replaceFragment(BankStudentFragment())
+                R.id.navStockStudent -> replaceFragment(StockStudentFragment())
+                R.id.navShopStudent  -> replaceFragment(StoreStudentFragment())
             }
             true
         }
@@ -49,5 +85,30 @@ class MainActivity : AppCompatActivity() {
         supportFragmentManager.beginTransaction()
             .replace(R.id.fragment_container, fragment)
             .commit()
+    }
+
+    private fun initEvent() {
+        binding.btnSettings.setOnClickListener {
+            lifecycleScope.launch {
+                runCatching {
+                    if (SharedPreferencesUtil.getValue(SharedPreferencesUtil.IS_TEACHER, false)){
+                        RetrofitUtil.authService.logoutTeacher()
+                    }else{
+                        RetrofitUtil.authService.logoutStudent()
+                    }
+                }.onSuccess {
+                    // 토큰 & 교사/학생 구분 제거
+                    SharedPreferencesUtil.removeValue(SharedPreferencesUtil.JWT_TOKEN_KEY)
+                    SharedPreferencesUtil.removeValue(SharedPreferencesUtil.IS_TEACHER)
+
+                    showToast("로그아웃 완료")
+                    startActivity(Intent(this@MainActivity, LoginActivity::class.java).apply {
+                        Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    })
+                }.onFailure {
+                    showToast("로그아웃 실패")
+                }
+            }
+        }
     }
 }

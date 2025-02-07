@@ -21,7 +21,7 @@ import com.ladysparks.ttaenggrang.R
 import com.ladysparks.ttaenggrang.base.BaseFragment
 import com.ladysparks.ttaenggrang.base.BaseTableAdapter
 import com.ladysparks.ttaenggrang.data.model.dto.AlarmDto
-import com.ladysparks.ttaenggrang.ui.model.BaseTableRowModel
+import com.ladysparks.ttaenggrang.ui.component.BaseTableRowModel
 import com.ladysparks.ttaenggrang.databinding.FragmentHomeTeacherBinding
 import java.util.Date
 

@@ -8,11 +8,12 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.ladysparks.ttaenggrang.R
-import com.ladysparks.ttaenggrang.ui.model.BaseTableRowModel
+import com.ladysparks.ttaenggrang.ui.component.BaseTableRowModel
 
 class BaseTableAdapter(
     private var header: List<String>, // ✨ 헤더 컬럼 리스트 (동적 설정)
-    private var data: List<BaseTableRowModel> // ✨ 유동적인 데이터 리스트
+    private var data: List<BaseTableRowModel>, // ✨ 유동적인 데이터 리스트
+    private val onRowClickListener: ((rowIndex: Int, rowData: List<String>) -> Unit)? = null // ✅ 행 클릭 리스너 추가
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     companion object {
@@ -33,7 +34,7 @@ class BaseTableAdapter(
         } else {
             val view = LayoutInflater.from(parent.context)
                 .inflate(R.layout.item_table_row_dynamic, parent, false)
-            ItemViewHolder(view)
+            ItemViewHolder(view, onRowClickListener)
         }
     }
 
@@ -41,7 +42,7 @@ class BaseTableAdapter(
         if (holder is HeaderViewHolder) {
             holder.bind(header)
         } else if (holder is ItemViewHolder) {
-            holder.bind(data[position - 1].data) // 헤더 제외한 데이터 바인딩
+            holder.bind(data[position - 1].data, position - 1)
         }
     }
 
@@ -66,10 +67,10 @@ class BaseTableAdapter(
         }
     }
 
-    class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class ItemViewHolder(itemView: View, private val onRowClickListener: ((rowIndex: Int, rowData: List<String>) -> Unit)?) : RecyclerView.ViewHolder(itemView) {
         private val container: LinearLayout = itemView.findViewById(R.id.rowContainer)
 
-        fun bind(rowData: List<String>) {
+        fun bind(rowData: List<String>, rowIndex: Int) {
             container.removeAllViews() // 기존 뷰 초기화
             for (text in rowData) {
                 val textView = TextView(itemView.context).apply {
@@ -80,6 +81,18 @@ class BaseTableAdapter(
                 }
                 container.addView(textView)
             }
+
+            // ✅ 클릭 이벤트가 필요한 경우만 설정
+            itemView.setOnClickListener {
+                onRowClickListener?.invoke(rowIndex, rowData)
+            }
         }
+    }
+
+    // 데이터 업데이트용
+    fun updateData(newHeaders: List<String>, newRows: List<BaseTableRowModel>) {
+        header = newHeaders
+        data = newRows
+        notifyDataSetChanged() // RecyclerView 새로고침
     }
 }

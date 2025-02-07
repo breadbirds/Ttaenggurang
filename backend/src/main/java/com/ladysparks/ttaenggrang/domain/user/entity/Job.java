@@ -38,4 +38,9 @@ public class Job {
     protected void onCreate() {
         this.salaryDate = new Timestamp(System.currentTimeMillis());  // 기본값 설정
     }
+
+    @OneToOne
+    @JoinColumn(name = "student_id")  // nullable = false
+    private Student student;
+
 }
