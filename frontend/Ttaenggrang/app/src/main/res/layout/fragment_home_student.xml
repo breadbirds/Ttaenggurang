@@ -11,64 +11,64 @@
 
     <!-- 배너 -->
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintBannerArea"
-        android:layout_width="696dp"
-        android:layout_height="126dp"
-        android:background="@drawable/img_banner"
-        app:layout_constraintBottom_toTopOf="@+id/btnNationalRevenue"
-        app:layout_constraintEnd_toStartOf="@+id/view"
+    android:id="@+id/constraintBannerArea"
+    android:layout_width="696dp"
+    android:layout_height="126dp"
+    android:background="@drawable/img_banner"
+    app:layout_constraintBottom_toTopOf="@+id/btnNationalRevenue"
+    app:layout_constraintEnd_toStartOf="@+id/view"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent">
+
+    <!-- 텍스트 추가 -->
+    <TextView
+        android:id="@+id/textCountry"
+        style="@style/heading2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/spacing_20"
+        android:layout_marginTop="20dp"
+        android:text="대한민국"
+        android:textColor="@android:color/white"
+        android:textSize="18sp"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <!-- 텍스트 추가 -->
-        <TextView
-            android:id="@+id/textCountry"
-            style="@style/heading2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/spacing_20"
-            android:layout_marginTop="20dp"
-            android:text="대한민국"
-            android:textColor="@android:color/white"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/textInfo"
-            style="@style/body2"
-            android:layout_marginTop="@dimen/spacing_20"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="여러분이 직접 경제를 운영하는 주인공이에요"
-            android:textColor="@color/white"
-            app:layout_constraintStart_toStartOf="@+id/textCountry"
-            app:layout_constraintTop_toBottomOf="@+id/textCountry" />
+    <TextView
+        android:id="@+id/textInfo"
+        style="@style/body2"
+        android:layout_marginTop="@dimen/spacing_20"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="여러분이 직접 경제를 운영하는 주인공이에요"
+        android:textColor="@color/white"
+        app:layout_constraintStart_toStartOf="@+id/textCountry"
+        app:layout_constraintTop_toBottomOf="@+id/textCountry" />
 
 
-        <!-- ImageView를 감쌀 FrameLayout 추가 -->
-        <FrameLayout
-            android:layout_marginEnd="@dimen/spacing_20"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:clipChildren="true"
-            android:clipToPadding="true"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
+    <!-- ImageView를 감쌀 FrameLayout 추가 -->
+    <FrameLayout
+        android:layout_marginEnd="@dimen/spacing_20"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clipChildren="true"
+        android:clipToPadding="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
-            <!-- 이미지 추가 (크게 설정해서 배너 바깥으로 넘기기) -->
-            <ImageView
-                android:id="@+id/bannerImage"
-                android:layout_width="126dp"
-                android:layout_height="126dp"
-                android:src="@drawable/fox_coins"
-                android:scaleType="centerCrop"
-                android:translationX="20dp"
-                android:translationY="20dp" />
-        </FrameLayout>
+        <!-- 이미지 추가 (크게 설정해서 배너 바깥으로 넘기기) -->
+        <ImageView
+            android:id="@+id/bannerImage"
+            android:layout_width="126dp"
+            android:layout_height="126dp"
+            android:src="@drawable/fox_coins"
+            android:scaleType="centerCrop"
+            android:translationX="20dp"
+            android:translationY="20dp" />
+    </FrameLayout>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
 
     <!-- 국고 수입 btn -->
     <LinearLayout
