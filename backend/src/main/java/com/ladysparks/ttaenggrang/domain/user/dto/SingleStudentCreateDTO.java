@@ -2,6 +2,7 @@ package com.ladysparks.ttaenggrang.domain.user.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.ladysparks.ttaenggrang.domain.bank.entity.BankAccount;
+import com.ladysparks.ttaenggrang.domain.nation.entity.Nation;
 import com.ladysparks.ttaenggrang.domain.user.entity.Student;
 import com.ladysparks.ttaenggrang.domain.user.entity.Teacher;
 import jakarta.validation.constraints.NotEmpty;
@@ -25,5 +26,6 @@ public class SingleStudentCreateDTO {
 
     private Teacher teacher;
     private BankAccount bankAccount;
+
     private Student token;
 }

@@ -15,6 +15,6 @@ public interface TeacherMainApiSpecification {
             summary = "교사의 학생 평균 수입 및 지출 조회",
             description = "교사 ID를 기반으로 담당하는 학생들의 최근 7일 평균 수입과 평균 지출을 반환합니다."
     )
-    ResponseEntity<List<StudentDailyAverageFinancialDTO>> getDailyAverageIncomeAndExpense(@PathVariable Long teacherId);
+    ResponseEntity<List<StudentDailyAverageFinancialDTO>> getDailyAverageIncomeAndExpense();
 
 }

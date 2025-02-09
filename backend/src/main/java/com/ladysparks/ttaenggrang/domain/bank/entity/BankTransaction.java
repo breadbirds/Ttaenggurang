@@ -1,5 +1,6 @@
 package com.ladysparks.ttaenggrang.domain.bank.entity;
 
+import com.ladysparks.ttaenggrang.domain.user.entity.Student;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -22,9 +23,6 @@ public class BankTransaction {
     @JoinColumn(name = "bank_account_id", nullable = false)
     private BankAccount bankAccount;
 
-    @Column
-    private Long referenceId; // ✅ 동일한 referenceId로 송금 트랜잭션 연결
-
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private BankTransactionType type;
@@ -41,18 +39,11 @@ public class BankTransaction {
     @Column
     private String description;
 
+    @OneToOne
+    @JoinColumn(name = "receiver_id")
+    private Student receiver;
+
     @CreationTimestamp
     private Timestamp createdAt;
-
-    public static BankTransaction createTransaction(BankAccount bankAccount, BankTransactionType type, int amount, int balanceBefore, int balanceAfter, String description) {
-        return BankTransaction.builder()
-                .bankAccount(bankAccount)
-                .type(type)
-                .amount(amount)
-                .balanceBefore(balanceBefore)
-                .balanceAfter(balanceAfter)
-                .description(description)
-                .build();
-    }
 
 }

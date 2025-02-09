@@ -19,8 +19,8 @@ public class WeeklyReportController implements WeeklyReportApiSpecification {
     }
 
     @GetMapping
-    public ResponseEntity<ApiResponse<WeeklyReportDTO>> WeeklyReportDetails(@RequestParam Long studentId) {
-        return ResponseEntity.ok(ApiResponse.success(reportService.createWeeklyReport(studentId)));
+    public ResponseEntity<ApiResponse<WeeklyReportDTO>> WeeklyReportDetails() {
+        return ResponseEntity.ok(ApiResponse.success(reportService.createWeeklyReport()));
     }
 
 }

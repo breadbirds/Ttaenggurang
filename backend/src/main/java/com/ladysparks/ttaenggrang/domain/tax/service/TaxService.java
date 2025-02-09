@@ -4,9 +4,7 @@ import com.ladysparks.ttaenggrang.domain.tax.dto.TaxDTO;
 import com.ladysparks.ttaenggrang.domain.tax.entity.Tax;
 import com.ladysparks.ttaenggrang.domain.tax.mapper.TaxMapper;
 import com.ladysparks.ttaenggrang.domain.tax.repository.TaxRepository;
-import com.ladysparks.ttaenggrang.global.response.ApiResponse;
-import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
+import com.ladysparks.ttaenggrang.domain.user.service.TeacherService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,22 +17,24 @@ public class TaxService {
 
     private final TaxRepository taxRepository;
     private final TaxMapper taxMapper;
+    private final TeacherService teacherService;
 
     public TaxService(TaxRepository taxRepository,
-                      TaxMapper taxMapper) {
+                      TaxMapper taxMapper, TeacherService teacherService) {
         this.taxRepository = taxRepository;
         this.taxMapper = taxMapper;
+        this.teacherService = teacherService;
     }
 
     // 특정 교사의 세금 목록 조회
-    public List<TaxDTO> findTaxesByTeacher(Long teacherId) {
-        return taxRepository.findByTeacherId(teacherId).stream()
+    public List<TaxDTO> findTaxesByTeacher(Optional<Long> teacherId) {
+        return taxRepository.findByTeacherId(teacherId.orElseGet(teacherService::getCurrentTeacherId)).stream()
                 .map(taxMapper::toDto)
                 .collect(Collectors.toList());
     }
 
     // 특정 세금 정보 조회
-    public TaxDTO getTaxById(Long taxId) {
+    public TaxDTO findTaxById(Long taxId) {
         Tax tax = taxRepository.findById(taxId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 ID의 세금 정보를 찾을 수 없습니다."));
         return taxMapper.toDto(tax);
@@ -43,6 +43,8 @@ public class TaxService {
     // 세금 정보 등록
     @Transactional
     public TaxDTO addTax(TaxDTO taxDTO) {
+        Long teacherId = teacherService.getCurrentTeacherId();
+        taxDTO.setTeacherId(teacherId);
         Tax tax = taxMapper.toEntity(taxDTO);
         Tax savedTax = taxRepository.save(tax);
         return taxMapper.toDto(savedTax);

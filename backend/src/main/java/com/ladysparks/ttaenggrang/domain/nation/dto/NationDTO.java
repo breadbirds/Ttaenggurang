@@ -1,23 +1,22 @@
-package com.ladysparks.ttaenggrang.domain.user.dto;
+package com.ladysparks.ttaenggrang.domain.nation.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.context.support.MessageSourceAccessor;
 
 import java.sql.Timestamp;
 
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonIgnoreProperties(value={"id", "publicFunds", "establishedDate"}, allowGetters=true)
-public class NationCreateDTO {
+public class NationDTO {
 
     private Long id;
 
@@ -34,5 +33,8 @@ public class NationCreateDTO {
     @NotNull
     private Integer savingsGoalAmount;
 
+    private Integer funding;
+
     private Timestamp establishedDate;
+
 }

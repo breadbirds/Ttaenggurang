@@ -8,9 +8,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
-import java.sql.Date;
 import java.sql.Timestamp;
 import java.time.DayOfWeek;
+import java.time.LocalDate;
 
 @Getter
 @Builder
@@ -32,16 +32,10 @@ public class SavingsSubscription {
     private Student student;
 
     @Column(nullable = false)
-    private int depositAmount;
+    private LocalDate startDate;
 
     @Column(nullable = false)
-    private int durationWeeks;
-
-    @Column(nullable = false)
-    private Date startDate;
-
-    @Column(nullable = false)
-    private Date endDate;
+    private LocalDate endDate;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)

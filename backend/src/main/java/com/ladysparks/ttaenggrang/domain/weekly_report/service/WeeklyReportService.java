@@ -20,8 +20,8 @@ public class WeeklyReportService {
         this.savingsService = savingsService;
     }
 
-    public WeeklyReportDTO createWeeklyReport(Long studentId) {
-        return bankService.createWeeklyReport(studentId);
+    public WeeklyReportDTO createWeeklyReport() {
+        return bankService.createWeeklyReport();
     }
 
 }

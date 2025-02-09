@@ -28,7 +28,7 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(ErrorResponse.of(
                         400,
-                        Optional.of(ex.getMessage()).orElse("잘못된 요청입니다. 입력 값을 확인해주세요."),
+                        "잘못된 요청입니다. 입력 값을 확인해주세요.",
                         errors
                 ));
     }

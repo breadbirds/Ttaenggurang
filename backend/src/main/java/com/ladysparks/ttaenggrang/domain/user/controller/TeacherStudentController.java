@@ -66,7 +66,6 @@ public class TeacherStudentController implements TeacherStudentApiSpecificaion {
     // 학생 계정 단일 생성 (교사만 가능)
     @PostMapping("/single-create")
     public ResponseEntity<ApiResponse<StudentResponseDTO>> createStudent(@RequestBody SingleStudentCreateDTO studentCreateDTO) {
-
         // 1. 현재 로그인한 교사의 ID 가져오기
         Long teacherId = getTeacherIdFromSecurityContext();
 

@@ -1,5 +1,6 @@
 package com.ladysparks.ttaenggrang.global.docs;
 
+import com.ladysparks.ttaenggrang.domain.nation.dto.NationDTO;
 import com.ladysparks.ttaenggrang.domain.user.dto.*;
 import com.ladysparks.ttaenggrang.global.response.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -7,7 +8,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
@@ -39,7 +39,7 @@ public interface TeacherFunctionApiSpecification {
             - 계정 당 1개의 국가만 생성할 수 있습니다.
             - 만약 다른 국가를 개설하고 싶다면 기존 국가 정보를 삭제해야 합니다.
             """)
-    ResponseEntity<ApiResponse<NationCreateDTO>> createNation(@RequestBody @Valid NationCreateDTO nationCreateDTO);
+    ResponseEntity<ApiResponse<NationDTO>> createNation(@RequestBody @Valid NationDTO nationDTO);
 
     @Operation(summary = "국가 [조회]", description = """
             💡 교사가 국가 정보를 조회합니다.
@@ -50,7 +50,7 @@ public interface TeacherFunctionApiSpecification {
             - **savingsGoalAmount** : 학급 별 목표 저축액
             - **establishedDate** : 설립일 (국가 정보 등록한 날짜로 자동 생성)
             """)
-    ResponseEntity<ApiResponse<NationCreateDTO>> getNationByTeacher();
+    ResponseEntity<ApiResponse<NationDTO>> getNationByTeacher();
 
     @Operation(summary = "국가 [삭제]", description = "💡 교사가 국가 정보를 삭제합니다.")
     ResponseEntity<ApiResponse<Void>> deleteNation();
