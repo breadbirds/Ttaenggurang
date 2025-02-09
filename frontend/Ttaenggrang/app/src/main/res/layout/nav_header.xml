@@ -14,7 +14,7 @@
         android:id="@+id/imgUser"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:src="@drawable/ic_launcher_background"
+        android:src="@drawable/img_teacher"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -38,7 +38,9 @@
         android:layout_marginStart="@dimen/spacing_10"
         android:text="교사"
         style="@style/caption"
-        android:background="@color/lightOrange"
+        android:background="@drawable/btn_rounded_full"
+        android:backgroundTint="@color/lightOrange"
+        android:textColor="@color/mainOrange"
         app:layout_constraintStart_toEndOf="@+id/navHeaderName"
         app:layout_constraintTop_toTopOf="@+id/navHeaderName" />
 
