@@ -156,12 +156,12 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btnStudentRegistration"
+        android:id="@+id/btnCloseStudentNationTax"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/btn_rounded_full"
         android:textColor="@color/white"
-        android:text="추가"
+        android:text="닫기"
         style="@style/heading3"
         android:layout_marginTop="36.71dp"
         android:layout_margin="36.71dp"/>
