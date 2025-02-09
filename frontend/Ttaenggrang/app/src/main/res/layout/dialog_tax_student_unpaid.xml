@@ -2,7 +2,8 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="501dp"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/white">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -57,7 +58,9 @@
             android:layout_height="wrap_content"
             android:hint="벌금"
             style="@style/body1"
-            android:layout_marginTop="6dp"/>
+            android:background="@drawable/bg_edit_one_line"
+            android:layout_marginTop="6dp"
+            android:paddingHorizontal="14dp"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -75,7 +78,10 @@
             android:inputType="textMultiLine"
             android:lines="4"
             android:gravity="top"
-            android:layout_marginTop="6dp"/>
+            android:layout_marginTop="6dp"
+            android:background="@drawable/bg_edit_multi_line"
+            android:paddingHorizontal="14dp"
+            android:paddingVertical="12dp"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -90,7 +96,9 @@
             android:layout_height="wrap_content"
             android:hint="50,000"
             style="@style/body1"
-            android:layout_marginTop="6dp"/>
+            android:background="@drawable/bg_edit_one_line"
+            android:layout_marginTop="6dp"
+            android:paddingHorizontal="14dp"/>
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btnPayUnpiadTax"
