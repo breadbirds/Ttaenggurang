@@ -15,4 +15,7 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
 
     List<Item> findBySellerId(Long studentId);
 
+    @Query("SELECT i FROM Item i WHERE i.seller.teacher.id = :teacherId AND i.quantity > 0")
+    List<Item> findActiveItemsByTeacherId(@Param("teacherId") Long teacherId);
+
 }

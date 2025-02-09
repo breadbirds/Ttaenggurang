@@ -57,10 +57,19 @@ public class ItemService {
                 .collect(Collectors.toList());
     }
 
-    // 특정 교사의 상품 리스트 조회
+    // 특정 교사의 학근 배 상품 리스트 조회
     public List<ItemDTO> findItemListByTeacher() {
         Long teacherId = teacherService.getCurrentTeacherId();
         return itemRepository.findItemsByTeacherId(teacherId)
+                .stream()
+                .map(itemMapper::toDto)
+                .collect(Collectors.toList());
+    }
+
+    // 특정 교사의 학급 내 판매 중인 상품 리스트 조회
+    public List<ItemDTO> findActiveItemListByTeacher() {
+        Long teacherId = teacherService.getCurrentTeacherId();
+        return itemRepository.findActiveItemsByTeacherId(teacherId)
                 .stream()
                 .map(itemMapper::toDto)
                 .collect(Collectors.toList());
