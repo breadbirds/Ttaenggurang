@@ -33,7 +33,7 @@ public class NationDTO {
     @NotNull
     private Integer savingsGoalAmount;
 
-    private Integer funding;
+    private Integer nationalTreasury;
 
     private Timestamp establishedDate;
 

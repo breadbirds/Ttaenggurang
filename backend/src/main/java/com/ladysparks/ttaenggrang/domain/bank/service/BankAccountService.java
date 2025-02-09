@@ -64,4 +64,11 @@ public class BankAccountService {
         return bankAccountMapper.toDto(bankAccount);
     }
 
+    /**
+     * 특정 교사가 담당하는 학생들의 1인당 평균 잔고 조회
+     */
+    public double getAverageBalanceByTeacherId(Long teacherId) {
+        return bankAccountRepository.getAverageBalanceByTeacherId(teacherId);
+    }
+
 }

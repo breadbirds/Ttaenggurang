@@ -16,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.webjars.NotFoundException;
 
 import java.sql.Timestamp;
 import java.util.Optional;
@@ -60,7 +61,7 @@ public class NationService {
                 savedNation.getPopulation(),
                 savedNation.getCurrency(),
                 savedNation.getSavingsGoalAmount(),
-                savedNation.getFunding(),
+                savedNation.getNationalTreasury(),
                 savedNation.getEstablishedDate()
         );
 
@@ -85,7 +86,7 @@ public class NationService {
                 nation.getPopulation(),
                 nation.getCurrency(),
                 nation.getSavingsGoalAmount(),
-                nation.getFunding(),
+                nation.getNationalTreasury(),
                 nation.getEstablishedDate()
         );
 
@@ -124,12 +125,28 @@ public class NationService {
                 .orElseThrow(() -> new IllegalArgumentException("해당 국가를 찾을 수 없습니다."));
 
         // funding 값 업데이트
-        nation.setFunding(nation.getFunding() + funding);
+        nation.setNationalTreasury(nation.getNationalTreasury() + funding);
 
         Nation updatedNation = nationRepository.save(nation);
 
         // NationCreateDTO로 변환 후 반환
         return nationMapper.toDto(updatedNation);
     }
+
+    public NationDTO findNationByTeacherId(Long teacherId) {
+        // 1. 교사 엔티티 조회
+        Long nationId = teacherService.findById(teacherId);
+
+        // 2. 교사가 이미 국가를 가지고 있는지 확인
+        Optional<Nation> optionalNation = nationRepository.findById(nationId);
+        if (optionalNation.isEmpty()) {
+            throw new NotFoundException("등록된 국가가 없습니다.");
+        }
+
+        Nation nation = optionalNation.get();
+
+        return nationMapper.toDto(nation);
+    }
+
 
 }

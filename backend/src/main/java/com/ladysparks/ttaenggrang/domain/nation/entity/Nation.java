@@ -32,7 +32,7 @@ public class Nation {
     private Integer savingsGoalAmount;
 
     @Column(nullable = false)
-    private int funding;
+    private int nationalTreasury;
 
     @Column(nullable = false)
     private Timestamp establishedDate;
