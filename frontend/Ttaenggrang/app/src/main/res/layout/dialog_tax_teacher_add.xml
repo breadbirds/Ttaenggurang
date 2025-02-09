@@ -3,7 +3,8 @@
     android:orientation="vertical"
     android:layout_width="504dp"
     android:layout_height="wrap_content"
-    android:padding="24dp">
+    android:padding="24dp"
+    android:background="@color/white">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -44,7 +45,9 @@
         android:layout_height="wrap_content"
         android:hint="창의 활동세"
         style="@style/body1"
-        android:layout_marginTop="6dp"/>
+        android:layout_marginTop="6dp"
+        android:background="@drawable/bg_edit_one_line"
+        android:paddingHorizontal="14dp"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -59,7 +62,9 @@
         android:layout_height="wrap_content"
         android:hint="7%"
         style="@style/body1"
-        android:layout_marginTop="6dp"/>
+        android:layout_marginTop="6dp"
+        android:background="@drawable/bg_edit_one_line"
+        android:paddingHorizontal="14dp"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -77,7 +82,10 @@
         android:inputType="textMultiLine"
         android:lines="4"
         android:gravity="top"
-        android:layout_marginTop="6dp"/>
+        android:layout_marginTop="6dp"
+        android:background="@drawable/bg_edit_multi_line"
+        android:paddingHorizontal="14dp"
+        android:paddingVertical="12dp"/>
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnStudentRegistration"
