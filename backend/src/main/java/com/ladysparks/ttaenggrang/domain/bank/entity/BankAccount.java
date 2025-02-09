@@ -27,8 +27,4 @@ public class BankAccount {
     @CreationTimestamp
     private Timestamp createdAt;
 
-    public void updateBalance(int newBalance) {
-        this.balance = newBalance;
-    }
-
 }
