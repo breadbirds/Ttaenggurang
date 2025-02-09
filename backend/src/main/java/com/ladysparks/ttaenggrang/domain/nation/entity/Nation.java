@@ -1,6 +1,5 @@
-package com.ladysparks.ttaenggrang.domain.user.entity;
+package com.ladysparks.ttaenggrang.domain.nation.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,10 +8,10 @@ import lombok.NoArgsConstructor;
 
 import java.sql.Timestamp;
 
+@Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-@Entity
 @Builder
 public class Nation {
 
@@ -33,10 +32,9 @@ public class Nation {
     private Integer savingsGoalAmount;
 
     @Column(nullable = false)
+    private int funding;
+
+    @Column(nullable = false)
     private Timestamp establishedDate;
 
-    @JsonIgnore  // 순환 참조 방지
-    @OneToOne
-    @JoinColumn(name = "teacher_id", unique = true, nullable = false)
-    private Teacher teacher;
 }

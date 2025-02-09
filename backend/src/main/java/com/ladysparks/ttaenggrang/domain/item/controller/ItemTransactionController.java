@@ -4,6 +4,7 @@ import com.ladysparks.ttaenggrang.global.docs.ItemTransactionApiSpecification;
 import com.ladysparks.ttaenggrang.domain.item.dto.ItemTransactionDTO;
 import com.ladysparks.ttaenggrang.global.response.ApiResponse;
 import com.ladysparks.ttaenggrang.domain.item.service.ItemTransactionService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,24 +23,24 @@ public class ItemTransactionController implements ItemTransactionApiSpecificatio
         this.itemTransactionService = itemTransactionService;
     }
 
-    // 아이템 거래 [등록]
+    // 아이템 구매 [등록]
     @PostMapping
-    public ResponseEntity<ApiResponse<ItemTransactionDTO>> itemTransactionAdd(@RequestBody ItemTransactionDTO itemTransactionDTO) {
+    public ResponseEntity<ApiResponse<ItemTransactionDTO>> itemTransactionAdd(@RequestBody @Valid ItemTransactionDTO itemTransactionDTO) {
         ItemTransactionDTO savedTransaction = itemTransactionService.addItemTransaction(itemTransactionDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.created(savedTransaction));
     }
 
     // 아이템 판매 내역 [전체 조회]
     @GetMapping("/sale")
-    public ResponseEntity<ApiResponse<List<ItemTransactionDTO>>> saleItemTransactionList(@RequestParam Long studentId) {
-        List<ItemTransactionDTO> itemTransactionDTOList = itemTransactionService.findSaleItemTransactions(studentId);
+    public ResponseEntity<ApiResponse<List<ItemTransactionDTO>>> itemTransactionBySellerList() {
+        List<ItemTransactionDTO> itemTransactionDTOList = itemTransactionService.findItemTransactionsBySeller();
         return ResponseEntity.ok(ApiResponse.success(itemTransactionDTOList));
     }
 
     // 아이템 구매 내역 [전체 조회]
-    @GetMapping("/order")
-    public ResponseEntity<ApiResponse<List<ItemTransactionDTO>>> orderItemTransactionList(@RequestParam Long studentId) {
-        List<ItemTransactionDTO> itemTransactionDTOList = itemTransactionService.findOrderItemTransactions(studentId);
+    @GetMapping("/purchase")
+    public ResponseEntity<ApiResponse<List<ItemTransactionDTO>>> itemTransactionByBuyerList() {
+        List<ItemTransactionDTO> itemTransactionDTOList = itemTransactionService.findItemTransactionsByBuyer();
         return ResponseEntity.ok(ApiResponse.success(itemTransactionDTOList));
     }
 

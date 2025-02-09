@@ -8,6 +8,7 @@ import java.util.List;
 public interface SavingsSubscriptionRepository extends JpaRepository<SavingsSubscription, Long> {
 
     List<SavingsSubscription> findByStudentId(Long studentId);
+
     List<SavingsSubscription> findBySavingsProductId(Long savingsProductId);
 
     boolean existsByStudentIdAndSavingsProductId(Long studentId, Long savingsProductId);

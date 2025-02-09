@@ -4,7 +4,7 @@ import com.ladysparks.ttaenggrang.domain.bank.dto.BankAccountDTO;
 import com.ladysparks.ttaenggrang.domain.bank.entity.BankAccount;
 import com.ladysparks.ttaenggrang.domain.bank.mapper.BankAccountMapper;
 import com.ladysparks.ttaenggrang.domain.bank.repository.BankAccountRepository;
-import com.ladysparks.ttaenggrang.domain.bank.service.BankAccountService;
+import com.ladysparks.ttaenggrang.domain.nation.entity.Nation;
 import com.ladysparks.ttaenggrang.domain.user.dto.*;
 import com.ladysparks.ttaenggrang.domain.user.entity.Student;
 import com.ladysparks.ttaenggrang.domain.user.entity.Teacher;
@@ -12,9 +12,9 @@ import com.ladysparks.ttaenggrang.domain.user.repository.StudentRepository;
 import com.ladysparks.ttaenggrang.domain.user.repository.TeacherRepository;
 import com.ladysparks.ttaenggrang.global.config.JwtTokenProvider;
 import com.ladysparks.ttaenggrang.global.response.ApiResponse;
+import com.ladysparks.ttaenggrang.global.utill.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.boot.model.naming.IllegalIdentifierException;
-import org.springdoc.core.models.GroupedOpenApi;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -34,10 +34,16 @@ public class StudentService {
     private final TeacherRepository teacherRepository;
     private final TeacherService teacherService;
     private final PasswordEncoder passwordEncoder;
-    private final BankAccountService bankAccountService;
     private final BankAccountRepository bankAccountRepository; // ✅ 추가
     private final JwtTokenProvider jwtTokenProvider;
-    private final GroupedOpenApi studentApi;
+    private final SecurityUtil securityUtil;
+
+    public Long getCurrentStudentId() {
+        String username = securityUtil.getCurrentUser();
+        return studentRepository.findByUsername(username)
+                .orElseThrow(() -> new IllegalArgumentException("해당 ID를 가진 학생을 찾을 수 없습니다."))
+                .getId();
+    }
 
     // ✅ 계좌 번호 생성 메서드
     private String generateAccountNumber() {
@@ -79,6 +85,7 @@ public class StudentService {
                     .password(passwordEncoder.encode(password))
                     .teacher(teacher)
                     .bankAccount(bankAccount) // ✅ **저장된 계좌 연결**
+                    .nation(teacher.getNation())
                     .build();
 
             studentRepository.save(student); // ✅ **저장된 bankAccount를 참조하는 상태에서 저장**
@@ -120,6 +127,7 @@ public class StudentService {
                 .password(passwordEncoder.encode(password))
                 .teacher(teacher)
                 .bankAccount(bankAccount)
+                .nation(teacher.getNation())
                 .build();
 
         studentRepository.save(student);
@@ -273,5 +281,53 @@ public class StudentService {
                 .collect(Collectors.toList());
 
         return ApiResponse.success("학생 목록 조회 성공", responseDTOs);
+    }
+
+    public Long getNationIdById(Long studentId) {
+        Student student = studentRepository.findById(studentId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 ID를 가진 학생이 존재하지 않습니다."));
+
+        return Optional.ofNullable(student.getTeacher().getNation())
+                .map(Nation::getId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 학생은 국가 정보가 등록되어 있지 않습니다."));
+    }
+
+    public Long findBankAccountIdById(Long studentId) {
+        return studentRepository.findBankAccountIdById(studentId);
+    }
+
+    // ✅ 교사 ID로 우리반 학생 전체 조회
+    public List<StudentResponseDTO> findAllByTeacherId(Long teacherId) {
+        List<Student> students = studentRepository.findAllByTeacherId(teacherId);
+
+        if (students.isEmpty()) {
+            throw new IllegalArgumentException("우리반 학생이 없습니다.");
+        }
+
+        List<StudentResponseDTO> responseDTOs = students.stream()
+                .map(student -> {
+                    // ✅ JWT 토큰 생성 (학생의 username 기반)
+                    String token = jwtTokenProvider.createToken(student.getUsername());
+
+                    // 학생 정보 DTO로 변환
+                    return new StudentResponseDTO(
+                            student.getId(),
+                            student.getUsername(),
+                            student.getName(),
+                            student.getProfileImage(),
+                            student.getTeacher(),
+                            student.getBankAccount(),
+                            token
+                    );
+                })
+                .collect(Collectors.toList());
+
+        return responseDTOs;
+    }
+
+    public Long findTeacherIdByStudentId(Long studentId) {
+        Student student = studentRepository.findById(studentId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 ID를 가진 학생이 존재하지 않습니다."));
+        return student.getTeacher().getId();
     }
 }

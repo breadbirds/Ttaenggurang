@@ -14,13 +14,11 @@ public interface ItemMapper {
 
     // Entity → DTO 변환
     @Mapping(source = "seller.id", target = "sellerId")
-    @Mapping(source = "teacher.id", target = "teacherId")
     ItemDTO toDto(Item bankAccount);
 
     // DTO → Entity 변환
     @Mapping(target = "id", ignore = true) // ID는 자동 생성되므로 무시
     @Mapping(source = "sellerId", target = "seller.id")
-    @Mapping(source = "teacherId", target = "teacher.id")
     Item toEntity(ItemDTO itemDTO);
 
 }

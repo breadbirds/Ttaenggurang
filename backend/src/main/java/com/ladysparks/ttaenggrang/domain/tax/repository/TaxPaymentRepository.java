@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.Collection;
 import java.util.List;
 
 public interface TaxPaymentRepository extends JpaRepository<TaxPayment, Long> {
@@ -18,4 +19,6 @@ public interface TaxPaymentRepository extends JpaRepository<TaxPayment, Long> {
     @Query("SELECT t FROM TaxPayment t WHERE t.student.teacher.id = :teacherId")
     List<TaxPayment> findByTeacherId(@Param("teacherId") Long teacherId);
 
+    @Query("SELECT t FROM TaxPayment t WHERE t.student.teacher.id = :teacherId AND t.id = :taxId")
+    List<TaxPayment> findByTeacherIdAndTaxId(@Param("teacherId") Long teacherId, @Param("taxId") Long taxId);
 }

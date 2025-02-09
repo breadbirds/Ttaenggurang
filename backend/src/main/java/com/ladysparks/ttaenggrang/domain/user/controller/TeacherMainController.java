@@ -22,8 +22,8 @@ public class TeacherMainController implements TeacherMainApiSpecification {
     }
 
     @GetMapping("/daily-average-income-expense")
-    public ResponseEntity<List<StudentDailyAverageFinancialDTO>> getDailyAverageIncomeAndExpense(@PathVariable Long teacherId) {
-        List<StudentDailyAverageFinancialDTO> response = bankTransactionService.getDailyAverageIncomeAndExpense(teacherId);
+    public ResponseEntity<List<StudentDailyAverageFinancialDTO>> getDailyAverageIncomeAndExpense() {
+        List<StudentDailyAverageFinancialDTO> response = bankTransactionService.getDailyAverageIncomeAndExpense();
         return ResponseEntity.ok(response);
     }
 

@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/taxes/")
@@ -28,7 +29,7 @@ public class TaxController implements TaxApiSpecification {
 
     // 세금 항목 [전체 조회]
     @GetMapping
-    public ResponseEntity<ApiResponse<List<TaxDTO>>> taxList(@RequestParam Long teacherId) {
+    public ResponseEntity<ApiResponse<List<TaxDTO>>> taxList(@RequestParam Optional<Long> teacherId) {
         List<TaxDTO> taxDTOList = taxService.findTaxesByTeacher(teacherId);
         ApiResponse<List<TaxDTO>> response = ApiResponse.success(taxDTOList);
         return ResponseEntity.status(response.getStatusCode()).body(response);

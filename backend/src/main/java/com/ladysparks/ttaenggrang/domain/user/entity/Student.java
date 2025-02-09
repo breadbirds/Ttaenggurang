@@ -2,6 +2,7 @@ package com.ladysparks.ttaenggrang.domain.user.entity;
 
 import com.ladysparks.ttaenggrang.domain.bank.entity.BankAccount;
 import com.ladysparks.ttaenggrang.domain.etf.entity.EtfTransaction;
+import com.ladysparks.ttaenggrang.domain.nation.entity.Nation;
 import com.ladysparks.ttaenggrang.domain.stock.entity.StockTransaction;
 import jakarta.persistence.*;
 import lombok.*;
@@ -51,6 +52,10 @@ public class Student {
     @ManyToOne
     @JoinColumn(name = "job_id")
     private Job job;
+
+    @ManyToOne
+    @JoinColumn(name = "nation_id")
+    private Nation nation;
 
     //주식 거래내역
 //    @OneToMany(mappedBy = "student", fetch = FetchType.LAZY)

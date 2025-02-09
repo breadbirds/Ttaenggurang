@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface ItemTransactionRepository extends JpaRepository<ItemTransaction, Long> {
 
-    // ✅ 특정 판매자가 판매한 모든 거래 조회
+    // 특정 판매자가 판매한 모든 거래 조회
     List<ItemTransaction> findByItemSellerId(Long sellerId);
 
     List<ItemTransaction> findByBuyerId(Long buyerId);

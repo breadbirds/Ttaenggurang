@@ -10,7 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/bank-account")
+@RequestMapping("/bank-accounts")
 public class BankAccountController implements BankAccountApiSpecification {
 
     private final BankAccountService bankAccountService;
@@ -21,16 +21,18 @@ public class BankAccountController implements BankAccountApiSpecification {
     }
 
     // 은행 계좌 [등록]
+    /*
     @PostMapping
     public ResponseEntity<ApiResponse<BankAccountDTO>> BankAccountAdd(@RequestBody BankAccountDTO bankAccountDto) {
         BankAccountDTO savedBankAccountDto = bankAccountService.addBankAccount(bankAccountDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.created(savedBankAccountDto));
     }
+    */
 
     // 은행 계좌 [조회]
-    @GetMapping("/{bankAccountId}")
-    public ResponseEntity<ApiResponse<BankAccountDTO>> BankAccountDetails(@PathVariable("bankAccountId") Long bankAccountId) {
-        BankAccountDTO account = bankAccountService.findBankAccount(bankAccountId);
+    @GetMapping
+    public ResponseEntity<ApiResponse<BankAccountDTO>> BankAccountDetails() {
+        BankAccountDTO account = bankAccountService.findBankAccount();
         return ResponseEntity.ok(ApiResponse.success(account));
     }
 
