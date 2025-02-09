@@ -19,10 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -184,50 +181,68 @@ public class BankTransactionService {
                 .collect(Collectors.toList());
     }
 
-    public WeeklyReportDTO createWeeklyReport() {
+    public WeeklyReportDTO generateWeeklyReport() {
+        Long studentId = studentService.getCurrentStudentId();
+
         LocalDateTime endDate = LocalDateTime.now();
         LocalDateTime startDate = endDate.minusDays(7);
 
-        Long studentId = studentService.getCurrentStudentId();
-        Long bankAccountId = studentService.findBankAccountIdById(studentId);
+        // 특정 학생의 최근 7일간의 거래 내역 조회
+        List<BankTransaction> transactions = bankTransactionRepository.findTransactionsByStudentIdAndDateRange(studentId, startDate, endDate);
 
-        // 해당 학생의 은행 계좌에서 최근 7일간 거래 내역 조회
-        List<BankTransaction> transactions = bankTransactionRepository.findTransactionsByBankAccountAndDateRange(bankAccountId, startDate, endDate);
-
+        // 항목별 금액 계산
         int totalIncome = transactions.stream()
                 .filter(t -> t.getType() == BankTransactionType.DEPOSIT
                         || t.getType() == BankTransactionType.SALARY
                         || t.getType() == BankTransactionType.ITEM_SELL
-                        || t.getType() == BankTransactionType.BANK_INTEREST
                         || t.getType() == BankTransactionType.ETF_SELL
+                        || t.getType() == BankTransactionType.STOCK_SELL
+                        || t.getType() == BankTransactionType.SAVINGS_INTEREST
+                        || t.getType() == BankTransactionType.BANK_INTEREST
+                        || t.getType() == BankTransactionType.INCENTIVE)
+                .mapToInt(BankTransaction::getAmount)
+                .sum();
+
+        int salaryAmount = transactions.stream()
+                .filter(t -> t.getType() == BankTransactionType.SALARY)
+                .mapToInt(BankTransaction::getAmount)
+                .sum();
+
+        int savingsAmount = transactions.stream()
+                .filter(t -> t.getType() == BankTransactionType.SAVINGS_DEPOSIT)
+                .mapToInt(BankTransaction::getAmount)
+                .sum();
+
+        int investmentReturn = transactions.stream()
+                .filter(t -> t.getType() == BankTransactionType.ETF_SELL
                         || t.getType() == BankTransactionType.STOCK_SELL)
                 .mapToInt(BankTransaction::getAmount)
                 .sum();
 
-        int totalExpense = transactions.stream()
+        int incentiveAmount = transactions.stream()
+                .filter(t -> t.getType() == BankTransactionType.INCENTIVE)
+                .mapToInt(BankTransaction::getAmount)
+                .sum();
+
+        int totalExpenses = transactions.stream()
                 .filter(t -> t.getType() == BankTransactionType.WITHDRAW
                         || t.getType() == BankTransactionType.ITEM_BUY
-                        || t.getType() == BankTransactionType.ETF_BUY
-                        || t.getType() == BankTransactionType.STOCK_BUY)
+                        || t.getType() == BankTransactionType.STOCK_BUY
+                        || t.getType() == BankTransactionType.ETF_BUY)
                 .mapToInt(BankTransaction::getAmount)
                 .sum();
 
-        int totalSavings = transactions.stream()
-                .filter(t -> t.getType() == BankTransactionType.SAVINGS_DEPOSIT || t.getType() == BankTransactionType.BANK_INTEREST)
+        int taxAmount = transactions.stream()
+                .filter(t -> t.getType() == BankTransactionType.TAX)
                 .mapToInt(BankTransaction::getAmount)
                 .sum();
 
-        int totalInvestment = transactions.stream()
-                .filter(t -> t.getType() == BankTransactionType.STOCK_BUY || t.getType() == BankTransactionType.ETF_BUY)
+        int fineAmount = transactions.stream()
+                .filter(t -> t.getType() == BankTransactionType.FINE)
                 .mapToInt(BankTransaction::getAmount)
                 .sum();
 
-        int totalInvestmentReturn = transactions.stream()
-                .filter(t -> t.getType() == BankTransactionType.STOCK_SELL || t.getType() == BankTransactionType.ETF_SELL)
-                .mapToInt(BankTransaction::getAmount)
-                .sum();
-
-        // 한 주의 첫 거래 이전 잔액과 마지막 거래 이후 잔액을 비교
+        // 한 주의 첫 거래 이전 잔액과 마지막 거래 이후 잔액을 비교(순자산 변화)
         int netBalanceChange = 0;
         if (!transactions.isEmpty()) {
             int firstBalance = transactions.get(0).getBalanceBefore();
@@ -235,14 +250,17 @@ public class BankTransactionService {
             netBalanceChange = lastBalance - firstBalance;
         }
 
-        return new WeeklyReportDTO(
-                totalIncome,
-                totalExpense,
-                totalSavings,
-                totalInvestment,
-                totalInvestmentReturn,
-                netBalanceChange
-        );
+        // DTO 생성 및 반환
+        return WeeklyReportDTO.builder()
+                .totalIncome(totalIncome)
+                .salaryAmount(salaryAmount)
+                .savingsAmount(savingsAmount)
+                .investmentReturn(investmentReturn)
+                .incentiveAmount(incentiveAmount)
+                .totalExpenses(totalExpenses)
+                .taxAmount(taxAmount)
+                .fineAmount(fineAmount)
+                .build();
     }
 
     // 최근 7일 간 평균 수입, 지출
@@ -305,6 +323,68 @@ public class BankTransactionService {
         }
 
         return dailyAverages;
+    }
+
+    // 주간 통계
+    public int getTotalIncome(Long studentId, LocalDateTime startDate, LocalDateTime endDate) {
+        return bankTransactionRepository.getTotalAmountByType(studentId, startDate, endDate,
+                Arrays.asList(
+                        BankTransactionType.DEPOSIT,
+                        BankTransactionType.SALARY,
+                        BankTransactionType.INCENTIVE,
+                        BankTransactionType.ITEM_SELL,
+                        BankTransactionType.ETF_SELL,
+                        BankTransactionType.STOCK_SELL,
+                        BankTransactionType.SAVINGS_INTEREST,
+                        BankTransactionType.BANK_INTEREST
+                ));
+    }
+
+    public int getSalary(Long studentId, LocalDateTime startDate, LocalDateTime endDate) {
+        return bankTransactionRepository.getTotalAmountByType(studentId, startDate, endDate,
+                Collections.singletonList(BankTransactionType.SALARY));
+    }
+
+    public int getSavings(Long studentId, LocalDateTime startDate, LocalDateTime endDate) {
+        return bankTransactionRepository.getTotalAmountByType(studentId, startDate, endDate,
+                Arrays.asList(
+                        BankTransactionType.SAVINGS_DEPOSIT,
+                        BankTransactionType.SAVINGS_INTEREST,
+                        BankTransactionType.BANK_INTEREST
+                ));
+    }
+
+    public int getIncentive(Long studentId, LocalDateTime startDate, LocalDateTime endDate) {
+        return bankTransactionRepository.getTotalAmountByType(studentId, startDate, endDate,
+                Collections.singletonList(BankTransactionType.INCENTIVE));
+    }
+
+    public int getTotalExpenses(Long studentId, LocalDateTime startDate, LocalDateTime endDate) {
+        return bankTransactionRepository.getTotalAmountByType(studentId, startDate, endDate,
+                Arrays.asList(
+                        BankTransactionType.WITHDRAW,
+                        BankTransactionType.ITEM_BUY,
+                        BankTransactionType.STOCK_BUY,
+                        BankTransactionType.ETF_BUY
+                ));
+    }
+
+    public int getTaxAmount(Long studentId, LocalDateTime startDate, LocalDateTime endDate) {
+        return bankTransactionRepository.getTotalAmountByType(studentId, startDate, endDate,
+                Collections.singletonList(BankTransactionType.TAX));
+    }
+
+    public int getFineAmount(Long studentId, LocalDateTime startDate, LocalDateTime endDate) {
+        return bankTransactionRepository.getTotalAmountByType(studentId, startDate, endDate,
+                Collections.singletonList(BankTransactionType.FINE));
+    }
+
+    public int getInvestmentSellAmount(Long studentId, LocalDateTime startDate, LocalDateTime endDate) {
+        return bankTransactionRepository.getTotalAmountByType(studentId, startDate, endDate,
+                Arrays.asList(
+                        BankTransactionType.STOCK_SELL,
+                        BankTransactionType.ETF_SELL
+                ));
     }
 
 }

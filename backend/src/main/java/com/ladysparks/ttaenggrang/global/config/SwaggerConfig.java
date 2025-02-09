@@ -112,7 +112,7 @@ public class SwaggerConfig {
     public GroupedOpenApi weeklyReportApi() {
         return GroupedOpenApi.builder()
                 .group("weekly-report")
-                .pathsToMatch("/weekly/**")
+                .pathsToMatch("/weekly-report/**")
                 .build();
     }
 

@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.hibernate.boot.model.naming.IllegalIdentifierException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.webjars.NotFoundException;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -105,6 +106,26 @@ public class TeacherService {
         Teacher teacher = teacherRepository.findById(teacherId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 ID의 교사가 존재하지 않습니다."));
         return teacher.getNation() == null ? -1 : teacher.getNation().getId();
+    }
+
+    public List<TeacherResponseDTO> findAllTeachers() {
+        List<Teacher> teachers = teacherRepository.findAll();
+
+        if (teachers.isEmpty()) {
+            throw new NotFoundException("등록된 교사가 없습니다.");
+        }
+
+        List<TeacherResponseDTO> responseDTOs = teachers.stream()
+                .map(teacher -> new TeacherResponseDTO(
+                        teacher.getId(),
+                        teacher.getEmail(),
+                        teacher.getName(),
+                        teacher.getSchool(),
+                        teacher.getCreatedAt()
+                ))
+                .collect(Collectors.toList());
+
+        return responseDTOs;
     }
 
 }
