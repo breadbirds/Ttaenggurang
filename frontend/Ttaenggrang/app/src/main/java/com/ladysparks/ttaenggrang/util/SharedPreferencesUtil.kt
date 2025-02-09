@@ -31,6 +31,7 @@ object SharedPreferencesUtil {
 
     // Key 상수 값 모음
     const val JWT_TOKEN_KEY = "jwt_token"
+    const val IS_TEACHER = "is_teacher"
 
     private lateinit var preferences: SharedPreferences
 
