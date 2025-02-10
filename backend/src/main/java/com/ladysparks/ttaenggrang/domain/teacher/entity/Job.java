@@ -8,6 +8,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -40,8 +42,7 @@ public class Job {
         this.salaryDate = new Timestamp(System.currentTimeMillis());  // 기본값 설정
     }
 
-    @OneToOne
-    @JoinColumn(name = "student_id")  // nullable = false
-    private Student student;
+    @OneToMany(mappedBy = "job", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Student> students = new ArrayList<>();
 
 }
