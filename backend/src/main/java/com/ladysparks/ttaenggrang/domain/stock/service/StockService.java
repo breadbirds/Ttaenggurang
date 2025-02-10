@@ -300,80 +300,148 @@ public class StockService {
         return StockTransactionDTO.fromEntity(transaction, updatedOwnedQty);
     }
 
-    //가격 변동
-    @Transactional
-    public StockDTO updateStockPrice(Long stockId) {
-        Stock stock = stockRepository.findById(stockId)
-                .orElseThrow(() -> new RuntimeException("주식이 존재하지 않습니다."));
-
-        // 주식장이 활성화된 경우에만 가격 변동이 가능
-//        if (!stock.isMarketActive()) {
-//            throw new RuntimeException("주식장이 활성화되지 않았습니다.");
+//    //가격 변동
+//    @Transactional
+//    public StockDTO updateStockPrice(Long stockId) {
+//        Stock stock = stockRepository.findById(stockId)
+//                .orElseThrow(() -> new RuntimeException("주식이 존재하지 않습니다."));
+//
+//        // 주식장이 활성화된 경우에만 가격 변동이 가능
+////        if (!stock.isMarketActive()) {
+////            throw new RuntimeException("주식장이 활성화되지 않았습니다.");
+////        }
+//
+//        // 전날 날짜 계산
+//        LocalDate yesterday = LocalDate.now().minusDays(1);
+//
+//        // LocalDate를 Timestamp로 변환 (00:00:00로 설정)
+//        Timestamp startTimestamp = Timestamp.valueOf(yesterday.atStartOfDay());
+//        // LocalDate를 Timestamp로 변환 (23:59:59로 설정)
+//        Timestamp endTimestamp = Timestamp.valueOf(yesterday.atTime(23, 59, 59));
+//
+//        // 전날 매수, 매도 수량 가져오기 (날짜 범위 추가)
+//        int totalBought = stockTransactionRepository.getTotalSharesByType(stockId.intValue(), TransType.BUY, startTimestamp, endTimestamp);
+//        int totalSold = stockTransactionRepository.getTotalSharesByType(stockId.intValue(), TransType.SELL, startTimestamp, endTimestamp);
+//
+//        // 매수, 매도 수량 평균 계산
+//        int totalTransactions = totalBought + totalSold;
+//        double calculatedChangeRate = 0.0;
+//
+//        if (totalTransactions > 0) {
+//            double buyRatio = (double) totalBought / totalTransactions;
+//            double sellRatio = (double) totalSold / totalTransactions;
+//            calculatedChangeRate = (buyRatio - sellRatio) * 0.05; // 최대 ±5% 변동
 //        }
+//
+//        // 새로운 가격 계산
+//        int currentPrice = stock.getPrice_per();
+//        int newPrice = (int) (currentPrice * (1 + calculatedChangeRate));
+//
+//        // 최소 가격 제한
+//        if (newPrice < 1000) {
+//            newPrice = 1000;
+//        }
+//
+//        // 가격 업데이트
+//        stock.setPrice_per(newPrice);
+//        stock.setChangeRate((int) (calculatedChangeRate * 100));
+//        stockRepository.save(stock);
+//
+//        System.out.println(stock.getName() + "의 새 가격: " + newPrice);
+//
+//        // 변동된 가격을 stock_history 테이블에 기록
+//        StockHistory history = new StockHistory();
+//        history.setStock(stock);
+//        history.setPrice(newPrice);
+//        history.setVolume(totalTransactions);
+//        history.setDate(Timestamp.valueOf(LocalDateTime.now()));
+//        stockHistoryRepository.save(history);
+//
+//        // DTO 변환 및 반환
+//        return StockDTO.fromEntity(stock);
+//    }
 
-        // 전날 날짜 계산
-        LocalDate yesterday = LocalDate.now().minusDays(1);
-
-        // LocalDate를 Timestamp로 변환 (00:00:00로 설정)
-        Timestamp startTimestamp = Timestamp.valueOf(yesterday.atStartOfDay());
-        // LocalDate를 Timestamp로 변환 (23:59:59로 설정)
-        Timestamp endTimestamp = Timestamp.valueOf(yesterday.atTime(23, 59, 59));
-
-        // 전날 매수, 매도 수량 가져오기 (날짜 범위 추가)
-        int totalBought = stockTransactionRepository.getTotalSharesByType(stockId.intValue(), TransType.BUY, startTimestamp, endTimestamp);
-        int totalSold = stockTransactionRepository.getTotalSharesByType(stockId.intValue(), TransType.SELL, startTimestamp, endTimestamp);
-
-        // 매수, 매도 수량 평균 계산
-        int totalTransactions = totalBought + totalSold;
-        double calculatedChangeRate = 0.0;
-
-        if (totalTransactions > 0) {
-            double buyRatio = (double) totalBought / totalTransactions;
-            double sellRatio = (double) totalSold / totalTransactions;
-            calculatedChangeRate = (buyRatio - sellRatio) * 0.05; // 최대 ±5% 변동
-        }
-
-        // 새로운 가격 계산
-        int currentPrice = stock.getPrice_per();
-        int newPrice = (int) (currentPrice * (1 + calculatedChangeRate));
-
-        // 최소 가격 제한
-        if (newPrice < 1000) {
-            newPrice = 1000;
-        }
-
-        // 가격 업데이트
-        stock.setPrice_per(newPrice);
-        stock.setChangeRate((int) (calculatedChangeRate * 100));
-        stockRepository.save(stock);
-
-        System.out.println(stock.getName() + "의 새 가격: " + newPrice);
-
-        // 변동된 가격을 stock_history 테이블에 기록
-        StockHistory history = new StockHistory();
-        history.setStock(stock);
-        history.setPrice(newPrice);
-        history.setVolume(totalTransactions);
-        history.setDate(Timestamp.valueOf(LocalDateTime.now()));
-        stockHistoryRepository.save(history);
-
-        // DTO 변환 및 반환
-        return StockDTO.fromEntity(stock);
-    }
-
-    //카테고리 조회
-
-    //    public List<StockDTO> getStocksByCategory(String category) {
-//        return stockRepository.findByCategory(category);
+////가격 변동
+//    public void openMarket() {
+//        try {
+//            // 주식장 열기
+//            List<Stock> stocks = stockRepository.findAll();
+//
+//            if (stocks.isEmpty()) {
+//                throw new IllegalArgumentException("주식 목록이 비어 있습니다.");
+//            }
+//
+//            // 모든 주식의 marketActive를 true로 설정하여 주식장이 열리도록 함
+//            for (Stock stock : stocks) {
+//                stock.setIsMarketActive(true); // 주식장 열기
+//            }
+//            stockRepository.saveAll(stocks);
+//            System.out.println("📢 주식장이 열렸습니다.");
+//        } catch (IllegalArgumentException e) {
+//            System.err.println("주식장 열기 실패: " + e.getMessage());
+//        } catch (Exception e) {
+//            System.err.println("알 수 없는 오류 발생: " + e.getMessage());
+//        }
 //    }
 //
-//    // 사용자가 선택한 주식 ID 리스트를 받아 DTO 리스트로 반환하는 메소드
-//    public List<StockDTO> selectStocks(List<Long> selectedStockIds, List<StockDTO> availableStocks) {
-//        return availableStocks.stream()
-//                .filter(stockDTO -> selectedStockIds.contains(stockDTO.getId())) // 선택한 주식만 필터링
-//                .collect(Collectors.toList());
+//    public void closeMarket() {
+//        try {
+//            // 주식장 닫기 -> 가격 변동 처리
+//            List<Stock> stocks = stockRepository.findAll();
+//
+//            if (stocks.isEmpty()) {
+//                throw new IllegalArgumentException("주식 목록이 비어 있습니다.");
+//            }
+//
+//            for (Stock stock : stocks) {
+//                int totalBuyVolume = stockHistoryRepository.getTotalBuyVolume(stock.getId());
+//                int totalSellVolume = stockHistoryRepository.getTotalSellVolume(stock.getId());
+//
+//                if (totalBuyVolume == 0 && totalSellVolume == 0) {
+//                    System.out.println("거래량 없음: " + stock.getName() + " 가격 유지");
+//                    continue; // 거래량 없으면 가격 유지
+//                }
+//
+//                double newPrice = calculatePriceChange(totalBuyVolume, totalSellVolume, stock.getPrice_per());
+//                stock.setPrice_per((int) Math.round(newPrice)); // 새로운 가격 적용
+//                stock.setPriceChangeTime(LocalDateTime.now());
+//                stock.setIsMarketActive(false); // 주식장 닫기
+//
+//                System.out.println("📉 주식 가격 변동 적용: " + stock.getName() + " -> " + stock.getPrice_per() + "원");
+//            }
+//
+//            stockRepository.saveAll(stocks);
+//            System.out.println("🔒 주식장이 닫혔습니다.");
+//        } catch (IllegalArgumentException e) {
+//            System.err.println("주식장 닫기 실패: " + e.getMessage());
+//        } catch (Exception e) {
+//            System.err.println("알 수 없는 오류 발생: " + e.getMessage());
+//        }
 //    }
-
+//
+//    /**
+//     * 주식 가격 변동 계산 (매수량과 매도량 기반)
+//     */
+//    private double calculatePriceChange(int buyVolume, int sellVolume, double oldPrice) {
+//        if (buyVolume == 0 && sellVolume == 0) {
+//            return oldPrice; // 거래가 없으면 가격 유지
+//        }
+//
+//        try {
+//            // 매수량과 매도량 차이를 계산하여 변동률을 구함
+//            double changeRate = (double) (buyVolume - sellVolume) / (buyVolume + sellVolume);
+//
+//            // 변동률을 ±10%로 제한 (0.10 = 10%)
+//            changeRate = Math.max(-0.10, Math.min(0.10, changeRate));
+//
+//            // 새로운 가격 계산
+//            return oldPrice * (1 + changeRate);
+//        } catch (ArithmeticException e) {
+//            throw new IllegalArgumentException("매수량과 매도량의 합이 0입니다. 가격 계산이 불가능합니다.");
+//        } catch (Exception e) {
+//            throw new RuntimeException("알 수 없는 오류 발생: " + e.getMessage());
+//        }
+//    }
 }
 
 
