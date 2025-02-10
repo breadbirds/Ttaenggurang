@@ -17,7 +17,7 @@ public interface ItemTransactionApiSpecification {
     @Operation(summary = "아이템 구매 [등록]", description = """
             💡학생이 아이템을 구매합니다.
 
-            **[ 필드 설명 ]**
+            **[ 요청 필드 ]**
             - **itemId** : 아이템 ID
             - **quantity** : 구매 수량
             

@@ -17,7 +17,7 @@ public interface SavingsSubscriptionApiSpecification {
     @Operation(summary = "적금 가입 [등록]", description = """
             💡 학생이 적금 상품에 가입합니다.
             
-            **[ 필드 설명 ]**
+            **[ 요청 필드 ]**
             - **savingsProductId** : 적금 상품 ID
             - **depositDayOfWeek** : 납입 요일
                 - **"MONDAY"**

@@ -17,7 +17,7 @@ public interface ItemApiSpecification {
     @Operation(summary = "학급 내 판매 아이템 [등록]", description = """
             💡 학생이 판매할 아이템을 등록합니다.
 
-            **[ 필드 설명 ]**
+            **[ 요청 필드 ]**
             - **name** : 상품명
             - **description** : 상품 설명
             - **image** : 상품 이미지 URL (S3 URL)
