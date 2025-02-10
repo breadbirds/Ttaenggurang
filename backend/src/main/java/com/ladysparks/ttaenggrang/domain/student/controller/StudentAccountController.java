@@ -46,7 +46,7 @@ public class StudentAccountController implements StudentAccountApiSpecification 
             String token = authHeader.substring(7);
 
             // 2. (선택) JWT 블랙리스트 처리 또는 토큰 무효화 로직 추가 가능
-            securityUtil.blicklistToken(token);
+            securityUtil.blacklistToken(token);
 
             return ResponseEntity.ok(ApiResponse.success("학생 로그아웃 성공"));
         } else {
