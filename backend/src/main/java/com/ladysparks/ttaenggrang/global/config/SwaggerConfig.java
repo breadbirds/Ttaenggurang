@@ -124,4 +124,12 @@ public class SwaggerConfig {
                 .build();
     }
 
+    @Bean
+    public GroupedOpenApi fcmApi() {
+        return GroupedOpenApi.builder()
+                .group("fcm")
+                .pathsToMatch("/fcm/**")
+                .build();
+    }
+
 }
