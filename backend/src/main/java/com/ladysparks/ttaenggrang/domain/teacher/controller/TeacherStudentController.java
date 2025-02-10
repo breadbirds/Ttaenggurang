@@ -9,11 +9,14 @@ import com.ladysparks.ttaenggrang.global.docs.TeacherStudentApiSpecificaion;
 import com.ladysparks.ttaenggrang.global.response.ApiResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.*;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -26,17 +29,23 @@ public class TeacherStudentController implements TeacherStudentApiSpecificaion {
     private final StudentService studentService;
 
     // 학생 계정 빠른 생성 (교사만 가능)  (토큰 문제 해결 후 다시 사용하기)
-    @PostMapping("/quick-create")
+    @PostMapping(value = "/quick-create", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<ApiResponse<List<StudentResponseDTO>>> createStudents(
-            @RequestBody @Valid MultipleStudentCreateDTO studentCreateDTO) {
+            @RequestParam("baseId") String baseId,
+            @RequestParam("studentCount") int studentCount,
+            @RequestPart("file")MultipartFile file) {  // 🔥 파일과 함께 데이터를 받으려면 ModelAttribute 사용
 
         // ✅ 현재 로그인한 교사의 ID 가져오기
         Long teacherId = getTeacherIdFromSecurityContext();
 
-        // ✅ 학생 계정 생성 서비스 호출
+        // DTO로 변환
+        MultipleStudentCreateDTO studentCreateDTO = new MultipleStudentCreateDTO();
+        studentCreateDTO.setBaseId(baseId);
+        studentCreateDTO.setStudentCount(studentCount);
+        studentCreateDTO.setFile(file);
+
         List<StudentResponseDTO> createdStudents = studentService.createStudentAccounts(teacherId, studentCreateDTO);
 
-        // ✅ ApiResponse.success() 사용
         return ResponseEntity.ok(ApiResponse.success(createdStudents));
     }
 
