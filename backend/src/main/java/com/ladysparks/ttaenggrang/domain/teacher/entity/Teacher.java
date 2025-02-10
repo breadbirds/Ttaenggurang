@@ -2,7 +2,6 @@ package com.ladysparks.ttaenggrang.domain.teacher.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ladysparks.ttaenggrang.domain.etf.entity.Etf;
-import com.ladysparks.ttaenggrang.domain.nation.entity.Nation;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

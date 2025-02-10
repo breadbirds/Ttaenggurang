@@ -2,8 +2,7 @@ package com.ladysparks.ttaenggrang.domain.teacher.service;
 
 import com.ladysparks.ttaenggrang.domain.bank.service.BankAccountService;
 import com.ladysparks.ttaenggrang.domain.item.service.ItemService;
-import com.ladysparks.ttaenggrang.domain.nation.dto.NationDTO;
-import com.ladysparks.ttaenggrang.domain.nation.service.NationService;
+import com.ladysparks.ttaenggrang.domain.teacher.dto.NationDTO;
 import com.ladysparks.ttaenggrang.domain.student.service.StudentService;
 import com.ladysparks.ttaenggrang.domain.teacher.dto.TeacherDashboardDTO;
 import lombok.RequiredArgsConstructor;

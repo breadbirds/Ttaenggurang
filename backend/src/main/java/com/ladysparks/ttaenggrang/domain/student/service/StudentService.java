@@ -4,7 +4,7 @@ import com.ladysparks.ttaenggrang.domain.bank.dto.BankAccountDTO;
 import com.ladysparks.ttaenggrang.domain.bank.entity.BankAccount;
 import com.ladysparks.ttaenggrang.domain.bank.mapper.BankAccountMapper;
 import com.ladysparks.ttaenggrang.domain.bank.repository.BankAccountRepository;
-import com.ladysparks.ttaenggrang.domain.nation.entity.Nation;
+import com.ladysparks.ttaenggrang.domain.teacher.entity.Nation;
 import com.ladysparks.ttaenggrang.domain.student.dto.SavingsAchievementDTO;
 import com.ladysparks.ttaenggrang.domain.student.dto.StudentLoginRequestDTO;
 import com.ladysparks.ttaenggrang.domain.student.dto.StudentLoginResponseDTO;

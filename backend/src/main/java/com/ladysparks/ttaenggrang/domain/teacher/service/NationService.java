@@ -1,10 +1,9 @@
-package com.ladysparks.ttaenggrang.domain.nation.service;
+package com.ladysparks.ttaenggrang.domain.teacher.service;
 
-import com.ladysparks.ttaenggrang.domain.nation.dto.NationDTO;
-import com.ladysparks.ttaenggrang.domain.nation.entity.Nation;
-import com.ladysparks.ttaenggrang.domain.nation.mapper.NationMapper;
-import com.ladysparks.ttaenggrang.domain.nation.repository.NationRepository;
-import com.ladysparks.ttaenggrang.domain.teacher.service.TeacherService;
+import com.ladysparks.ttaenggrang.domain.teacher.dto.NationDTO;
+import com.ladysparks.ttaenggrang.domain.teacher.entity.Nation;
+import com.ladysparks.ttaenggrang.domain.teacher.mapper.NationMapper;
+import com.ladysparks.ttaenggrang.domain.teacher.repository.NationRepository;
 import com.ladysparks.ttaenggrang.global.response.ApiResponse;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;

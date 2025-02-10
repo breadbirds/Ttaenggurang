@@ -1,4 +1,4 @@
-package com.ladysparks.ttaenggrang.domain.nation.dto;
+package com.ladysparks.ttaenggrang.domain.teacher.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.validation.constraints.Min;

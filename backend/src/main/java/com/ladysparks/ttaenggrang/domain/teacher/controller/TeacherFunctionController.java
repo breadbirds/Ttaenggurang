@@ -1,11 +1,11 @@
 package com.ladysparks.ttaenggrang.domain.teacher.controller;
 
 import com.ladysparks.ttaenggrang.domain.teacher.dto.JobCreateDTO;
-import com.ladysparks.ttaenggrang.domain.nation.dto.NationDTO;
+import com.ladysparks.ttaenggrang.domain.teacher.dto.NationDTO;
 import com.ladysparks.ttaenggrang.domain.student.dto.StudentResponseDTO;
 import com.ladysparks.ttaenggrang.domain.teacher.repository.TeacherRepository;
 import com.ladysparks.ttaenggrang.domain.teacher.service.JobService;
-import com.ladysparks.ttaenggrang.domain.nation.service.NationService;
+import com.ladysparks.ttaenggrang.domain.teacher.service.NationService;
 import com.ladysparks.ttaenggrang.domain.student.service.StudentService;
 import com.ladysparks.ttaenggrang.global.docs.TeacherFunctionApiSpecification;
 import com.ladysparks.ttaenggrang.global.response.ApiResponse;
