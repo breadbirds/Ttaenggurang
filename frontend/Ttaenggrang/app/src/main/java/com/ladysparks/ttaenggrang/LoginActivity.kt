@@ -10,6 +10,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
 import com.ladysparks.ttaenggrang.base.ApplicationClass
+import com.ladysparks.ttaenggrang.base.BaseActivity
 import com.ladysparks.ttaenggrang.data.model.request.StudentSignInRequest
 import com.ladysparks.ttaenggrang.data.model.request.TeacherSignInRequest
 import com.ladysparks.ttaenggrang.data.model.response.StudentSignInResponse
@@ -20,7 +21,7 @@ import com.ladysparks.ttaenggrang.util.SharedPreferencesUtil
 import com.ladysparks.ttaenggrang.util.showToast
 import kotlinx.coroutines.launch
 
-class LoginActivity : AppCompatActivity() {
+class LoginActivity : BaseActivity() {
 
     private val binding by lazy { ActivityLoginBinding.inflate(layoutInflater) }
     private var isPasswordVisible = false

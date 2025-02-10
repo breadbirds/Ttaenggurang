@@ -1,6 +1,6 @@
 package com.ladysparks.ttaenggrang.domain.bank.entity;
 
-import com.ladysparks.ttaenggrang.domain.user.entity.Teacher;
+import com.ladysparks.ttaenggrang.domain.teacher.entity.Teacher;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
