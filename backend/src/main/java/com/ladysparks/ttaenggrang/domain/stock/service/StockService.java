@@ -8,6 +8,7 @@ import com.ladysparks.ttaenggrang.domain.bank.service.BankTransactionService;
 import com.ladysparks.ttaenggrang.domain.stock.dto.OpenResponseDTO;
 import com.ladysparks.ttaenggrang.domain.stock.dto.StockTransactionDTO;
 import com.ladysparks.ttaenggrang.domain.stock.entity.Stock;
+import com.ladysparks.ttaenggrang.domain.stock.entity.StockHistory;
 import com.ladysparks.ttaenggrang.domain.stock.entity.StockTransaction;
 import com.ladysparks.ttaenggrang.domain.stock.entity.TransType;
 import com.ladysparks.ttaenggrang.domain.stock.dto.StockDTO;
