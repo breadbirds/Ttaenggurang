@@ -361,6 +361,7 @@ public class StockService {
 //        return StockDTO.fromEntity(stock);
 //    }
 
+
 ////가격 변동
 //    public void openMarket() {
 //        try {
@@ -443,8 +444,5 @@ public class StockService {
 //        }
 //    }
 }
-
-
-
 
 
