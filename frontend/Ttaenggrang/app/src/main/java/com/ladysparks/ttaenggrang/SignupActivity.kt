@@ -8,6 +8,7 @@ import android.widget.EditText
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import com.ladysparks.ttaenggrang.base.BaseActivity
 import com.ladysparks.ttaenggrang.data.model.request.TeacherSignUpRequest
 import com.ladysparks.ttaenggrang.data.remote.RetrofitUtil
 import com.ladysparks.ttaenggrang.databinding.ActivitySignupBinding
@@ -15,7 +16,7 @@ import com.ladysparks.ttaenggrang.util.showToast
 import kotlinx.coroutines.launch
 import java.util.Date
 
-class SignupActivity : AppCompatActivity() {
+class SignupActivity : BaseActivity() {
 
     // binding
     private val binding by lazy { ActivitySignupBinding.inflate(layoutInflater) }

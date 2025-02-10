@@ -10,49 +10,36 @@
     android:orientation="vertical"
     android:padding="@dimen/spacing_20">
 
-    <ImageButton
-        android:id="@+id/imgDialogStatus"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="@dimen/spacing_10"
-        android:background="@android:color/transparent"
-        app:layout_constraintEnd_toEndOf="parent"
+    <TextView
+        android:id="@+id/textVoteTitle"
+        style="@style/heading3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="우리반 봉사왕"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btnDialogClose"
-        android:layout_width="44dp"
-        android:layout_height="44dp"
-        android:layout_marginTop="@dimen/spacing_10"
-        android:background="@drawable/ic_close"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <TextView
-        android:id="@+id/textDialogTitle"
-        style="@style/heading2"
+        android:id="@+id/textVoteDate"
+        android:layout_marginTop="5dp"
+        style="@style/body2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/spacing_20"
-        android:text="타이틀 영역"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imgDialogStatus" />
-
-    <TextView
-        android:id="@+id/textDialogContent"
-        style="@style/body1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/spacing_20"
-        android:gravity="center"
+        android:text="2025.01.02 ~ 2025.02.04"
         android:textColor="@color/black300"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textDialogTitle"
-        tools:text="내용 테스트\n중앙 정렬 테스트\n실제 화면에는 보이지 않습니다" />
+        app:layout_constraintStart_toStartOf="@+id/textVoteTitle"
+        app:layout_constraintTop_toBottomOf="@+id/textVoteTitle" />
+
+
+    <EditText
+        android:layout_marginTop="@dimen/spacing_20"
+        android:layout_marginHorizontal="@dimen/spacing_40"
+        android:id="@+id/selectStudent"
+        app:layout_constraintTop_toBottomOf="@+id/textVoteDate"
+        app:layout_constraintStart_toStartOf="@+id/textVoteDate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="드롭 다운으로 변경 필요"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -61,11 +48,11 @@
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textDialogContent">
+        app:layout_constraintTop_toBottomOf="@+id/selectStudent">
 
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btDialogCancel"
+            android:id="@+id/btnDialogCancel"
             style="@style/heading3"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
