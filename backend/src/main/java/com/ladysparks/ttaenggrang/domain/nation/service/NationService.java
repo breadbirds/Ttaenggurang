@@ -62,7 +62,8 @@ public class NationService {
                 savedNation.getCurrency(),
                 savedNation.getSavingsGoalAmount(),
                 savedNation.getNationalTreasury(),
-                savedNation.getEstablishedDate()
+                savedNation.getEstablishedDate(),
+                savedNation.getProfileImageUrl()
         );
 
         return ApiResponse.created("국가 정보 등록이 완료되었습니다.", responseDTO);
@@ -87,7 +88,8 @@ public class NationService {
                 nation.getCurrency(),
                 nation.getSavingsGoalAmount(),
                 nation.getNationalTreasury(),
-                nation.getEstablishedDate()
+                nation.getEstablishedDate(),
+                nation.getProfileImageUrl()
         );
 
         return ApiResponse.success("국가 정보 조회 성공", responseDTO);

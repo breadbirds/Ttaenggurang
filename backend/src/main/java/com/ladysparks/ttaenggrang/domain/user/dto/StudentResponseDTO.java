@@ -12,12 +12,12 @@ import java.util.UUID;
 
 @Data
 //@AllArgsConstructor
-@JsonIgnoreProperties(value = "{id, token}", allowGetters = true)
+@JsonIgnoreProperties(value = "{id, token, profileImageUrl}", allowGetters = true)
 public class StudentResponseDTO {
     private Long id;
     private String username;  // 생성된 학생 계정
     private String name;
-    private String profileImage;
+    private String profileImageUrl;
 
     private Teacher teacher;
     private BankAccount bankAccount;
@@ -29,13 +29,11 @@ public class StudentResponseDTO {
     }
 
     // ✅ 학생 정보 조회용 생성자
-    public StudentResponseDTO(Long id, String username, String name, byte[] profileImage, Teacher teacher, BankAccount bankAccount, String token) {
+    public StudentResponseDTO(Long id, String username, String name, String profileImageUrl, Teacher teacher, BankAccount bankAccount, String token) {
         this.id = id;
         this.username = username;
         this.name = name;
-        this.profileImage = (profileImage != null && profileImage.length > 0)
-                ? java.util.Base64.getEncoder().encodeToString(profileImage)
-                : null;
+        this.profileImageUrl = profileImageUrl;
         this.teacher = teacher;
         this.bankAccount = bankAccount;
         this.token = token;

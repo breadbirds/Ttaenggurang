@@ -48,6 +48,17 @@ public class StudentService {
                 .getId();
     }
 
+    // ✅ 프로필 이미지 URL 업데이트 메서드
+    @Transactional
+    public void updateProfileImage(Long studentId, String profileImageUrl) {
+        Student student = studentRepository.findById(studentId)
+                .orElseThrow(() -> new IllegalArgumentException("학생을 찾을 수 없습니다."));
+
+        student.setProfileImageUrl(profileImageUrl);  // ✅ 이미지 URL 저장
+        studentRepository.save(student);
+    }
+
+
     // ✅ 계좌 번호 생성 메서드
     private String generateAccountNumber() {
         return "110-" + (int) (Math.random() * 1_000_000_000);
@@ -167,9 +178,7 @@ public class StudentService {
                 student.getId(),
                 student.getUsername(),
                 student.getName(),
-                student.getProfileImage() != null && student.getProfileImage().length > 0
-                        ? Base64.getEncoder().encodeToString(student.getProfileImage())
-                        : null,  // 빈 값 처리 추가
+                student.getProfileImageUrl(),
                 student.getTeacher(),  // teacher 정보 추가
                 student.getBankAccount(),  // bankAccount 정보 추가
                 token
@@ -189,7 +198,7 @@ public class StudentService {
                         student.getId(),
                         student.getUsername(),
                         student.getName(),
-                        student.getProfileImage(),
+                        student.getProfileImageUrl(),
                         student.getTeacher(),
                         student.getBankAccount(),
                         jwtTokenProvider.createToken(student.getUsername()) // ✅ JWT 토큰 포함
@@ -217,7 +226,7 @@ public class StudentService {
                             student.getId(),
                             student.getUsername(),
                             student.getName(),
-                            student.getProfileImage(),
+                            student.getProfileImageUrl(),
                             student.getTeacher(),
                             student.getBankAccount(),
                             token
@@ -248,7 +257,7 @@ public class StudentService {
                 student.getId(),
                 student.getUsername(),
                 student.getName(),
-                student.getProfileImage(),
+                student.getProfileImageUrl(),
                 student.getTeacher(),
                 student.getBankAccount(),
                 token
@@ -276,7 +285,7 @@ public class StudentService {
                         student.getId(),
                         student.getUsername(),
                         student.getName(),
-                        student.getProfileImage(),
+                        student.getProfileImageUrl(),
                         student.getTeacher(),
                         student.getBankAccount(),
                         jwtTokenProvider.createToken(student.getUsername())
@@ -317,7 +326,7 @@ public class StudentService {
                             student.getId(),
                             student.getUsername(),
                             student.getName(),
-                            student.getProfileImage(),
+                            student.getProfileImageUrl(),
                             student.getTeacher(),
                             student.getBankAccount(),
                             token
