@@ -50,5 +50,12 @@
         <item name="android:fontFamily">@font/pretendard_regular_family</item>
     </style>
 
+<!--     Calendar 스타일-->
+    <style name="CustomCalendarStyle">
+        <item name="colorAccent">@color/mainOrange</item>
+        <item name="android:fontFamily">@font/pretendard_bold_family</item>
+    </style>
+
+
 
 </resources>
