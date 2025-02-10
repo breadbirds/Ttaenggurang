@@ -37,4 +37,7 @@ public class Nation {
     @Column(nullable = false)
     private Timestamp establishedDate;
 
+    @Column(length = 2083)
+    private String profileImageUrl;  // ✅ AWS S3 이미지 URL 저장 필드
+
 }

@@ -30,7 +30,7 @@ public class Student {
     private String name;  // 학생 이름
 
     @Column(length = 2083)
-    private byte[] profileImage;  // 이미지 파일 경로
+    private String profileImageUrl;  // ✅ AWS S3 이미지 URL 저장 필드
 
     @Column(nullable = false, updatable = false)
     private Timestamp createdAt;
