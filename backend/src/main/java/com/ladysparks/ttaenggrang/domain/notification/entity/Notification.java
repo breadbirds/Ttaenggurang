@@ -4,6 +4,10 @@ import com.ladysparks.ttaenggrang.domain.student.entity.Student;
 import com.ladysparks.ttaenggrang.domain.teacher.entity.Teacher;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.CurrentTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
 import java.sql.Timestamp;
 
 @Entity
@@ -34,6 +38,9 @@ public class Notification {
     @JoinColumn(name = "receiver_teacher_id")
     private Teacher receiverTeacher;
 
+    @Column(nullable = false)
+    private String targetToken;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "notification_type", nullable = false)
     private NotificationType notificationType;
@@ -48,10 +55,17 @@ public class Notification {
     @Column(nullable = false)
     private NotificationStatus status;
 
-    @Column(name = "created_at", nullable = false, updatable = false)
+    @CreationTimestamp
     private Timestamp createdAt;
 
-    @Column(name = "read_at")
+    @UpdateTimestamp
     private Timestamp readAt;
+
+    @PrePersist
+    protected void prePersist() { // 데이터가 INSERT 되기 전에 기본값 설정
+        if (this.status == null) {
+            this.status = NotificationStatus.UNREAD;
+        }
+    }
 
 }

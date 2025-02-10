@@ -18,10 +18,10 @@ public interface NotificationMapper {
     NotificationDTO toDto(Notification notification);
 
     @Mapping(target = "id", ignore = true)
-    @Mapping(source = "senderStudentId", target = "senderStudent.id")
-    @Mapping(source = "senderTeacherId", target = "senderTeacher.id")
-    @Mapping(source = "receiverStudentId", target = "receiverStudent.id")
-    @Mapping(source = "receiverTeacherId", target = "receiverTeacher.id")
+    @Mapping(target = "senderStudent", expression = "java(notificationDTO.getSenderStudentId() != null ? new Student(notificationDTO.getSenderStudentId()) : null)")
+    @Mapping(target = "senderTeacher", expression = "java(notificationDTO.getSenderTeacherId() != null ? new Teacher(notificationDTO.getSenderTeacherId()) : null)")
+    @Mapping(target = "receiverStudent", expression = "java(notificationDTO.getReceiverStudentId() != null ? new Student(notificationDTO.getReceiverStudentId()) : null)")
+    @Mapping(target = "receiverTeacher", expression = "java(notificationDTO.getReceiverTeacherId() != null ? new Teacher(notificationDTO.getReceiverTeacherId()) : null)")
     Notification toEntity(NotificationDTO notificationDTO);
 
 }

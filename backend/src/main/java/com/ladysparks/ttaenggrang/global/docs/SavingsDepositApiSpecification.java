@@ -17,7 +17,7 @@ public interface SavingsDepositApiSpecification {
     @Operation(summary = "적금 납입 [등록]", description = """
             💡 학생이 미납된 적금을 수동으로 납입합니다.
 
-            **[ 필드 설명 ]**
+            **[ 요청 필드 ]**
             - **savingsDepositId** : 적금 납입 정보 ID
             
             **[ 규칙 ]**
