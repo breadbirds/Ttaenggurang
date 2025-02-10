@@ -1,7 +1,7 @@
 package com.ladysparks.ttaenggrang.domain.notification.entity;
 
-import com.ladysparks.ttaenggrang.domain.user.entity.Student;
-import com.ladysparks.ttaenggrang.domain.user.entity.Teacher;
+import com.ladysparks.ttaenggrang.domain.student.entity.Student;
+import com.ladysparks.ttaenggrang.domain.teacher.entity.Teacher;
 import jakarta.persistence.*;
 import lombok.*;
 import java.sql.Timestamp;
