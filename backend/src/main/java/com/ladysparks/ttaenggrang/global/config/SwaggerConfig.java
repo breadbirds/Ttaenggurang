@@ -47,7 +47,7 @@ public class SwaggerConfig {
     @Bean
     public GroupedOpenApi teacherApi() {
         return GroupedOpenApi.builder()
-                .group("teachers")
+                .group("Teacher")
                 .pathsToMatch("/teachers/**")
                 .build();
     }
@@ -55,7 +55,7 @@ public class SwaggerConfig {
     @Bean
     public GroupedOpenApi studentApi() {
         return GroupedOpenApi.builder()
-                .group("students")
+                .group("Student")
                 .pathsToMatch("/students/**")
                 .build();
     }
@@ -71,7 +71,7 @@ public class SwaggerConfig {
     @Bean
     public GroupedOpenApi bankApi() {
         return GroupedOpenApi.builder()
-                .group("bank")
+                .group("Bank")
                 .pathsToMatch("/bank-accounts/**", "/bank-transactions/**", "/savings-products/**", "/savings-subscriptions/**", "/savings-deposits/**")
                 .build();
     }
@@ -79,7 +79,7 @@ public class SwaggerConfig {
     @Bean
     public GroupedOpenApi itemApi() {
         return GroupedOpenApi.builder()
-                .group("items")
+                .group("Item")
                 .pathsToMatch("/item-products/**", "/item-transactions/**")
                 .build();
     }
@@ -87,7 +87,7 @@ public class SwaggerConfig {
     @Bean
     public GroupedOpenApi stockApi() {
         return GroupedOpenApi.builder()
-                .group("stock")
+                .group("Stock")
                 .pathsToMatch("/stocks/**")
                 .build();
     }
@@ -95,7 +95,7 @@ public class SwaggerConfig {
     @Bean
     public GroupedOpenApi etfApi() {
         return GroupedOpenApi.builder()
-                .group("etf")
+                .group("Etf")
                 .pathsToMatch("/etfs/**")
                 .build();
     }
@@ -103,7 +103,7 @@ public class SwaggerConfig {
     @Bean
     public GroupedOpenApi newsApi() {
         return GroupedOpenApi.builder()
-                .group("news")
+                .group("News")
                 .pathsToMatch("/news/**")
                 .build();
     }
@@ -111,7 +111,7 @@ public class SwaggerConfig {
     @Bean
     public GroupedOpenApi weeklyReportApi() {
         return GroupedOpenApi.builder()
-                .group("weekly-report")
+                .group("Weekly-report")
                 .pathsToMatch("/weekly-report/**")
                 .build();
     }
@@ -119,7 +119,7 @@ public class SwaggerConfig {
     @Bean
     public GroupedOpenApi taxApi() {
         return GroupedOpenApi.builder()
-                .group("taxes")
+                .group("Tax")
                 .pathsToMatch("/taxes/**", "/tax-payments/**")
                 .build();
     }
@@ -127,7 +127,7 @@ public class SwaggerConfig {
     @Bean
     public GroupedOpenApi voteApi() {
         return GroupedOpenApi.builder()
-                .group("votes")
+                .group("Vote")
                 .pathsToMatch("/votes/**", "/salaries/**")
                 .build();
     }
@@ -135,8 +135,8 @@ public class SwaggerConfig {
     @Bean
     public GroupedOpenApi fcmApi() {
         return GroupedOpenApi.builder()
-                .group("fcm")
-                .pathsToMatch("/fcm/**")
+                .group("Notification")
+                .pathsToMatch("/notifications/**")
                 .build();
     }
 

@@ -2,7 +2,6 @@ package com.ladysparks.ttaenggrang.domain.notification.dto;
 
 import lombok.Getter;
 import lombok.Setter;
-
 import java.util.Map;
 
 @Setter

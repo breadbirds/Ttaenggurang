@@ -16,7 +16,7 @@ public interface BankTransactionApiSpecification {
     @Operation(summary = "은행 계좌 거래 [등록]", description = """
             💡 은행 계좌 거래를 합니다.
 
-            **[ 필드 설명 ]**
+            **[ 요청 필드 ]**
             - **type** : 거래 타입
                 - 입금 → **DEPOSIT**
                 - 출금 → **WITHDRAW**
