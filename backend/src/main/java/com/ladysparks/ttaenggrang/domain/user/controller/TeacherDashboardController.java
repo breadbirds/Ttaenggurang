@@ -4,7 +4,7 @@ import com.ladysparks.ttaenggrang.domain.bank.dto.StudentDailyAverageFinancialDT
 import com.ladysparks.ttaenggrang.domain.bank.service.BankTransactionService;
 import com.ladysparks.ttaenggrang.domain.user.dto.TeacherDashboardDTO;
 import com.ladysparks.ttaenggrang.domain.user.service.TeacherDashboardService;
-import com.ladysparks.ttaenggrang.global.docs.TeacherMainApiSpecification;
+import com.ladysparks.ttaenggrang.global.docs.TeacherDashboardApiSpecification;
 import com.ladysparks.ttaenggrang.global.response.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +17,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/teachers/{teacherId}/dashboard")
-public class TeacherDashboardController implements TeacherMainApiSpecification {
+public class TeacherDashboardController implements TeacherDashboardApiSpecification {
 
     private final TeacherDashboardService teacherDashboardService;
     private final BankTransactionService bankTransactionService;

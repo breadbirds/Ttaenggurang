@@ -9,11 +9,11 @@ import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
-@Tag(name = "Teacher-Main", description = "교사 메인 페이지 관련 API")
-public interface TeacherMainApiSpecification {
+@Tag(name = "Teacher-Dashboard", description = "교사 대시보드 페이지 관련 API")
+public interface TeacherDashboardApiSpecification {
 
-    @Operation(summary = "교사가 학생 평균 수입 및 지출 조회", description = """
-            💡 교사가 담당하는 학생들의 최근 7일 평균 수입과 평균 지출을 반환합니다.
+    @Operation(summary = "학생들의 최근 7일 평균 수입 및 지출 [조회]", description = """
+            💡 교사가 담당하는 학생들의 최근 7일의 평균 수입과 평균 지출을 반환합니다.
             
             - **date** : 날짜
             - **averageIncome** : 평균 수입
@@ -21,8 +21,8 @@ public interface TeacherMainApiSpecification {
             """)
     ResponseEntity<ApiResponse<List<StudentDailyAverageFinancialDTO>>> DailyAverageIncomeAndExpense();
 
-    @Operation(summary = "교사 메인 대시보드 조회", description = """
-            💡 교사 ID를 기반으로 메인 대시보드 정보를 조회합니다.
+    @Operation(summary = "교사 메인 대시보드 [조회]", description = """
+            💡 교사 메인 대시보드 데이터 정보를 조회합니다.
 
             - **treasuryIncome** : 국고 수입
             - **averageStudentBalance** : 1인 평균 잔고

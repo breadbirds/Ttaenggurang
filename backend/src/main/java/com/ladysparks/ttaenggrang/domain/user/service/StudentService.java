@@ -10,6 +10,7 @@ import com.ladysparks.ttaenggrang.domain.user.entity.Student;
 import com.ladysparks.ttaenggrang.domain.user.entity.Teacher;
 import com.ladysparks.ttaenggrang.domain.user.repository.StudentRepository;
 import com.ladysparks.ttaenggrang.domain.user.repository.TeacherRepository;
+import com.ladysparks.ttaenggrang.domain.weekly_report.service.InvestmentService;
 import com.ladysparks.ttaenggrang.global.config.JwtTokenProvider;
 import com.ladysparks.ttaenggrang.global.response.ApiResponse;
 import com.ladysparks.ttaenggrang.global.utill.SecurityUtil;
@@ -19,6 +20,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.webjars.NotFoundException;
 
 import java.util.ArrayList;
 import java.util.Base64;
@@ -33,6 +35,7 @@ public class StudentService {
     private final StudentRepository studentRepository;
     private final TeacherRepository teacherRepository;
     private final TeacherService teacherService;
+    private final InvestmentService investmentService;
     private final PasswordEncoder passwordEncoder;
     private final BankAccountRepository bankAccountRepository; // ✅ 추가
     private final JwtTokenProvider jwtTokenProvider;
@@ -330,4 +333,42 @@ public class StudentService {
                 .orElseThrow(() -> new IllegalArgumentException("해당 ID를 가진 학생이 존재하지 않습니다."));
         return student.getTeacher().getId();
     }
+
+    /**
+     * 특정 학생의 저축 목표 달성률을 계산
+     */
+    public SavingsAchievementDTO calculateSavingsAchievementRate() {
+        // 학생 정보 조회
+        Long studentId = getCurrentStudentId();
+        Student student = studentRepository.findById(studentId)
+                .orElseThrow(() -> new NotFoundException("해당 ID의 학생이 존재하지 않습니다."));
+
+        // 학생의 국가 정보 조회
+        Nation nation = student.getNation();
+        if (nation == null) {
+            throw new NotFoundException("해당 학생의 국가 정보가 존재하지 않습니다.");
+        }
+
+        SavingsAchievementDTO savingsAchievementDTO = SavingsAchievementDTO.builder()
+                .studentId(studentId)
+                .build();
+
+        int savingsGoalAmount = nation.getSavingsGoalAmount(); // 국가에서 설정한 목표 저축 금액
+
+        if (savingsGoalAmount == 0) {
+            savingsAchievementDTO.setSavingsAchievementRate(0.0); // 목표 저축 금액이 0이면 달성률도 0
+        } else {
+            int bankBalance = student.getBankAccount().getBalance(); // 학생의 은행 잔고
+            int investmentValue = investmentService.getCurrentInvestmentValue(studentId); // 현재 투자 평가액
+
+            // 내 총 자산 계산
+            int totalAssets = bankBalance + investmentValue;
+
+            // 목표 달성률 계산
+            savingsAchievementDTO.setSavingsAchievementRate(((double) totalAssets / savingsGoalAmount) * 100);
+        }
+
+        return savingsAchievementDTO;
+    }
+
 }
