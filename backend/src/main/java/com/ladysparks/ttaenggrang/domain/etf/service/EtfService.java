@@ -42,7 +42,7 @@ public class EtfService {//s
 
     private final BankTransactionService bankTransactionService;
 
-    private final StockService stockService;
+//    private final StockService stockService;
 
     //목록 조회
 

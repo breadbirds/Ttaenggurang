@@ -39,9 +39,9 @@ public class BankTransaction {
     @Column
     private String description;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "receiver_id")
-    private Student receiver;
+    private Student receiver; //
 
     @CreationTimestamp
     private Timestamp createdAt;
