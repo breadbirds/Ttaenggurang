@@ -8,10 +8,12 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonIgnoreProperties(value={"id", "studentId"}, allowGetters=true)
+@JsonIgnoreProperties(value={"id", "studentIds"}, allowGetters=true)
 public class JobCreateDTO {
 
     private Long id;
@@ -30,5 +32,5 @@ public class JobCreateDTO {
     @Min(value = 1, message = "최대 인원은 최소 1명 이상이어야 합니다.")
     private Integer maxPeople;
 
-    private Long studentId;
+    private List<Long> studentIds;
 }
