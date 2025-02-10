@@ -7,6 +7,7 @@ import android.view.WindowInsets
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import com.ladysparks.ttaenggrang.base.BaseActivity
 import com.ladysparks.ttaenggrang.data.remote.RetrofitUtil
 import com.ladysparks.ttaenggrang.databinding.ActivityMainBinding
 import com.ladysparks.ttaenggrang.ui.bank.BankStudentFragment
@@ -26,7 +27,7 @@ import com.ladysparks.ttaenggrang.util.showToast
 import kotlinx.coroutines.launch
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : BaseActivity() {
 
     private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
 

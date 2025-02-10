@@ -1,9 +1,11 @@
 package com.ladysparks.ttaenggrang.ui.home
 
 import android.app.Dialog
+import android.content.res.Configuration
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.util.DisplayMetrics
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
@@ -34,8 +36,11 @@ class HomeTeacherFragment : BaseFragment<FragmentHomeTeacherBinding>(FragmentHom
 
     private lateinit var alarmAdapter: AlarmAdapter
 
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+
 
         // ViewModel
         homeViewModel = ViewModelProvider(this).get(HomeViewModel::class.java)

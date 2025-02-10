@@ -1,10 +1,9 @@
-package com.ladysparks.ttaenggrang.base
+package com.ladysparks.ttaenggrang.ui.component
 
 import android.app.Dialog
 import android.content.Context
 import android.view.View
 import android.widget.ImageView
-import android.widget.ImageButton
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatButton
 import com.ladysparks.ttaenggrang.R
@@ -13,12 +12,12 @@ class BaseTwoButtonDialog(
     context: Context,
     private val title: String,
     private val message: String,
-    private val positiveButtonText: String,
-    private val negativeButtonText: String,
+    private val positiveButtonText: String? = null,
+    private val negativeButtonText: String? = null,
     private val statusImageResId: Int? = null,
     private val showCloseButton: Boolean = true, // 닫기 버튼 표시 여부
-    private val onPositiveClick: () -> Unit,
-    private val onNegativeClick: () -> Unit,
+    private val onPositiveClick: (() -> Unit)? = null,
+    private val onNegativeClick: (() -> Unit)? = null,
     private val onCloseClick: (() -> Unit)? = null // 닫기 버튼 클릭 이벤트
 ) : Dialog(context) {
 
@@ -40,7 +39,7 @@ class BaseTwoButtonDialog(
             imgStatus.visibility = View.GONE
         }
 
-        //  닫기 버튼 설정
+        // 닫기 버튼 설정
         btnClose.visibility = if (showCloseButton) View.VISIBLE else View.GONE
         btnClose.setOnClickListener {
             onCloseClick?.invoke()
@@ -51,18 +50,25 @@ class BaseTwoButtonDialog(
         textTitle.text = title
         textMessage.text = message
 
-        // 버튼 텍스트 설정
-        btnPositive.text = positiveButtonText
-        btnNegative.text = negativeButtonText
-
-        // 버튼 클릭 리스너 설정
-        btnPositive.setOnClickListener {
-            onPositiveClick()
-            dismiss()
+        // 버튼 설정 (null 값이면 버튼 숨김)
+        if (positiveButtonText != null) {
+            btnPositive.text = positiveButtonText
+            btnPositive.setOnClickListener {
+                onPositiveClick?.invoke()
+                dismiss()
+            }
+        } else {
+            btnPositive.visibility = View.GONE
         }
-        btnNegative.setOnClickListener {
-            onNegativeClick()
-            dismiss()
+
+        if (negativeButtonText != null) {
+            btnNegative.text = negativeButtonText
+            btnNegative.setOnClickListener {
+                onNegativeClick?.invoke()
+                dismiss()
+            }
+        } else {
+            btnNegative.visibility = View.GONE
         }
     }
 }

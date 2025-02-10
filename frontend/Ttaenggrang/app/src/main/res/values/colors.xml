@@ -5,6 +5,7 @@
 
     <!-- Material -->
     <color name="black200">#8A8A8A</color>
+    <color name="black300">#545454</color>
 
     <!-- Custom Color -->
     <color name="mainOrange">#FF993A</color>
