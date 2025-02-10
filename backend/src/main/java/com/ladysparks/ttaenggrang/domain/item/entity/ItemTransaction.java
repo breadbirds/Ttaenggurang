@@ -1,5 +1,5 @@
 package com.ladysparks.ttaenggrang.domain.item.entity;
-import com.ladysparks.ttaenggrang.domain.user.entity.Student;
+import com.ladysparks.ttaenggrang.domain.student.entity.Student;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;

@@ -4,7 +4,7 @@ import com.ladysparks.ttaenggrang.domain.tax.dto.TaxDTO;
 import com.ladysparks.ttaenggrang.domain.tax.entity.Tax;
 import com.ladysparks.ttaenggrang.domain.tax.mapper.TaxMapper;
 import com.ladysparks.ttaenggrang.domain.tax.repository.TaxRepository;
-import com.ladysparks.ttaenggrang.domain.user.service.TeacherService;
+import com.ladysparks.ttaenggrang.domain.teacher.service.TeacherService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
