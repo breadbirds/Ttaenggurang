@@ -65,6 +65,13 @@ dependencies {
 
 	// OkHttp
 	implementation 'com.squareup.okhttp3:okhttp:4.9.1'
+
+	// CSV 파일 파싱 기능
+	implementation 'org.apache.commons:commons-csv:1.9.0'
+
+	// XLSX (엑셀 파일) 파싱 기능
+	implementation 'org.apache.poi:poi:5.2.3'
+	implementation 'org.apache.poi:poi-ooxml:5.2.3'
 }
 
 tasks.named('test') {

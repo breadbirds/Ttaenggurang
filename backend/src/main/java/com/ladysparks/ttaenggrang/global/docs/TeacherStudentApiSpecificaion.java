@@ -5,12 +5,12 @@ import com.ladysparks.ttaenggrang.domain.teacher.dto.SingleStudentCreateDTO;
 import com.ladysparks.ttaenggrang.domain.student.dto.StudentResponseDTO;
 import com.ladysparks.ttaenggrang.global.response.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -41,7 +41,11 @@ public interface TeacherStudentApiSpecificaion {
             
             """)
     @PostMapping("/quick-create")
-    ResponseEntity<ApiResponse<List<StudentResponseDTO>>> createStudents(@RequestBody @Valid MultipleStudentCreateDTO multipleStudentCreateDTO);
+    ResponseEntity<ApiResponse<List<StudentResponseDTO>>> createStudents(
+            @Parameter(description = "학생 계정의 base ID") @RequestParam("baseId") String baseId,
+            @Parameter(description = "생성할 학생 계정 수") @RequestParam("studentCount") int studentCount,
+            @Parameter(description = "학생 이름이 포함된 파일 (CSV 또는 XLSX)") @RequestPart("file") MultipartFile file
+    );
 
     @Operation(summary = "우리반 학생 [전체 조회]", description = """
             💡 교사가 우리 반 전체 학생 목록을 조회합니다.

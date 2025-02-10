@@ -7,7 +7,7 @@ import lombok.Data;
 
 @Data
 //@AllArgsConstructor
-@JsonIgnoreProperties(value = "{id, token, profileImageUrl}", allowGetters = true)
+@JsonIgnoreProperties(value = {"id", "token", "profileImageUrl"}, allowGetters = true)
 public class StudentResponseDTO {
     private Long id;
     private String username;  // 생성된 학생 계정

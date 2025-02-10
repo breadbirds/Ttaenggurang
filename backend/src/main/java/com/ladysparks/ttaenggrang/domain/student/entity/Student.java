@@ -1,11 +1,14 @@
 package com.ladysparks.ttaenggrang.domain.student.entity;
 
 import com.ladysparks.ttaenggrang.domain.bank.entity.BankAccount;
-import com.ladysparks.ttaenggrang.domain.teacher.entity.Nation;
 import com.ladysparks.ttaenggrang.domain.teacher.entity.Job;
+import com.ladysparks.ttaenggrang.domain.teacher.entity.Nation;
 import com.ladysparks.ttaenggrang.domain.teacher.entity.Teacher;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.sql.Timestamp;
 
