@@ -34,7 +34,8 @@ public interface ItemApiSpecification {
             💡 학생이 학급 내 전체 판매 아이템을 조회합니다.
             
             - **id** : 아이템 ID
-            - **sellerId** : 판매 학생 ID
+            - **sellerId** : 판매자 학생 ID
+            - **sellerName** : 판매자 학생 이름
             - **name** : 상품명
             - **description** : 상품 설명
             - **image** : 상품 이미지 URL (S3 URL)
@@ -50,7 +51,8 @@ public interface ItemApiSpecification {
             💡 판매 중인 아이템을 조회합니다.
             
             - **id** : 아이템 ID
-            - **sellerId** : 판매 학생 ID
+            - **sellerId** : 판매자 학생 ID
+            - **sellerName** : 판매자 학생 이름
             - **name** : 상품명
             - **description** : 상품 설명
             - **image** : 상품 이미지 URL (S3 URL)
@@ -66,7 +68,8 @@ public interface ItemApiSpecification {
             💡 해당 학생이 판매 중인 전체 아이템을 조회합니다.
             
             - **id** : 아이템 ID
-            - **sellerId** : 판매 학생 ID
+            - **sellerId** : 판매자 학생 ID
+            - **sellerName** : 판매자 학생 이름
             - **name** : 상품명
             - **description** : 상품 설명
             - **image** : 상품 이미지 URL (S3 URL)
@@ -82,7 +85,8 @@ public interface ItemApiSpecification {
             💡 교사가 학급 내 전체 판매 아이템을 조회합니다.
             
             - **id** : 아이템 ID
-            - **sellerId** : 판매 학생 ID
+            - **sellerId** : 판매자 학생 ID
+            - **sellerName** : 판매자 학생 이름
             - **name** : 상품명
             - **description** : 상품 설명
             - **image** : 상품 이미지 URL (S3 URL)
