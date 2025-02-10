@@ -43,10 +43,18 @@ public interface StockApiSpecification {
                                                                      @RequestParam("share_count") int shareCount,
                                                                      @RequestParam("studentId") Long studentId);
 
-    @Operation(summary = "변동률", description = "💡 주식 변동률 조회")
-    public ResponseEntity<ApiResponse<StockDTO>> updateStockPrice(
-            @PathVariable("stockId") Long stockId);
+//    @Operation(summary = "변동률", description = "💡 주식 변동률 조회")
+//    public ResponseEntity<ApiResponse<StockDTO>> updateStockPrice(
+//            @PathVariable("stockId") Long stockId);
+//    @Operation(summary = "주식장 열기", description = "💡 주식장 열려라 참께")
+//    @PostMapping("/open")
+//    public ResponseEntity<String> openMarket();
+//
+//    @Operation(summary = "주식장 닫기", description = "💡 주식장 닫혀라 참께")
+//    @PostMapping("/close")
+//    public ResponseEntity<String> closeMarket();
 
 
 
-    }
+
+}
