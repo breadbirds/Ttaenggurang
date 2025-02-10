@@ -1,5 +1,6 @@
 package com.ladysparks.ttaenggrang.domain.student.service;
 
+import com.google.common.collect.Table;
 import com.ladysparks.ttaenggrang.domain.bank.dto.BankAccountDTO;
 import com.ladysparks.ttaenggrang.domain.bank.entity.BankAccount;
 import com.ladysparks.ttaenggrang.domain.bank.mapper.BankAccountMapper;
@@ -21,13 +22,22 @@ import com.ladysparks.ttaenggrang.global.config.JwtTokenProvider;
 import com.ladysparks.ttaenggrang.global.response.ApiResponse;
 import com.ladysparks.ttaenggrang.global.utill.SecurityUtil;
 import lombok.RequiredArgsConstructor;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.hibernate.boot.model.naming.IllegalIdentifierException;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 import org.webjars.NotFoundException;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -63,11 +73,50 @@ public class StudentService {
         studentRepository.save(student);
     }
 
-
     // ✅ 계좌 번호 생성 메서드
     private String generateAccountNumber() {
         return "110-" + (int) (Math.random() * 1_000_000_000);
     }
+
+    // 🔥 파일 파싱 메서드 (CSV 및 XLSX 파일 처리)
+    private List<String> parseNamesFromFile(MultipartFile file) {
+        List<String> names = new ArrayList<>();
+        String fileName = file.getOriginalFilename();
+
+        try {
+            if (fileName != null && fileName.endsWith(".csv")) {
+                // CSV 파일 처리
+                try (BufferedReader reader = new BufferedReader(new InputStreamReader(file.getInputStream()))) {
+                    String line;
+                    boolean isFirstLine = true;
+                    while ((line = reader.readLine()) != null) {
+                        if (isFirstLine) { isFirstLine = false; continue; }  // 헤더 건너뛰기
+                        String[] values = line.split(",");
+                        if (values.length > 0) {
+                            names.add(values[0]);  // 첫 번째 컬럼 (이름) 추가
+                        }
+                    }
+                }
+            } else if (fileName != null && (fileName.endsWith(".xlsx") || fileName.endsWith(".xls"))) {
+                // XLSX 파일 처리
+                Workbook workbook = new XSSFWorkbook(file.getInputStream());
+                Sheet sheet = workbook.getSheetAt(0);
+                for (Row row : sheet) {
+                    if (row.getRowNum() == 0) continue;  // 헤더 스킵
+                    Cell cell = row.getCell(0);
+                    if (cell != null) {
+                        names.add(cell.getStringCellValue());  // 첫 번째 열(이름) 가져오기
+//                        System.out.println("읽어온 학생 이름: " + names);
+                    }
+                }
+            }
+        } catch (IOException e) {
+            throw new RuntimeException("파일 파싱 중 오류 발생", e);
+        }
+
+        return names;
+    }
+
 
     // 여러 학생 계정 생성
     @Transactional
@@ -77,8 +126,14 @@ public class StudentService {
                 .orElseThrow(() -> new IllegalArgumentException("교사를 찾을 수 없습니다."));
 
         List<StudentResponseDTO> createdStudents = new ArrayList<>();
+        List<String> namesFromFile = new ArrayList<>();
 
-        // 2️⃣ 학생 계정 자동 생성
+        // 🔥 파일이 업로드된 경우 이름 추출
+        if (multipleStudentCreateDTO.getFile() != null && !multipleStudentCreateDTO.getFile().isEmpty()) {
+            namesFromFile = parseNamesFromFile(multipleStudentCreateDTO.getFile());  // 파일에서 이름 리스트 가져오기
+        }
+
+        // 2️⃣ 학생 계정 자동 생성 (이름 포함)
         for (int i = 1; i <= multipleStudentCreateDTO.getStudentCount(); i++) {
             String username = multipleStudentCreateDTO.getBaseId() + i;
             String password = multipleStudentCreateDTO.getBaseId() + i;
@@ -98,19 +153,33 @@ public class StudentService {
             BankAccount bankAccount = BankAccountMapper.INSTANCE.toEntity(bankAccountDTO);
             bankAccount = bankAccountRepository.save(bankAccount); // ✅ **DB에 먼저 저장**
 
+            // 🔥 파일에서 이름이 있는 경우, 해당 이름 사용
+            String studentName = (i <= namesFromFile.size()) ? namesFromFile.get(i - 1) : null;
+
+
             // 5️⃣ 학생 계정 생성 (은행 계좌 연결)
             Student student = Student.builder()
                     .username(username)
                     .password(passwordEncoder.encode(password))
                     .teacher(teacher)
                     .bankAccount(bankAccount) // ✅ **저장된 계좌 연결**
+                    .name(studentName)  // 이름 저장
                     .nation(teacher.getNation())
                     .build();
 
             studentRepository.save(student); // ✅ **저장된 bankAccount를 참조하는 상태에서 저장**
 
             // 6️⃣ 생성된 계정 리스트에 추가
-            createdStudents.add(new StudentResponseDTO(username));
+            createdStudents.add(new StudentResponseDTO(
+                    student.getId(),
+                    student.getUsername(),
+                    student.getName(),  // 🔥 이름 필드 포함
+                    student.getProfileImageUrl(),
+                    student.getTeacher(),
+                    student.getBankAccount(),
+                    null  // 초기 생성 시 토큰은 null로 설정
+
+            ));
         }
 
         return createdStudents;
