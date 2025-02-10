@@ -84,7 +84,7 @@ public class VoteService {
                             student.getId(),
                             student.getUsername(),
                             student.getName(),
-                            student.getProfileImage(),
+                            student.getProfileImageUrl(),
                             student.getTeacher(),
                             student.getBankAccount(),
                             null  // 토큰 값은 필요 시 추가
