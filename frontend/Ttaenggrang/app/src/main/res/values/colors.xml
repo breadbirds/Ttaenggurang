@@ -2,4 +2,23 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <!-- Material -->
+    <color name="black200">#8A8A8A</color>
+
+    <!-- Custom Color -->
+    <color name="mainOrange">#FF993A</color>
+    <color name="lightOrange">#FFE3C9</color>
+    <color name="mainGreen">#5CB85C</color>
+
+    <color name="backgroundGray">#F5F5F5</color>
+    <color name="deepBlack">#444444</color>
+    <color name="lightGray">#ADACAC</color>
+
+    <!-- Chart Color -->
+    <color name="chartGray">#F2F3F6</color>
+    <color name="chartYellow">#FFD144</color>
+    <color name="chartPink">#F765A3</color>
+    <color name="chartPurple">#A155B9</color>
+    <color name="chartBlue">#7987FF</color>
 </resources>
