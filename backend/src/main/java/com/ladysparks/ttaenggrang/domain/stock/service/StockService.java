@@ -1,27 +1,25 @@
 package com.ladysparks.ttaenggrang.domain.stock.service;
 
-import com.ladysparks.ttaenggrang.category.Category;
-import com.ladysparks.ttaenggrang.category.CategoryRepository;
+import com.ladysparks.ttaenggrang.domain.stock.category.Category;
+import com.ladysparks.ttaenggrang.domain.stock.category.CategoryRepository;
 import com.ladysparks.ttaenggrang.domain.bank.dto.BankTransactionDTO;
 import com.ladysparks.ttaenggrang.domain.bank.entity.BankTransactionType;
 import com.ladysparks.ttaenggrang.domain.bank.service.BankTransactionService;
 import com.ladysparks.ttaenggrang.domain.stock.dto.StockTransactionDTO;
 import com.ladysparks.ttaenggrang.domain.stock.entity.Stock;
-import com.ladysparks.ttaenggrang.domain.stock.entity.StockHistory;
 import com.ladysparks.ttaenggrang.domain.stock.entity.StockTransaction;
 import com.ladysparks.ttaenggrang.domain.stock.entity.TransType;
 import com.ladysparks.ttaenggrang.domain.stock.dto.StockDTO;
 import com.ladysparks.ttaenggrang.domain.stock.repository.StockHistoryRepository;
 import com.ladysparks.ttaenggrang.domain.stock.repository.StockRepository;
 import com.ladysparks.ttaenggrang.domain.stock.repository.StockTransactionRepository;
-import com.ladysparks.ttaenggrang.domain.user.entity.Student;
-import com.ladysparks.ttaenggrang.domain.user.repository.StudentRepository;
+import com.ladysparks.ttaenggrang.domain.student.entity.Student;
+import com.ladysparks.ttaenggrang.domain.student.repository.StudentRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;

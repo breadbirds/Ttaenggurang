@@ -1,6 +1,6 @@
 package com.ladysparks.ttaenggrang.domain.tax.entity;
 
-import com.ladysparks.ttaenggrang.domain.user.entity.Teacher;
+import com.ladysparks.ttaenggrang.domain.teacher.entity.Teacher;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.DecimalMax;
 import jakarta.validation.constraints.DecimalMin;

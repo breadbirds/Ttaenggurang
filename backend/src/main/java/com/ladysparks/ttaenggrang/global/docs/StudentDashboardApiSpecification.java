@@ -1,6 +1,6 @@
 package com.ladysparks.ttaenggrang.global.docs;
 
-import com.ladysparks.ttaenggrang.domain.user.dto.SavingsAchievementDTO;
+import com.ladysparks.ttaenggrang.domain.student.dto.SavingsAchievementDTO;
 import com.ladysparks.ttaenggrang.global.response.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;

@@ -1,13 +1,6 @@
 package com.ladysparks.ttaenggrang.domain.tax.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.ladysparks.ttaenggrang.domain.user.entity.Teacher;
-import jakarta.persistence.Column;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.validation.constraints.DecimalMax;
-import jakarta.validation.constraints.DecimalMin;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.hibernate.validator.constraints.Range;
