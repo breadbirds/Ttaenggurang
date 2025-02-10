@@ -22,10 +22,7 @@ import com.ladysparks.ttaenggrang.global.config.JwtTokenProvider;
 import com.ladysparks.ttaenggrang.global.response.ApiResponse;
 import com.ladysparks.ttaenggrang.global.utill.SecurityUtil;
 import lombok.RequiredArgsConstructor;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.hibernate.boot.model.naming.IllegalIdentifierException;
 import org.springframework.http.HttpStatus;
@@ -39,6 +36,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -88,12 +86,25 @@ public class StudentService {
                 // CSV 파일 처리
                 try (BufferedReader reader = new BufferedReader(new InputStreamReader(file.getInputStream()))) {
                     String line;
-                    boolean isFirstLine = true;
+                    String[] headers = reader.readLine().split(",");  // 첫 줄(헤더) 읽기
+
+                    int nameColumnIndex = -1;
+                    for (int i = 0; i < headers.length; i++) {
+                        if ("이름".equals(headers[i].trim())) {
+                            nameColumnIndex = i;
+                            break;
+                        }
+                    }
+
+                    if (nameColumnIndex == -1) {
+                        throw new IllegalArgumentException("CSV 파일에 '이름' 컬럼이 없습니다.");
+                    }
+
+                    // 데이터 행 읽기
                     while ((line = reader.readLine()) != null) {
-                        if (isFirstLine) { isFirstLine = false; continue; }  // 헤더 건너뛰기
                         String[] values = line.split(",");
-                        if (values.length > 0) {
-                            names.add(values[0]);  // 첫 번째 컬럼 (이름) 추가
+                        if (values.length > nameColumnIndex) {
+                            names.add(values[nameColumnIndex].trim());
                         }
                     }
                 }
@@ -101,12 +112,36 @@ public class StudentService {
                 // XLSX 파일 처리
                 Workbook workbook = new XSSFWorkbook(file.getInputStream());
                 Sheet sheet = workbook.getSheetAt(0);
-                for (Row row : sheet) {
-                    if (row.getRowNum() == 0) continue;  // 헤더 스킵
-                    Cell cell = row.getCell(0);
-                    if (cell != null) {
-                        names.add(cell.getStringCellValue());  // 첫 번째 열(이름) 가져오기
-//                        System.out.println("읽어온 학생 이름: " + names);
+                Iterator<Row> rowIterator = sheet.iterator();
+
+                if (!rowIterator.hasNext()) {
+                    throw new IllegalArgumentException("엑셀 파일이 비어 있습니다.");
+                }
+
+                // 헤더 행 읽기
+                Row headerRow = rowIterator.next();
+                int nameColumnIndex = -1;
+
+                for (Cell cell : headerRow) {
+                    if (cell.getCellType() == CellType.STRING) {
+                        if ("이름".equals(cell.getStringCellValue().trim())) {
+                            nameColumnIndex = cell.getColumnIndex();
+                            break;
+                        }
+                    }
+                }
+
+                if (nameColumnIndex == -1) {
+                    throw new IllegalArgumentException("엑셀 파일에 '이름' 컬럼이 없습니다.");
+                }
+
+                // 데이터 행 읽기
+                while (rowIterator.hasNext()) {
+                    Row row = rowIterator.next();
+                    Cell nameCell = row.getCell(nameColumnIndex);
+
+                    if (nameCell != null && nameCell.getCellType() == CellType.STRING) {
+                        names.add(nameCell.getStringCellValue().trim());
                     }
                 }
             }
