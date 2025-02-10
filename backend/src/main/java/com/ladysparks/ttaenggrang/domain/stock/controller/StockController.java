@@ -1,11 +1,11 @@
 package com.ladysparks.ttaenggrang.domain.stock.controller;
 
+import com.ladysparks.ttaenggrang.domain.stock.dto.OpenResponseDTO;
 import com.ladysparks.ttaenggrang.domain.stock.dto.StockTransactionDTO;
 import com.ladysparks.ttaenggrang.global.docs.StockApiSpecification;
 import com.ladysparks.ttaenggrang.domain.stock.dto.StockDTO;
 import com.ladysparks.ttaenggrang.domain.stock.service.StockService;
 import com.ladysparks.ttaenggrang.global.response.ApiResponse;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -88,7 +88,7 @@ public class StockController implements StockApiSpecification {
 //    }
 //
 
-//    // 주식장 열기
+    // 주식장 열기
 //    @PostMapping("/open")
 //    public ResponseEntity<String> openMarket() {
 //        stockService.openMarket();
@@ -100,11 +100,23 @@ public class StockController implements StockApiSpecification {
 //    public ResponseEntity<String> closeMarket() {
 //        stockService.closeMarket();
 //        return ResponseEntity.ok("주식장이 닫혔습니다.");
-//    }
+    // 주식장 열기
+    @PostMapping("/open")
+    public ResponseEntity<String> openMarket() {
+        stockService.manageMarket(false);  // false는 주식장을 닫는 플래그
+        return ResponseEntity.ok("주식장이 열렸습니다");
+    }
 
-
-
-
-
-
+    // 주식장 닫기
+    @PostMapping("/close")
+    public ResponseEntity<String> closeMarket() {
+        stockService.manageMarket(false);  // false는 주식장을 닫는 플래그
+        return ResponseEntity.ok("주식장이 닫혔습니다.");
+    }
 }
+
+
+
+
+
+

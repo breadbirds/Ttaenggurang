@@ -12,9 +12,6 @@ import java.util.Optional;
 
 public interface StockRepository extends JpaRepository<Stock, Long> {
 
-//    List<StockDTO> findByCategory(String category);
-    List<Stock> findByCategory(Category category);
-
     boolean existsByName(String name);
 
     // 현재 주식 평가액 조회
@@ -39,4 +36,6 @@ public interface StockRepository extends JpaRepository<Stock, Long> {
                                                @Param("startDate") LocalDateTime startDate,
                                                @Param("endDate") LocalDateTime endDate);
 
+    // 모든 StockDTO 리스트를 가져오는 메소드 (DTO 변환)
+//    List<StockDTO> findAllDTO();
 }
