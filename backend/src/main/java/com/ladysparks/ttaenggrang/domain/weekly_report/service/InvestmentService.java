@@ -52,4 +52,28 @@ public class InvestmentService {
         return stockValue + etfValue;
     }
 
+    public int getInvestmentValue(Long studentId, LocalDate targetDate) {
+        // 해당 날짜가 속한 주의 금요일 찾기
+        LocalDate targetFriday = targetDate.with(DayOfWeek.FRIDAY);
+        LocalDateTime startDate = targetFriday.minusDays(6).atStartOfDay();  // 해당 주의 토요일 00:00:00
+        LocalDateTime endDate = targetFriday.atTime(23, 59, 59);  // 해당 주의 금요일 23:59:59
+
+        int stockValue = stockRepository.getStockEvaluationByDate(studentId, startDate, endDate).orElse(0);
+        int etfValue = etfRepository.getEtfEvaluationByDate(studentId, startDate, endDate).orElse(0);
+
+        return stockValue + etfValue;
+    }
+
+    /**
+     * 특정 학생의 현재 투자 평가액 조회 (현재 날짜 기준)
+     */
+    public int getCurrentInvestmentValue(Long studentId) {
+        LocalDateTime now = LocalDateTime.now();  // 현재 시간
+
+        int stockValue = stockRepository.getStockEvaluationByDate(studentId, now, now).orElse(0);
+        int etfValue = etfRepository.getEtfEvaluationByDate(studentId, now, now).orElse(0);
+
+        return stockValue + etfValue;
+    }
+
 }
