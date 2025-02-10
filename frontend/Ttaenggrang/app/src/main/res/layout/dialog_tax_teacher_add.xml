@@ -74,7 +74,7 @@
         android:layout_marginTop="20dp"/>
 
     <EditText
-        android:id="@+id/editAddTaxDescriptioni"
+        android:id="@+id/editAddTaxDescription"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="학급 내 특별 활동(미술, 음악, 토론 등)을 지원하기 위해 부과되는 세금으로, 창의적인 프로젝트 자금을 마련합니다."
