@@ -1,21 +1,16 @@
 package com.ladysparks.ttaenggrang.domain.stock.repository;
 
-import com.ladysparks.ttaenggrang.category.Category;
-import com.ladysparks.ttaenggrang.domain.stock.dto.StockDTO;
+import com.ladysparks.ttaenggrang.domain.stock.category.Category;
 import com.ladysparks.ttaenggrang.domain.stock.entity.Stock;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
 public interface StockRepository extends JpaRepository<Stock, Long> {
-
-//    List<StockDTO> findByCategory(String category);
-    List<Stock> findByCategory(Category category);
 
     boolean existsByName(String name);
 
@@ -41,4 +36,6 @@ public interface StockRepository extends JpaRepository<Stock, Long> {
                                                @Param("startDate") LocalDateTime startDate,
                                                @Param("endDate") LocalDateTime endDate);
 
+    // 모든 StockDTO 리스트를 가져오는 메소드 (DTO 변환)
+//    List<StockDTO> findAllDTO();
 }

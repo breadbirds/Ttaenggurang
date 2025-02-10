@@ -4,7 +4,7 @@ import com.ladysparks.ttaenggrang.domain.bank.dto.SavingsSubscriptionDTO;
 import com.ladysparks.ttaenggrang.domain.bank.entity.SavingsSubscription;
 import com.ladysparks.ttaenggrang.domain.bank.mapper.SavingsSubscriptionMapper;
 import com.ladysparks.ttaenggrang.domain.bank.repository.SavingsSubscriptionRepository;
-import com.ladysparks.ttaenggrang.domain.user.service.StudentService;
+import com.ladysparks.ttaenggrang.domain.student.service.StudentService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

@@ -1,6 +1,6 @@
 package com.ladysparks.ttaenggrang.domain.bank.entity;
 
-import com.ladysparks.ttaenggrang.domain.user.entity.Student;
+import com.ladysparks.ttaenggrang.domain.student.entity.Student;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -39,9 +39,9 @@ public class BankTransaction {
     @Column
     private String description;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "receiver_id")
-    private Student receiver;
+    private Student receiver; //
 
     @CreationTimestamp
     private Timestamp createdAt;

@@ -125,6 +125,14 @@ public class SwaggerConfig {
     }
 
     @Bean
+    public GroupedOpenApi voteApi() {
+        return GroupedOpenApi.builder()
+                .group("votes")
+                .pathsToMatch("/votes/**", "/salaries/**")
+                .build();
+    }
+
+    @Bean
     public GroupedOpenApi fcmApi() {
         return GroupedOpenApi.builder()
                 .group("fcm")

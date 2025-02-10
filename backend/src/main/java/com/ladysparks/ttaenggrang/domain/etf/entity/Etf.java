@@ -1,9 +1,8 @@
 package com.ladysparks.ttaenggrang.domain.etf.entity;
 
-import com.ladysparks.ttaenggrang.domain.stock.dto.StockDTO;
 import com.ladysparks.ttaenggrang.domain.stock.entity.Stock;
 import com.ladysparks.ttaenggrang.domain.stock.entity.StockHistory;
-import com.ladysparks.ttaenggrang.domain.user.entity.Teacher;
+import com.ladysparks.ttaenggrang.domain.teacher.entity.Teacher;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
