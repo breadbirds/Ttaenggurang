@@ -1,14 +1,99 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/backgroundGray"
+    android:orientation="horizontal"
+    android:padding="40dp"
     tools:context=".ui.stock.StockStudentFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="학생용 주식 페이지" />
+    <!-- 배너 -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintBannerArea"
+        android:layout_width="696dp"
+        android:layout_height="126dp"
+        android:background="@drawable/img_banner"
+        app:layout_constraintBottom_toTopOf="@+id/constraintStockGraphArea"
 
-</FrameLayout>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <!-- 텍스트 추가 -->
+        <TextView
+            android:id="@+id/textBannerHead"
+            style="@style/heading2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_20"
+            android:layout_marginStart="@dimen/spacing_20"
+            android:layout_marginBottom="@dimen/spacing_10"
+            android:text="주식"
+            android:textColor="@android:color/white"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textInfo"
+            style="@style/body2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_20"
+            android:text="여러분이 직접 경제를 운영하는 주인공이에요"
+            android:textColor="@color/white"
+
+
+             />
+
+
+        <!-- ImageView를 감쌀 FrameLayout 추가 -->
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/spacing_20"
+            android:clipChildren="true"
+            android:clipToPadding="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <!-- 이미지 추가 (크게 설정해서 배너 바깥으로 넘기기) -->
+            <ImageView
+                android:id="@+id/bannerImage"
+                android:layout_width="126dp"
+                android:layout_height="126dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/fox_coins"
+                android:translationX="20dp"
+                android:translationY="20dp" />
+        </FrameLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!--주식 그래프-->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintStockGraphArea"
+        android:layout_width="696dp"
+        android:layout_height="341.3dp"
+        android:layout_marginTop="@dimen/spacing_20"
+        android:background="@drawable/bg_rounded_15"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/constraintBannerArea"
+
+        >
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!--주식 뉴스-->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="696dp"
+        android:layout_height="0dp"
+        android:background="@drawable/bg_rounded_15"
+        android:layout_marginTop="@dimen/spacing_20"
+        app:layout_constraintTop_toBottomOf="@id/constraintStockGraphArea"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
