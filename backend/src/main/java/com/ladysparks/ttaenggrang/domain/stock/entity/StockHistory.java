@@ -18,13 +18,16 @@ import java.sql.Timestamp;
 public class StockHistory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
     @Column
     private int price;  //해당 날짜의 주식 가격
 
     @Column
-    private int volume; //해당 날짜의 거래량
+    private int buyVolume; //해당 날짜의 거래량
+
+    @Column
+    private int sellVolume;
 
     @Column
     private Timestamp date;  //기록된 날짜

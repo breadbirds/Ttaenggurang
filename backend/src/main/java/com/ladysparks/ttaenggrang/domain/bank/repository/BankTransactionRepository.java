@@ -1,6 +1,7 @@
 package com.ladysparks.ttaenggrang.domain.bank.repository;
 
 import com.ladysparks.ttaenggrang.domain.bank.entity.BankTransaction;
+import com.ladysparks.ttaenggrang.domain.bank.entity.BankTransactionType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -25,6 +26,23 @@ public interface BankTransactionRepository extends JpaRepository<BankTransaction
             @Param("startDate") LocalDateTime startDate,
             @Param("endDate") LocalDateTime endDate
     );
+
+    @Query("SELECT t FROM BankTransaction t WHERE t.bankAccount.id = (SELECT s.bankAccount.id FROM Student s WHERE s.id = :studentId) " +
+            "AND t.createdAt BETWEEN :startDate AND :endDate")
+    List<BankTransaction> findTransactionsByStudentIdAndDateRange(
+            @Param("studentId") Long studentId,
+            @Param("startDate") LocalDateTime startDate,
+            @Param("endDate") LocalDateTime endDate
+    );
+
+    @Query("SELECT COALESCE(SUM(t.amount), 0) FROM BankTransaction t " +
+            "WHERE t.bankAccount.id IN (SELECT s.bankAccount.id FROM Student s WHERE s.id = :studentId) " +
+            "AND t.createdAt BETWEEN :startDate AND :endDate " +
+            "AND t.type IN (:transactionTypes)")
+    int getTotalAmountByType(@Param("studentId") Long studentId,
+                             @Param("startDate") LocalDateTime startDate,
+                             @Param("endDate") LocalDateTime endDate,
+                             @Param("transactionTypes") List<BankTransactionType> transactionTypes);
 
 }
 

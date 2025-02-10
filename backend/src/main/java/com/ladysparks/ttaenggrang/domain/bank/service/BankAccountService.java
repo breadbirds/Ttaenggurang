@@ -1,25 +1,23 @@
 package com.ladysparks.ttaenggrang.domain.bank.service;
 
-import com.ladysparks.ttaenggrang.domain.bank.entity.BankAccount;
 import com.ladysparks.ttaenggrang.domain.bank.dto.BankAccountDTO;
+import com.ladysparks.ttaenggrang.domain.bank.entity.BankAccount;
 import com.ladysparks.ttaenggrang.domain.bank.mapper.BankAccountMapper;
 import com.ladysparks.ttaenggrang.domain.bank.repository.BankAccountRepository;
+import com.ladysparks.ttaenggrang.domain.user.service.StudentService;
 import jakarta.persistence.EntityNotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import org.hibernate.boot.model.naming.IllegalIdentifierException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@RequiredArgsConstructor
 public class BankAccountService {
 
     private final BankAccountRepository bankAccountRepository;
     private final BankAccountMapper bankAccountMapper;
-
-    @Autowired
-    public BankAccountService(BankAccountRepository bankAccountRepository, BankAccountMapper bankAccountMapper) {
-        this.bankAccountRepository = bankAccountRepository;
-        this.bankAccountMapper = bankAccountMapper;
-    }
+    private final StudentService studentService;
 
     // 은행 계좌 [등록]
     @Transactional
@@ -44,10 +42,33 @@ public class BankAccountService {
     }
 
     // 은행 계좌 [조회]
-    public BankAccountDTO findBankAccount(Long bankAccountId) {
+    public BankAccountDTO findBankAccount() {
+        Long studentId = studentService.getCurrentStudentId();
+        Long bankAccountId = studentService.findBankAccountIdById(studentId);
+
+        BankAccount bankAccount = bankAccountRepository.findById(bankAccountId)
+                .orElseThrow(() -> new EntityNotFoundException("해당 계좌를 찾을 수 없습니다. ID: " + bankAccountId));
+
+        return bankAccountMapper.toDto(bankAccount);
+    }
+
+    // 은행 계좌 [수정]
+    public void updateBankAccount(BankAccountDTO bankAccountDTO) {
+        BankAccount bankAccount = bankAccountMapper.toUpdatedEntity(bankAccountDTO);
+        bankAccountRepository.save(bankAccount);
+    }
+
+    public BankAccountDTO findBankAccountById(Long bankAccountId) {
         BankAccount bankAccount = bankAccountRepository.findById(bankAccountId)
                 .orElseThrow(() -> new EntityNotFoundException("해당 계좌를 찾을 수 없습니다. ID: " + bankAccountId));
         return bankAccountMapper.toDto(bankAccount);
+    }
+
+    /**
+     * 특정 교사가 담당하는 학생들의 1인당 평균 잔고 조회
+     */
+    public double getAverageBalanceByTeacherId(Long teacherId) {
+        return bankAccountRepository.getAverageBalanceByTeacherId(teacherId);
     }
 
 }

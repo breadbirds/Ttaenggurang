@@ -11,11 +11,9 @@ import java.util.Optional;
 public interface StudentRepository extends JpaRepository<Student, Long> {
 
     // 메서드 네이밍만 사용하면 Student 객체 전체가 반환 -> @Query 사용
-//    Optional<Long> findBankAccountIdById(Long studentId);
-
-    // ✅ 특정 학생(Student ID)의 BankAccount ID 조회 (JPQL 사용)
+    // 특정 학생(Student ID)의 BankAccount ID 조회 (JPQL 사용)
     @Query("SELECT s.bankAccount.id FROM Student s WHERE s.id = :studentId")
-    Optional<Long> findBankAccountIdById(@Param("studentId") Long studentId);
+    Long findBankAccountIdById(@Param("studentId") Long studentId);
 
     // username으로 학생 계정 조회하는 메서드
     Optional<Student> findByUsername(String username);
@@ -31,4 +29,7 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
 
     // 교사ID 와 직업ID로 학생 목록 조회 (특정 직업을 가진 학생 목록 조회)
     List<Student> findByTeacherIdAndJobId(Long teacherId, Long jobId);
+
+    Optional<Student> findNationIdById(Long studentId);;
+
 }

@@ -68,13 +68,13 @@ public class EtfController  {
         return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.created(dto));
     }
 
-    // 가격 변동 (관리자가 호출)
-    @PostMapping("/{etfId}/update-price")
-    public ResponseEntity<ApiResponse<EtfDTO>> updateEtfPrice(
-            @PathVariable("etfId") int etfId) {
-
-        // 주식 가격 업데이트 서비스 호출
-        EtfDTO updatedEtf = etfService.updateEtfPrice(etfId);
-        return ResponseEntity.status(HttpStatus.OK).body(ApiResponse.success(updatedEtf));
-    }
+//    // 가격 변동 (관리자가 호출)
+//    @PostMapping("/{etfId}/update-price")
+//    public ResponseEntity<ApiResponse<EtfDTO>> updateEtfPrice(
+//            @PathVariable("etfId") int etfId) {
+//
+//        // 주식 가격 업데이트 서비스 호출
+//        EtfDTO updatedEtf = etfService.updateEtfPrice(etfId);
+//        return ResponseEntity.status(HttpStatus.OK).body(ApiResponse.success(updatedEtf));
+//    }
 }

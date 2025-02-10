@@ -1,11 +1,11 @@
 package com.ladysparks.ttaenggrang.domain.user.controller;
 
 import com.ladysparks.ttaenggrang.domain.user.dto.JobCreateDTO;
-import com.ladysparks.ttaenggrang.domain.user.dto.NationCreateDTO;
+import com.ladysparks.ttaenggrang.domain.nation.dto.NationDTO;
 import com.ladysparks.ttaenggrang.domain.user.dto.StudentResponseDTO;
 import com.ladysparks.ttaenggrang.domain.user.repository.TeacherRepository;
 import com.ladysparks.ttaenggrang.domain.user.service.JobService;
-import com.ladysparks.ttaenggrang.domain.user.service.NationService;
+import com.ladysparks.ttaenggrang.domain.nation.service.NationService;
 import com.ladysparks.ttaenggrang.domain.user.service.StudentService;
 import com.ladysparks.ttaenggrang.global.docs.TeacherFunctionApiSpecification;
 import com.ladysparks.ttaenggrang.global.response.ApiResponse;
@@ -68,23 +68,23 @@ public class TeacherFunctionController implements TeacherFunctionApiSpecificatio
     }
 
     // 국가 정보 [등록]
-    @PostMapping("/nations/create")
-    public ResponseEntity<ApiResponse<NationCreateDTO>> createNation(@RequestBody @Valid NationCreateDTO nationCreateDTO) {
+    @PostMapping("/nations")
+    public ResponseEntity<ApiResponse<NationDTO>> createNation(@RequestBody @Valid NationDTO nationDTO) {
 
         // 로그인한 교사의 ID 가져오기
         Long teacherId = getTeacherIdFromSecurityContext();
 
-        ApiResponse<NationCreateDTO> response = nationService.createNation(teacherId, nationCreateDTO);
+        ApiResponse<NationDTO> response = nationService.createNation(teacherId, nationDTO);
         return ResponseEntity.status(response.getStatusCode()).body(response);
     }
 
     // 국가 정보 [조회]
     @GetMapping("/nations")
-    public ResponseEntity<ApiResponse<NationCreateDTO>> getNationByTeacher() {
+    public ResponseEntity<ApiResponse<NationDTO>> getNationByTeacher() {
         // 현재 로그인한 교사 ID 가져오기
         long teacherId = getTeacherIdFromSecurityContext();
 
-        ApiResponse<NationCreateDTO> response = nationService.getNationByTeacherId(teacherId);
+        ApiResponse<NationDTO> response = nationService.getNationByTeacherId(teacherId);
         return ResponseEntity.status(response.getStatusCode()).body(response);
     }
 

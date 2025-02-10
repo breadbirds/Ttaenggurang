@@ -10,6 +10,7 @@ import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
+import org.hibernate.validator.constraints.Range;
 
 import java.math.BigDecimal;
 
@@ -17,13 +18,21 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-@JsonIgnoreProperties(value = {"id"}, allowGetters = true)
+@JsonIgnoreProperties(value = {"id", "teacherId"}, allowGetters = true)
 public class TaxDTO {
 
     private Long id;
+
     private Long teacherId;
+
+    @NotNull(message = "세금명(taxName)은 필수 항목입니다.")
     private String taxName;
+
+    @NotNull(message = "세율(taxRate)은 필수 항목입니다.")
+    @Range(min = 0, max = 1, message = "0 < taxRate(세율) < 1 값만 입력 가능합니다.")
     private BigDecimal taxRate;
+
+    @NotNull(message = "세금 설명(taxDescription)은 필수 항목입니다.")
     private String taxDescription;
 
 }

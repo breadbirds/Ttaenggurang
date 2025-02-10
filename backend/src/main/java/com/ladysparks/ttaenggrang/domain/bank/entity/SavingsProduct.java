@@ -5,8 +5,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
-import java.sql.Date;
 import java.sql.Timestamp;
+import java.time.LocalDate;
 
 @Getter
 @ToString
@@ -37,13 +37,13 @@ public class SavingsProduct {
     private int durationWeeks;
 
     @Column(nullable = false)
-    private int depositAmount;
+    private int amount;
 
     @Column(nullable = false)
-    private Date saleStartDate;
+    private LocalDate saleStartDate;
 
     @Column(nullable = false)
-    private Date saleEndDate;
+    private LocalDate saleEndDate;
 
     @CreationTimestamp
     private Timestamp createdAt;

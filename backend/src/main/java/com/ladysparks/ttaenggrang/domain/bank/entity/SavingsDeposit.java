@@ -1,16 +1,15 @@
 package com.ladysparks.ttaenggrang.domain.bank.entity;
 
-import com.ladysparks.ttaenggrang.domain.user.entity.Student;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
-import java.sql.Date;
 import java.sql.Timestamp;
-import java.time.DayOfWeek;
+import java.time.LocalDate;
 
 @Getter
 @Builder
@@ -28,15 +27,28 @@ public class SavingsDeposit {
     private SavingsSubscription savingsSubscription;
 
     @Column(nullable = false)
-    private int depositAmount;
+    private int amount;
 
     @Column(nullable = false)
-    private Date depositDate;
+    private LocalDate scheduledDate; // 예정된 납입 날짜
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private Boolean isDeposited;
+    private SavingsDepositStatus status;
 
     @CreationTimestamp
     private Timestamp createdAt;
+
+    @UpdateTimestamp
+    private Timestamp updatedAt;
+
+    public void updateAmount(int amount) {
+        this.amount = amount;
+    }
+
+    public void updateStatus(SavingsDepositStatus status) {
+        this.status = status;
+        this.updatedAt = new Timestamp(System.currentTimeMillis());
+    }
 
 }
