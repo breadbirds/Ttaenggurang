@@ -124,4 +124,12 @@ public class SwaggerConfig {
                 .build();
     }
 
+    @Bean
+    public GroupedOpenApi voteApi() {
+        return GroupedOpenApi.builder()
+                .group("votes")
+                .pathsToMatch("/votes/**", "/salaries/**")
+                .build();
+    }
+
 }
