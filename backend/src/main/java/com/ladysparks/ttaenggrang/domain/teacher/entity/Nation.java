@@ -1,4 +1,4 @@
-package com.ladysparks.ttaenggrang.domain.nation.entity;
+package com.ladysparks.ttaenggrang.domain.teacher.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

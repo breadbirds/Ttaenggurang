@@ -1,6 +1,6 @@
 package com.ladysparks.ttaenggrang.global.docs;
 
-import com.ladysparks.ttaenggrang.domain.nation.dto.NationDTO;
+import com.ladysparks.ttaenggrang.domain.teacher.dto.NationDTO;
 import com.ladysparks.ttaenggrang.domain.student.dto.StudentResponseDTO;
 import com.ladysparks.ttaenggrang.domain.teacher.dto.JobCreateDTO;
 import com.ladysparks.ttaenggrang.global.response.ApiResponse;
