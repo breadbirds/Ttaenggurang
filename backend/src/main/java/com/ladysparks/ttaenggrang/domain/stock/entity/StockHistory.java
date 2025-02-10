@@ -2,7 +2,6 @@ package com.ladysparks.ttaenggrang.domain.stock.entity;
 
 import com.ladysparks.ttaenggrang.domain.etf.entity.Etf;
 import com.ladysparks.ttaenggrang.domain.etf.entity.EtfTransaction;
-import com.ladysparks.ttaenggrang.domain.user.entity.Student;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
