@@ -1,12 +1,10 @@
-package com.ladysparks.ttaenggrang.domain.fcm.service;
+package com.ladysparks.ttaenggrang.domain.notification.service;
 
 import java.io.IOException;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
-import com.ladysparks.ttaenggrang.domain.fcm.dto.FcmMessage;
+import com.ladysparks.ttaenggrang.domain.notification.dto.FcmMessage;
 import com.ladysparks.ttaenggrang.global.utill.Constants;
 import org.apache.http.HttpHeaders;
 import org.slf4j.Logger;
@@ -43,7 +41,6 @@ public class FirebaseCloudMessageService {
      * @throws IOException
      */
     private String getAccessToken() throws IOException {
-
         // GoogleApi를 사용하기 위해 oAuth2를 이용해 인증한 대상을 나타내는객체
         GoogleCredentials googleCredentials = GoogleCredentials
                 // 서버로부터 받은 service key 파일 활용
@@ -102,7 +99,6 @@ public class FirebaseCloudMessageService {
     public FirebaseCloudMessageService(ObjectMapper objectMapper){
         this.objectMapper = objectMapper;
     }
-
 
     // 클라이언트 토큰 관리
     public void addToken(String token) {

@@ -1,7 +1,7 @@
-package com.ladysparks.ttaenggrang.domain.fcm.controller;
+package com.ladysparks.ttaenggrang.domain.notification.controller;
 
-import com.ladysparks.ttaenggrang.domain.fcm.service.FirebaseCloudMessageService;
-import com.ladysparks.ttaenggrang.domain.fcm.service.FirebaseCloudMessageWithDataService;
+import com.ladysparks.ttaenggrang.domain.notification.service.FirebaseCloudMessageService;
+import com.ladysparks.ttaenggrang.domain.notification.service.FirebaseCloudMessageWithDataService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

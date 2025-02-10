@@ -1,11 +1,11 @@
-package com.ladysparks.ttaenggrang.domain.fcm.service;
+package com.ladysparks.ttaenggrang.domain.notification.service;
 
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.ladysparks.ttaenggrang.domain.fcm.dto.FcmMessageWithData;
+import com.ladysparks.ttaenggrang.domain.notification.dto.FcmMessageWithData;
 import com.ladysparks.ttaenggrang.global.utill.Constants;
 import org.apache.http.HttpHeaders;
 import org.slf4j.Logger;
@@ -79,7 +79,6 @@ public class FirebaseCloudMessageWithDataService {
 
         return objectMapper.writeValueAsString(fcmMessage);
     }
-
 
     /**
      * targetToken에 해당하는 device로 FCM 푸시 알림 전송
