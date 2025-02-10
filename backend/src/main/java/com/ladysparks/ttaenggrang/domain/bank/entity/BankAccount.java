@@ -7,6 +7,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import java.sql.Timestamp;
 
 @Getter
+@Setter
 @ToString
 @Builder
 @AllArgsConstructor
@@ -26,9 +27,5 @@ public class BankAccount {
 
     @CreationTimestamp
     private Timestamp createdAt;
-
-    public void updateBalance(int newBalance) {
-        this.balance = newBalance;
-    }
 
 }

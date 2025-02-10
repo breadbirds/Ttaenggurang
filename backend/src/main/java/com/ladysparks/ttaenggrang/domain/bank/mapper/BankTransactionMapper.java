@@ -13,10 +13,12 @@ public interface BankTransactionMapper {
     BankTransactionMapper INSTANCE = Mappers.getMapper(BankTransactionMapper.class);
 
     @Mapping(source = "bankAccount.id", target = "bankAccountId")
+    @Mapping(source = "receiver.id", target = "receiverId")
     BankTransactionDTO toDto(BankTransaction bankTransaction);
 
     @Mapping(target = "id", ignore = true)
     @Mapping(source = "bankAccountId", target = "bankAccount.id")
+    @Mapping(source = "receiverId", target = "receiver.id")
     BankTransaction toEntity(BankTransactionDTO bankTransactionDTO);
 
 }

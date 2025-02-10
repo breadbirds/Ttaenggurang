@@ -60,19 +60,19 @@ public class SwaggerConfig {
                 .build();
     }
 
-    @Bean
-    public GroupedOpenApi savingsGoalApi() {
-        return GroupedOpenApi.builder()
-                .group("savings-goal")
-                .pathsToMatch("/savings-goals/**")
-                .build();
-    }
+//    @Bean
+//    public GroupedOpenApi savingsGoalApi() {
+//        return GroupedOpenApi.builder()
+//                .group("savings-goal")
+//                .pathsToMatch("/savings-goals/**")
+//                .build();
+//    }
 
     @Bean
     public GroupedOpenApi bankApi() {
         return GroupedOpenApi.builder()
                 .group("bank")
-                .pathsToMatch("/bank-account/**", "/bank-transactions/**", "/savings-products/**", "/savings-subscriptions/**", "/savings-deposits/**")
+                .pathsToMatch("/bank-accounts/**", "/bank-transactions/**", "/savings-products/**", "/savings-subscriptions/**", "/savings-deposits/**")
                 .build();
     }
 
@@ -80,7 +80,7 @@ public class SwaggerConfig {
     public GroupedOpenApi itemApi() {
         return GroupedOpenApi.builder()
                 .group("items")
-                .pathsToMatch("/items/**", "/item-transactions/**")
+                .pathsToMatch("/item-products/**", "/item-transactions/**")
                 .build();
     }
 
@@ -112,7 +112,7 @@ public class SwaggerConfig {
     public GroupedOpenApi weeklyReportApi() {
         return GroupedOpenApi.builder()
                 .group("weekly-report")
-                .pathsToMatch("/weekly/**")
+                .pathsToMatch("/weekly-report/**")
                 .build();
     }
 
@@ -121,6 +121,14 @@ public class SwaggerConfig {
         return GroupedOpenApi.builder()
                 .group("taxes")
                 .pathsToMatch("/taxes/**", "/tax-payments/**")
+                .build();
+    }
+
+    @Bean
+    public GroupedOpenApi voteApi() {
+        return GroupedOpenApi.builder()
+                .group("votes")
+                .pathsToMatch("/votes/**", "/salaries/**")
                 .build();
     }
 

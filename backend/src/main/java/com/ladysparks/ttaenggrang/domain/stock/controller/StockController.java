@@ -77,15 +77,31 @@ public class StockController implements StockApiSpecification {
         return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.created(dto));
     }
 
-    // 가격 변동 (관리자가 호출)
-    @PostMapping("/{stockId}/update-price")
-    public ResponseEntity<ApiResponse<StockDTO>> updateStockPrice(
-            @PathVariable("stockId") Long stockId) {
+//    // 가격 변동 (관리자가 호출)
+//    @PostMapping("/{stockId}/update-price")
+//    public ResponseEntity<ApiResponse<StockDTO>> updateStockPrice(
+//            @PathVariable("stockId") Long stockId) {
+//
+//        // 주식 가격 업데이트 서비스 호출
+//        StockDTO updatedStock = stockService.updateStockPrice(stockId);
+//        return ResponseEntity.status(HttpStatus.OK).body(ApiResponse.success(updatedStock));
+//    }
+//
 
-        // 주식 가격 업데이트 서비스 호출
-        StockDTO updatedStock = stockService.updateStockPrice(stockId);
-        return ResponseEntity.status(HttpStatus.OK).body(ApiResponse.success(updatedStock));
-    }
+//    // 주식장 열기
+//    @PostMapping("/open")
+//    public ResponseEntity<String> openMarket() {
+//        stockService.openMarket();
+//        return ResponseEntity.ok("주식장이 열렸습니다.");
+//    }
+//
+//    // 주식장 닫기
+//    @PostMapping("/close")
+//    public ResponseEntity<String> closeMarket() {
+//        stockService.closeMarket();
+//        return ResponseEntity.ok("주식장이 닫혔습니다.");
+//    }
+
 
 
 

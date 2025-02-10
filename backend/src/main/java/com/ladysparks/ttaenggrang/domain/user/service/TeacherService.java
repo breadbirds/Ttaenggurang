@@ -1,16 +1,18 @@
 package com.ladysparks.ttaenggrang.domain.user.service;
 
-import com.ladysparks.ttaenggrang.domain.user.dto.TeacherResponseDTO;
-import com.ladysparks.ttaenggrang.global.config.JwtTokenProvider;
-import com.ladysparks.ttaenggrang.domain.user.entity.Teacher;
 import com.ladysparks.ttaenggrang.domain.user.dto.TeacherLoginDTO;
+import com.ladysparks.ttaenggrang.domain.user.dto.TeacherResponseDTO;
 import com.ladysparks.ttaenggrang.domain.user.dto.TeacherSignupDTO;
+import com.ladysparks.ttaenggrang.domain.user.entity.Teacher;
 import com.ladysparks.ttaenggrang.domain.user.repository.TeacherRepository;
+import com.ladysparks.ttaenggrang.global.config.JwtTokenProvider;
 import com.ladysparks.ttaenggrang.global.response.ApiResponse;
+import com.ladysparks.ttaenggrang.global.utill.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.boot.model.naming.IllegalIdentifierException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.webjars.NotFoundException;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -23,6 +25,14 @@ public class TeacherService {
     private final TeacherRepository teacherRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;  // ✅ JWT 토큰 생성기
+    private final SecurityUtil securityUtil;
+
+    public Long getCurrentTeacherId() {
+        String email = securityUtil.getCurrentUser();
+        return teacherRepository.findByEmail(email)
+                .orElseThrow(() -> new IllegalArgumentException("해당 이메일을 가진 교사를 찾을 수 없습니다."))
+                .getId();
+    }
 
     // 회원가입
     public TeacherSignupDTO signupTeacher(TeacherSignupDTO teacherSignupDTO) {
@@ -71,7 +81,7 @@ public class TeacherService {
         return new TeacherLoginDTO(teacher.getEmail(), teacher.getName(), teacher.getSchool(), token);
     }
 
-    // ✅ 교사 전체 목록 조회 (조회용)
+    // 교사 전체 목록 조회 (조회용)
     public ApiResponse<List<TeacherResponseDTO>> getAllTeachers() {
         List<Teacher> teachers = teacherRepository.findAll();
 
@@ -91,4 +101,31 @@ public class TeacherService {
 
         return ApiResponse.success("교사 목록 조회 성공", responseDTOs);
     }
+
+    public Long findById(Long teacherId) {
+        Teacher teacher = teacherRepository.findById(teacherId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 ID의 교사가 존재하지 않습니다."));
+        return teacher.getNation() == null ? -1 : teacher.getNation().getId();
+    }
+
+    public List<TeacherResponseDTO> findAllTeachers() {
+        List<Teacher> teachers = teacherRepository.findAll();
+
+        if (teachers.isEmpty()) {
+            throw new NotFoundException("등록된 교사가 없습니다.");
+        }
+
+        List<TeacherResponseDTO> responseDTOs = teachers.stream()
+                .map(teacher -> new TeacherResponseDTO(
+                        teacher.getId(),
+                        teacher.getEmail(),
+                        teacher.getName(),
+                        teacher.getSchool(),
+                        teacher.getCreatedAt()
+                ))
+                .collect(Collectors.toList());
+
+        return responseDTOs;
+    }
+
 }

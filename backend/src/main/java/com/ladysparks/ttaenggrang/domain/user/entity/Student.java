@@ -2,6 +2,7 @@ package com.ladysparks.ttaenggrang.domain.user.entity;
 
 import com.ladysparks.ttaenggrang.domain.bank.entity.BankAccount;
 import com.ladysparks.ttaenggrang.domain.etf.entity.EtfTransaction;
+import com.ladysparks.ttaenggrang.domain.nation.entity.Nation;
 import com.ladysparks.ttaenggrang.domain.stock.entity.StockTransaction;
 import jakarta.persistence.*;
 import lombok.*;
@@ -29,7 +30,7 @@ public class Student {
     private String name;  // 학생 이름
 
     @Column(length = 2083)
-    private byte[] profileImage;  // 이미지 파일 경로
+    private String profileImageUrl;  // ✅ AWS S3 이미지 URL 저장 필드
 
     @Column(nullable = false, updatable = false)
     private Timestamp createdAt;
@@ -51,6 +52,10 @@ public class Student {
     @ManyToOne
     @JoinColumn(name = "job_id")
     private Job job;
+
+    @ManyToOne
+    @JoinColumn(name = "nation_id")
+    private Nation nation;
 
     //주식 거래내역
 //    @OneToMany(mappedBy = "student", fetch = FetchType.LAZY)

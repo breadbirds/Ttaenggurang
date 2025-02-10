@@ -1,26 +1,40 @@
 package com.ladysparks.ttaenggrang.domain.item.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.sql.Timestamp;
 
-@JsonIgnoreProperties(value = {"id", "createdAt", "updatedAt", "approved"}, allowGetters = true)
+@JsonIgnoreProperties(value = {"id", "sellerId", "createdAt", "updatedAt", "approved"}, allowGetters = true)
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Data // @Getter + @Setter
+@Data
 public class ItemDTO {
 
     private Long id;
+
     private Long sellerId;
-    private Long teacherId;
+
+    @NotNull(message = "상품명(name)은 필수 항목입니다.")
     private String name;
+
     private String description;
+
     private String image;
+
+    @NotNull(message = "상품 가격(price)은 필수 항목입니다.")
+    @Min(value = 1, message = "상품 가격(price)은 1 이상이어야 합니다.")
     private int price;
+
+    @NotNull(message = "판매 수량(quantity)은 필수 항목입니다.")
+    @Min(value = 1, message = "판매 수량(quantity)은 1 이상이어야 합니다.")
     private int quantity;
-    private boolean isApproved;
+
+    private boolean approved;
+
     private Timestamp createdAt;
     private Timestamp updatedAt;
 

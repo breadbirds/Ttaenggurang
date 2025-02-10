@@ -2,15 +2,20 @@ package com.ladysparks.ttaenggrang.domain.bank.entity;
 
 public enum BankTransactionType {
     DEPOSIT,
-    WITHDRAWAL,
+    WITHDRAW,
     TRANSFER,
-    PURCHASE,
-    SALE,
+    ITEM_BUY,
+    ITEM_SELL,
+    ITEM,
     STOCK_BUY,
     STOCK_SELL,
     ETF_BUY,
     ETF_SELL,
-    SAVINGS_PAYMENT,
+    SAVINGS_DEPOSIT,
+    SAVINGS_INTEREST,
     BANK_INTEREST,
-    SALARY
+    SALARY,
+    INCENTIVE,
+    TAX,
+    FINE,
 }

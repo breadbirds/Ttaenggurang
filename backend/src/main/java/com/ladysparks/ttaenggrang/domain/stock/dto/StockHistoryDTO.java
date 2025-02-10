@@ -11,9 +11,10 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 @Builder
 public class StockHistoryDTO {
-    private int id;
+    private Long id;
     private int price;
-    private int volume;
+    private int buyVolume;
+    private int sellVolume;
     private Timestamp date;
 
     //조인

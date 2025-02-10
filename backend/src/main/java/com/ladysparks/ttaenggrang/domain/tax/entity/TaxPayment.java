@@ -5,8 +5,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
-import java.sql.Date;
 import java.sql.Timestamp;
+import java.time.LocalDate;
 
 @Getter
 @ToString
@@ -31,8 +31,8 @@ public class TaxPayment {
     @Column(nullable = false)
     private int amount;
 
-    @Column(nullable = false)
-    private Date paymentDate;
+    @CreationTimestamp
+    private LocalDate paymentDate;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
