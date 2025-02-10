@@ -15,7 +15,7 @@ public interface SavingsProductApiSpecification {
     @Operation(summary = "적금 상품 [등록]", description = """
             💡 교사가 적금 상품을 등록합니다.
 
-            **[ 필드 설명 ]**
+            **[ 요청 필드 ]**
             - **name** : 적금 상품명
             - **interestRate** : 이자율
             - **earlyInterestRate** : 중도 해지시 적용되는 이자율

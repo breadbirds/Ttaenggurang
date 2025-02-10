@@ -59,6 +59,10 @@ public class Student {
     @JoinColumn(name = "nation_id")
     private Nation nation;
 
+    public Student(Long id) {
+        this.id = id;
+    }
+
     //주식 거래내역
 //    @OneToMany(mappedBy = "student", fetch = FetchType.LAZY)
 //    private List<StockTransaction> transactions;

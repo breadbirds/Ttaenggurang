@@ -37,12 +37,6 @@ public class Teacher{
     @Column(nullable = false, updatable = false)
     private Timestamp createdAt;
 
-    // <조인>
-    // 학생
-//    @OneToMany
-//    @JoinColumn(name = "studentId", nullable = false)
-//    private List<Student> student;
-
     //주식
 //    @OneToMany(mappedBy = "teacher", fetch = FetchType.LAZY)
 //    private List<Stock> stocks; // 선생님이 관리하는 주식 목록
@@ -51,12 +45,13 @@ public class Teacher{
     @OneToMany(mappedBy = "teacher", fetch = FetchType.LAZY)
     private List<Etf> etfs; // 선생님이 관리하는 주식 목록
 
-//    @OneToMany(mappedBy = "teacher", fetch = FetchType.LAZY)
-//    private List<Etf> etfs; // 선생님이 관리하는 주식 목록
-
     // 국가 (1:1 관계, Nation 엔티티에서 teacher_id를 관리)
     @JsonIgnore  // 순환 참조 방지
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Nation nation;
+
+    public Teacher(Long id) {
+        this.id = id;
+    }
 
 }

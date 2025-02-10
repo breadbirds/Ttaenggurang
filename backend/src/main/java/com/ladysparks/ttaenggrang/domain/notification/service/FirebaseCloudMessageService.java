@@ -1,12 +1,11 @@
-package com.ladysparks.ttaenggrang.domain.fcm.service;
+package com.ladysparks.ttaenggrang.domain.notification.service;
 
 import java.io.IOException;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
-import com.ladysparks.ttaenggrang.domain.fcm.dto.FcmMessage;
+import com.ladysparks.ttaenggrang.domain.notification.dto.FcmMessage;
+import com.ladysparks.ttaenggrang.domain.notification.dto.NotificationDTO;
 import com.ladysparks.ttaenggrang.global.utill.Constants;
 import org.apache.http.HttpHeaders;
 import org.slf4j.Logger;
@@ -36,14 +35,12 @@ public class FirebaseCloudMessageService {
     private static final Logger logger = LoggerFactory.getLogger(FirebaseCloudMessageService.class);
 
     public final ObjectMapper objectMapper;
+    private final NotificationService notificationService;
 
     /**
      * FCM에 push 요청을 보낼 때 인증을 위해 Header에 포함시킬 AccessToken 생성
-     * @return
-     * @throws IOException
      */
     private String getAccessToken() throws IOException {
-
         // GoogleApi를 사용하기 위해 oAuth2를 이용해 인증한 대상을 나타내는객체
         GoogleCredentials googleCredentials = GoogleCredentials
                 // 서버로부터 받은 service key 파일 활용
@@ -59,13 +56,12 @@ public class FirebaseCloudMessageService {
 
     /**
      * FCM 알림 메시지 생성
-     * @param targetToken
-     * @param title
-     * @param body
-     * @return
-     * @throws JsonProcessingException
      */
-    private String makeMessage(String targetToken, String title, String body) throws JsonProcessingException {
+    private String makeMessage(NotificationDTO notificationDTO) throws JsonProcessingException {
+        String title = notificationDTO.getTitle();
+        String body = notificationDTO.getMessage();
+        String targetToken = notificationDTO.getTargetToken();
+
         FcmMessage.Notification noti = new FcmMessage.Notification(title, body, null);
         FcmMessage.Message message = new FcmMessage.Message(noti, targetToken);
         FcmMessage fcmMessage = new FcmMessage(false, message);
@@ -75,14 +71,14 @@ public class FirebaseCloudMessageService {
 
     /**
      * targetToken에 해당하는 device로 FCM 푸시 알림 전송
-     * @param targetToken
-     * @param title
-     * @param body
-     * @throws IOException
      */
-    public void sendMessageTo(String targetToken, String title, String body) throws IOException {
-        String message = makeMessage(targetToken, title, body);
-        logger.info("message : {}", message);
+    public NotificationDTO sendMessageTo(NotificationDTO notificationDTO) throws IOException {
+        // Notification 테이블에 저장 루 FCM 메시지를 전송
+        NotificationDTO savedNotificationDTO = notificationService.saveNotification(notificationDTO);
+
+        String message = makeMessage(savedNotificationDTO);
+        logger.info("📨 FCM Message: {}", message);
+
         OkHttpClient client = new OkHttpClient();
         RequestBody requestBody = RequestBody.create(message, MediaType.get("application/json; charset=utf-8"));
         Request request = new Request.Builder()
@@ -97,12 +93,14 @@ public class FirebaseCloudMessageService {
 
         System.out.println(response.body().string());
 //        logger.info("message : {}", message);
+
+        return savedNotificationDTO;
     }
 
-    public FirebaseCloudMessageService(ObjectMapper objectMapper){
+    public FirebaseCloudMessageService(ObjectMapper objectMapper, NotificationService notificationService){
         this.objectMapper = objectMapper;
+        this.notificationService = notificationService;
     }
-
 
     // 클라이언트 토큰 관리
     public void addToken(String token) {
@@ -112,10 +110,15 @@ public class FirebaseCloudMessageService {
     }
 
     // 등록된 모든 토큰을 이용해서 broadcasting
-    public int broadCastMessage(String title, String body) throws IOException {
+    public int broadCastMessage(NotificationDTO notificationDTO) throws IOException {
         for(String token: Constants.clientTokens) {
-            logger.debug("broadcastmessage : {},{},{}",token, title, body);
-            sendMessageTo(token, title, body);
+            // Notification 테이블에 저장 루 FCM 메시지를 전송
+            NotificationDTO savedNotificationDTO = notificationService.saveNotification(notificationDTO);
+
+            String message = makeMessage(savedNotificationDTO);
+            logger.info("📨 FCM Message: {}", message);
+
+            sendMessageTo(notificationDTO);
         }
         return Constants.clientTokens.size();
     }

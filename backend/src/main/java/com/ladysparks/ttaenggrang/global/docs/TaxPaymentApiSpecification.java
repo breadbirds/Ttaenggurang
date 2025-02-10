@@ -17,7 +17,7 @@ public interface TaxPaymentApiSpecification {
     @Operation(summary = "세금 납부 [등록]", description = """
             💡 학생이 세금을 납부합니다.
             
-            **[ 필드 설명 ]**
+            **[ 요청 필드 ]**
             - **taxId** : 세금 ID
             - **amount** : 납부 금액
             - **status**: 납부 상태
