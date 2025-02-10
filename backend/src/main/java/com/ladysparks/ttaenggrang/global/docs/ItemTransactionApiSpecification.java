@@ -31,7 +31,8 @@ public interface ItemTransactionApiSpecification {
             💡학생의 아이템 판매 내역을 조회합니다.
             
             - **id** : 아이템 거래 ID
-            - **buyerId** : 구매 학생 ID
+            - **buyerId** : 구매자 학생 ID
+            - **buyerName** : 구매자 학생 이름
             - **quantity** : 구매 수량
             - **createdAt** : 상품 구매일
             """)
@@ -41,7 +42,8 @@ public interface ItemTransactionApiSpecification {
             💡학생의 아이템 구매 내역을 조회합니다.
 
             - **id** : 아이템 거래 ID
-            - **buyerId** : 구매 학생 ID
+            - **buyerId** : 구매자 학생 ID
+            - **buyerName** : 구매자 학생 이름
             - **quantity** : 구매 수량
             - **createdAt** : 상품 구매일
             """)

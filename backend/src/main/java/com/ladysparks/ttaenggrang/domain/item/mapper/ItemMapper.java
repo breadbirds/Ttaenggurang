@@ -14,6 +14,7 @@ public interface ItemMapper {
 
     // Entity → DTO 변환
     @Mapping(source = "seller.id", target = "sellerId")
+    @Mapping(source = "seller.name", target = "sellerName")
     ItemDTO toDto(Item bankAccount);
 
     // DTO → Entity 변환
