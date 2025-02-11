@@ -1,17 +1,50 @@
 package com.ladysparks.ttaenggrang.data.model.dto
 
-data class StockDto (
-    val id: Long = 0L,
+import com.google.gson.annotations.SerializedName
+
+data class StockDto(
+    @SerializedName("id")
+    val id: Long,  // int64 → Long
+
+    @SerializedName("name")
     val name: String,
-    val pricePer: Int = 0,
-    val totalQty: Int = 0,
-    val remainQty: Int = 0,
-    val description: String? = null,
-    val createdAt: String,
-    val updatedAt: String,
-    val changeRate: Int = 0,
-    val weight: Double = 0.0,
-    val teacherId: Long = 0L,
-    val categoryId: Long = 0L,
+
+    @SerializedName("price_per")
+    val pricePer: Int,  // int32 → Int
+
+    @SerializedName("total_qty")
+    val totalQty: Int,  // int32 → Int
+
+    @SerializedName("remain_qty")
+    val remainQty: Int,  // int32 → Int
+
+    @SerializedName("description")
+    val description: String?,
+
+    @SerializedName("created_at")
+    val createdAt: String,  // date-time → String (ISO 8601)
+
+    @SerializedName("updated_at")
+    val updatedAt: String,  // date-time → String (ISO 8601)
+
+    @SerializedName("changeRate")
+    val changeRate: Int,  // int32 → Int
+
+    @SerializedName("isMarketActive")
+    val isMarketActive: Boolean,
+
+    @SerializedName("priceChangeTime")
+    val priceChangeTime: String,  // date-time → String (ISO 8601)
+
+    @SerializedName("weight")
+    val weight: Double,  // number → Double
+
+    @SerializedName("teacher_id")
+    val teacherId: Long,  // int64 → Long
+
+    @SerializedName("categoryId")
+    val categoryId: Long,  // int64 → Long
+
+    @SerializedName("categoryName")
     val categoryName: String
 )
