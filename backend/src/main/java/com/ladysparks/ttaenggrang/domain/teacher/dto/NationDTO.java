@@ -1,7 +1,6 @@
 package com.ladysparks.ttaenggrang.domain.teacher.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.ladysparks.ttaenggrang.domain.teacher.entity.Teacher;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

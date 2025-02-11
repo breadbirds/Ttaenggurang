@@ -8,7 +8,7 @@ class RetrofitUtil {
 //        val orderService = ApplicationClass.retrofit.create(OrderService::class.java)
 //        val productService = ApplicationClass.retrofit.create(ProductService::class.java)
 //        val userService = ApplicationClass.retrofit.create(UserService::class.java)
-//        val storeService = ApplicationClass.retrofit.create(StoreService::class.java)
+        val storeService = ApplicationClass.retrofit.create(StoreService::class.java)
 //        val likeService = ApplicationClass.retrofit.create(LikeService::class.java)
 //        val diaryService = ApplicationClass.retrofit.create(DiaryService::class.java)
         val authService = ApplicationClass.retrofit.create(AuthService::class.java)
@@ -16,5 +16,6 @@ class RetrofitUtil {
         val teacherService = ApplicationClass.retrofit.create(TeacherService::class.java)
         val taxService = ApplicationClass.retrofit.create(TaxService::class.java)
         val salariesService = ApplicationClass.retrofit.create(SalariesService::class.java)
+        val stockService = ApplicationClass.retrofit.create(StockService::class.java)
     }
 }

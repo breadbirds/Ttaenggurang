@@ -16,6 +16,9 @@
     <color name="deepBlack">#444444</color>
     <color name="lightGray">#ADACAC</color>
 
+    <color name="transparent">#00000000</color>  <!-- 완전 투명 -->
+
+
     <!-- Chart Color -->
     <color name="chartGray">#F2F3F6</color>
     <color name="chartYellow">#FFD144</color>
