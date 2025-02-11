@@ -4,15 +4,10 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.InputType
 import android.util.Log
-import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.FirebaseApp
 import com.google.firebase.messaging.FirebaseMessaging
-import com.ladysparks.ttaenggrang.base.ApplicationClass
 import com.ladysparks.ttaenggrang.base.BaseActivity
 import com.ladysparks.ttaenggrang.data.model.request.StudentSignInRequest
 import com.ladysparks.ttaenggrang.data.model.request.TeacherSignInRequest
@@ -21,6 +16,7 @@ import com.ladysparks.ttaenggrang.data.model.response.TeacherSignInResponse
 import com.ladysparks.ttaenggrang.data.remote.RetrofitUtil
 import com.ladysparks.ttaenggrang.databinding.ActivityLoginBinding
 import com.ladysparks.ttaenggrang.util.SharedPreferencesUtil
+import com.ladysparks.ttaenggrang.util.showErrorDialog
 import com.ladysparks.ttaenggrang.util.showToast
 import kotlinx.coroutines.launch
 
@@ -76,6 +72,9 @@ class LoginActivity : BaseActivity() {
                     SharedPreferencesUtil.putValue(SharedPreferencesUtil.IS_TEACHER, true)
                     SharedPreferencesUtil.putValue(SharedPreferencesUtil.USER_ACCOUNT, it.data!!.email)
 
+                    // FCM TokenUpdate
+                    updateFCMToken(token)
+
                     // MainActivity 이동
                     startActivity(Intent(this@LoginActivity, MainActivity::class.java))
                 }.onFailure { error ->
@@ -98,10 +97,11 @@ class LoginActivity : BaseActivity() {
                         else -> ""
                     }
                     SharedPreferencesUtil.putValue(SharedPreferencesUtil.JWT_TOKEN_KEY, token)
-
-                    // 교사, 학생 여부 저장
                     SharedPreferencesUtil.putValue(SharedPreferencesUtil.IS_TEACHER, false)
                     SharedPreferencesUtil.putValue(SharedPreferencesUtil.USER_ACCOUNT, it.data!!.username)
+
+                    // FCM TokenUpdate
+                    updateFCMToken(token)
 
                     // MainActivity 이동
                     startActivity(Intent(this@LoginActivity, MainActivity::class.java))
@@ -111,6 +111,8 @@ class LoginActivity : BaseActivity() {
             }
         }
     }
+
+
 
 
     private fun initEvent() {
@@ -160,10 +162,11 @@ class LoginActivity : BaseActivity() {
 
 
                     SharedPreferencesUtil.putValue(SharedPreferencesUtil.JWT_TOKEN_KEY, token)
-
-                    // 교사, 학생 여부 저장
                     SharedPreferencesUtil.putValue(SharedPreferencesUtil.IS_TEACHER, binding.checkBoxAgree.isChecked)
                     SharedPreferencesUtil.putValue(SharedPreferencesUtil.USER_ACCOUNT, account)
+
+                    // FCM TokenUpdate
+                    updateFCMToken(token)
 
                     // MainActivity 이동
                     startActivity(Intent(this@LoginActivity, MainActivity::class.java))
@@ -171,8 +174,31 @@ class LoginActivity : BaseActivity() {
                     showToast("로그인 실패 ${error}")
                 }
             }
-
-
         }
+    }
+
+    // FCM Token 정보를 업데이트 합니다.
+    private fun updateFCMToken(jwtToken: String) {
+        FirebaseApp.initializeApp(this)
+        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+
+            if(!task.isSuccessful) {
+                return@OnCompleteListener
+            }
+            if(task.result != null){
+                lifecycleScope.launch {
+                    runCatching {
+                        RetrofitUtil.notificationService.updateFCMToken(task.result)
+                    }.onSuccess {
+                        Log.d("LoginActivity", "updateFCMToken: Token 저장 성공")
+                    }.onFailure {
+                        Log.d("TAG", "updateFCMToken: 에러 ${it.message}")
+                        showErrorDialog(it)
+                    }
+                }
+                Log.d(" FCM TOKEN !", "getFCMToken: ${task.result}")
+            }
+        })
+
     }
 }
