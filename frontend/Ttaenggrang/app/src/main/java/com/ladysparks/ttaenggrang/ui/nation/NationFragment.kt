@@ -5,13 +5,16 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Spinner
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.lifecycleScope
 import com.ladysparks.ttaenggrang.R
 import com.ladysparks.ttaenggrang.base.BaseFragment
+import com.ladysparks.ttaenggrang.databinding.DialogNationRegisterBinding
 import com.ladysparks.ttaenggrang.ui.component.BaseTwoButtonDialog
 import com.ladysparks.ttaenggrang.databinding.DialogVoteCreateBinding
 import com.ladysparks.ttaenggrang.databinding.DialogVoteParticipationBinding
@@ -50,6 +53,28 @@ class NationFragment : BaseFragment<FragmentNationBinding>(FragmentNationBinding
     }
 
     private fun initSetting() {
+
+        // 1. 국가 정보에 대한 데이터가 없을 경우, 정보를 추가하라는 팝업이 먼저 보여져야 한다. && 선생님일 때
+        if(false){
+            val dialog = BaseTwoButtonDialog(
+                context = requireContext(),
+                statusImageResId = R.drawable.ic_warning,
+                showCloseButton = false,
+                title = "등록된 국가 정보가 존재하지 않습니다!",
+                message = "화면을 눌러 국가 정보를 추가해보세요",
+                positiveButtonText = "확인",
+                onPositiveClick = {
+                    showNationRegistration()
+                }
+            )
+            dialog.setCancelable(false)
+            dialog.setCanceledOnTouchOutside(false)
+            dialog.show()
+
+
+            return
+        }
+
         // 선생님이 아닐 경우 일부기능을 보이지 않게 설정 합니다.
         if(SharedPreferencesUtil.getValue(SharedPreferencesUtil.IS_TEACHER, false)){
             binding.textVoteNow.visibility = View.GONE
@@ -66,6 +91,28 @@ class NationFragment : BaseFragment<FragmentNationBinding>(FragmentNationBinding
                 isEnabled = false
             }
         }
+    }
+
+    private fun showNationRegistration() {
+        val dialogBinding = DialogNationRegisterBinding.inflate(layoutInflater)
+        val dialog = AlertDialog.Builder(requireContext())
+            .setView(dialogBinding.root)
+            .create()
+
+
+//        dialogBinding.textVoteTitle.text = "우리반 봉사왕"
+//        dialogBinding.textVoteDate.text = "2021.02.03 ~ 2025.03.02"
+//
+//        // Button
+//        dialogBinding.btnDialogCancel.setOnClickListener { dialog.dismiss() }
+//        dialogBinding.btnDialogConfirm.setOnClickListener {
+//            showToast("투표가 완료되었습니다.")
+//            dialog.dismiss()
+//        }
+
+        dialog.setCanceledOnTouchOutside(false)
+        dialog.setCancelable(false)
+        dialog.show()
     }
 
     private fun initData() {
@@ -105,7 +152,7 @@ class NationFragment : BaseFragment<FragmentNationBinding>(FragmentNationBinding
                 // 결과
 
                 // 이미 투표에 참여한 기록이 있는 경우, 재참여 할 수 없다.
-                if(true){
+                if(false){
                     showVoteStatus()
                 }else{
                     // 투표 참여가능
@@ -113,6 +160,12 @@ class NationFragment : BaseFragment<FragmentNationBinding>(FragmentNationBinding
                     val dialog = AlertDialog.Builder(requireContext())
                         .setView(dialogBinding.root)
                         .create()
+                    // Spinner
+                    val jddddob = dialogBinding.selectStudent
+                    // job 설정
+                    val studentList = arrayOf("학생 1", "학생 2", "학생 3","학생 2", "학생 3", "학생 4", "학생 5","학생 1", "학생 2", "학생 3", "학생 4", "학생 5","학생 1", "학생 2", "학생 3", "학생 4", "학생 5")
+                    val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, studentList)
+                    jddddob!!.adapter = adapter
 
                     dialogBinding.textVoteTitle.text = "우리반 봉사왕"
                     dialogBinding.textVoteDate.text = "2021.02.03 ~ 2025.03.02"

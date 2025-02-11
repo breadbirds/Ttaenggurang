@@ -71,6 +71,7 @@ class LoginActivity : BaseActivity() {
                     }
                     SharedPreferencesUtil.putValue(SharedPreferencesUtil.JWT_TOKEN_KEY, token)
                     SharedPreferencesUtil.putValue(SharedPreferencesUtil.IS_TEACHER, true)
+                    SharedPreferencesUtil.putValue(SharedPreferencesUtil.USER_ACCOUNT, it.data!!.email)
 
                     // MainActivity 이동
                     startActivity(Intent(this@LoginActivity, MainActivity::class.java))
@@ -96,6 +97,7 @@ class LoginActivity : BaseActivity() {
 
                     // 교사, 학생 여부 저장
                     SharedPreferencesUtil.putValue(SharedPreferencesUtil.IS_TEACHER, false)
+                    SharedPreferencesUtil.putValue(SharedPreferencesUtil.USER_ACCOUNT, it.data!!.username)
 
                     // MainActivity 이동
                     startActivity(Intent(this@LoginActivity, MainActivity::class.java))
@@ -136,15 +138,28 @@ class LoginActivity : BaseActivity() {
                     showToast("로그인 성공")
 
 //                     Token 저장
-                    val token = when(val userData = it.data){
-                        is StudentSignInResponse -> userData.token
-                        is TeacherSignInResponse -> userData.token
+                    var token: String = ""
+                    var account: String = ""
+
+
+                    when(val userData = it.data){
+                        is StudentSignInResponse -> {
+                            token = userData.token
+                            account = userData.username
+                        }
+                        is TeacherSignInResponse -> {
+                            token = userData.token
+                            account = userData.email
+                        }
                         else -> ""
                     }
+
+
                     SharedPreferencesUtil.putValue(SharedPreferencesUtil.JWT_TOKEN_KEY, token)
 
                     // 교사, 학생 여부 저장
                     SharedPreferencesUtil.putValue(SharedPreferencesUtil.IS_TEACHER, binding.checkBoxAgree.isChecked)
+                    SharedPreferencesUtil.putValue(SharedPreferencesUtil.USER_ACCOUNT, account)
 
                     // MainActivity 이동
                     startActivity(Intent(this@LoginActivity, MainActivity::class.java))
