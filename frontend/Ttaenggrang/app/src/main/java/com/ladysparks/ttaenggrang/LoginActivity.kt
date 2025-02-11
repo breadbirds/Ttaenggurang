@@ -9,6 +9,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.FirebaseApp
+import com.google.firebase.messaging.FirebaseMessaging
 import com.ladysparks.ttaenggrang.base.ApplicationClass
 import com.ladysparks.ttaenggrang.base.BaseActivity
 import com.ladysparks.ttaenggrang.data.model.request.StudentSignInRequest
@@ -60,7 +63,7 @@ class LoginActivity : BaseActivity() {
         binding.tempBtnTeacher.setOnClickListener {
             lifecycleScope.launch {
                 runCatching {
-                    RetrofitUtil.authService.loginTeacher(TeacherSignInRequest(email = "aa@aa.com", password = "1234"))
+                    RetrofitUtil.authService.loginTeacher(TeacherSignInRequest(email = "hi1@naver.com", password = "ssafy123"))
                 }.onSuccess {
                     showToast("교사 로그인 성공")
 
@@ -76,6 +79,7 @@ class LoginActivity : BaseActivity() {
                     // MainActivity 이동
                     startActivity(Intent(this@LoginActivity, MainActivity::class.java))
                 }.onFailure { error ->
+
                     showToast("로그인 실패 ${error}")
                 }
             }
@@ -84,7 +88,7 @@ class LoginActivity : BaseActivity() {
         binding.tempBtnStudent.setOnClickListener {
             lifecycleScope.launch {
                 runCatching {
-                    RetrofitUtil.authService.loginStudent(StudentSignInRequest(username = "서미지", password = "1234"))
+                    RetrofitUtil.authService.loginStudent(StudentSignInRequest(username = "hello1", password = "ssafy123"))
                 }.onSuccess {
                     showToast("학생 로그인 성공")
 
