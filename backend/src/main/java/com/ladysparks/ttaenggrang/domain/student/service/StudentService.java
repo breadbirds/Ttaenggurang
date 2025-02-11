@@ -1,13 +1,11 @@
 package com.ladysparks.ttaenggrang.domain.student.service;
 
-import com.google.common.collect.Table;
 import com.ladysparks.ttaenggrang.domain.bank.dto.BankAccountDTO;
 import com.ladysparks.ttaenggrang.domain.bank.entity.BankAccount;
 import com.ladysparks.ttaenggrang.domain.bank.mapper.BankAccountMapper;
 import com.ladysparks.ttaenggrang.domain.bank.repository.BankAccountRepository;
 import com.ladysparks.ttaenggrang.domain.teacher.dto.JobInfoDTO;
 import com.ladysparks.ttaenggrang.domain.teacher.dto.NationDTO;
-import com.ladysparks.ttaenggrang.domain.teacher.entity.Nation;
 import com.ladysparks.ttaenggrang.domain.student.dto.SavingsAchievementDTO;
 import com.ladysparks.ttaenggrang.domain.student.dto.StudentLoginRequestDTO;
 import com.ladysparks.ttaenggrang.domain.student.dto.StudentLoginResponseDTO;
@@ -65,6 +63,11 @@ public class StudentService {
         return studentRepository.findByUsername(username)
                 .orElseThrow(() -> new IllegalArgumentException("해당 ID를 가진 학생을 찾을 수 없습니다."))
                 .getId();
+    }
+
+    public Optional<Long> getOptionalCurrentStudentId() {
+        String username = securityUtil.getCurrentUser();
+        return studentRepository.findByUsername(username).map(Student::getId);
     }
 
     // ✅ 프로필 이미지 URL 업데이트 메서드
