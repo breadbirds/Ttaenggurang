@@ -3,9 +3,12 @@ package com.ladysparks.ttaenggrang.ui.stock
 import android.app.TimePickerDialog
 import android.os.Bundle
 import android.view.View
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import com.ladysparks.ttaenggrang.R
 import com.ladysparks.ttaenggrang.base.BaseFragment
 import com.ladysparks.ttaenggrang.databinding.FragmentStockTeacherBinding
+import com.ladysparks.ttaenggrang.ui.home.StockAdapter
 import java.util.Calendar
 
 class StockTeacherFragment : BaseFragment<FragmentStockTeacherBinding>(
@@ -13,11 +16,23 @@ class StockTeacherFragment : BaseFragment<FragmentStockTeacherBinding>(
     R.layout.fragment_stock_teacher
 ) {
 
+    private val viewModel: StockViewModel by viewModels()
+    private lateinit var stockAdapter: StockAdapter
+
     private var startTime: String = ""
     private var endTime: String = ""
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        //초기화
+        initAdapter()
+
+        // LiveData 관찰하여 데이터 변경 시 UI 업데이트
+        observeViewModel()
+
+        // 서버에서 주식 데이터 가져오기
+        viewModel.fetchAllStocks()
 
         // 시작 시간 선택
         binding.startTime.setOnClickListener {
@@ -62,6 +77,19 @@ class StockTeacherFragment : BaseFragment<FragmentStockTeacherBinding>(
             true
         )
         timePickerDialog.show()
+    }
+
+    private fun initAdapter() {
+        stockAdapter = StockAdapter(arrayListOf())
+        binding.recyclerStockList.adapter = stockAdapter
+    }
+
+    private fun observeViewModel() {
+        viewModel.stockList.observe(viewLifecycleOwner, Observer { stockList ->
+            stockList?.let {
+                stockAdapter.updateData(it)  // 어댑터 데이터 업데이트
+            }
+        })
     }
 
 

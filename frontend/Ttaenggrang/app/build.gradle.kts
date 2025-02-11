@@ -80,4 +80,7 @@ dependencies {
     // chart
     implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
 
+    // 뷰모델
+    implementation ("androidx.fragment:fragment-ktx:1.5.7")
+
 }
