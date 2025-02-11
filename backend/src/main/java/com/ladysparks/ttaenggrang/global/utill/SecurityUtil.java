@@ -32,7 +32,7 @@ public class SecurityUtil {
     public final Set<String> blacklist = new HashSet<>();
 
     // 토큰을 블랙리스트에 추가하는 메서드
-    public void blicklistToken(String token) {
+    public void blacklistToken(String token) {
         blacklist.add(token);
     }
 
