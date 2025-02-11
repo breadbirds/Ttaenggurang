@@ -69,25 +69,13 @@ class SignupActivity : BaseActivity() {
 
 
     private fun signUp() {
-        // Test 위한 하드코딩 데이터
-//        val user = TeacherSignUpRequest(
-//            id = 0,
-//            email = "test2@example.com",
-//            password1 = "1234",
-//            password2 = "1234",
-//            name = "test3",
-//            school = "SSAFY University3",
-//            createdAt = Date().time
-//        )
-
         // 1. input Data가져오기
-        var email = binding.editEmailSignup.text.toString().trim()
-        var password1 = binding.editPasswordSignup.text.toString().trim()
-        var password2 = binding.editPasswordcheckSignup.text.toString().trim()
-        var name = binding.editNameSignup.text.toString().trim()
-        var school = binding.editSchoolSignup.text.toString().trim()
-        var createdAt = Date().time
-        // ...
+        val email = binding.editEmailSignup.text.toString().trim()
+        val password1 = binding.editPasswordSignup.text.toString().trim()
+        val password2 = binding.editPasswordcheckSignup.text.toString().trim()
+        val name = binding.editNameSignup.text.toString().trim()
+        val school = binding.editSchoolSignup.text.toString().trim()
+        val createdAt = Date().time
 
         // 1-2. 모든 필드가 작성되었는지 확인
         if (email.isEmpty() || name.isEmpty() || school.isEmpty() || password1.isEmpty() || password2.isEmpty()) {
@@ -110,10 +98,42 @@ class SignupActivity : BaseActivity() {
                 RetrofitUtil.authService.signupTeacher(user)
             }.onSuccess { data ->
                 showToast("회원 가입 완료 ! ${data}")
-                startActivity(Intent(this@SignupActivity, LoginActivity::class.java))
+                setBaseJobData()
             }.onFailure { exception ->
                 showToast("회원가입 실패 ! ${exception}")
                 Log.e("AlarmViewModel", "Error fetching alarms ${exception}")
+            }
+        }
+    }
+
+    /**
+     * 직업 정보, 세금 정보 더미 데이터 생성
+     */
+
+    private fun setBaseJobData() {
+        lifecycleScope.launch {
+            runCatching {
+//                RetrofitUtil.teacherService.registerJob("")
+//                RetrofitUtil.teacherService.registerJob("")
+//                RetrofitUtil.teacherService.registerJob("")
+//                RetrofitUtil.teacherService.registerJob("")
+//                RetrofitUtil.teacherService.registerJob("")
+//                RetrofitUtil.teacherService.registerJob("")
+//                RetrofitUtil.teacherService.registerJob("")
+//                RetrofitUtil.teacherService.registerJob("")
+//                RetrofitUtil.teacherService.registerJob("")
+//                RetrofitUtil.teacherService.registerJob("")
+//                RetrofitUtil.teacherService.registerJob("")
+//                RetrofitUtil.teacherService.registerJob("")
+//                RetrofitUtil.teacherService.registerJob("")
+//                RetrofitUtil.teacherService.registerJob("")
+//                RetrofitUtil.teacherService.registerJob("")
+
+            }.onSuccess {
+                showToast("기본 직업 데이터 생성 완료")
+                startActivity(Intent(this@SignupActivity, LoginActivity::class.java))
+            }.onFailure {
+                showToast("기본 직업 데이터 생성 실패 ${it}")
             }
         }
     }
