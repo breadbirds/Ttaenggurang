@@ -39,11 +39,29 @@
 
         <!-- 인센티브  + 학생 등록 -->
         <LinearLayout
+            android:layout_gravity="center_vertical"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
             <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnSalary"
+                android:paddingHorizontal="@dimen/spacing_10"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/spacing_10"
+                android:background="@drawable/btn_rounded_border"
+                android:backgroundTint="@null"
+                android:text="주급 지급"
+                android:textAppearance="@style/body2"
+                android:textColor="@color/mainOrange"
+                app:backgroundTint="@color/lightOrange"
+                app:strokeWidth="2dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnIncentive"
+                android:paddingHorizontal="@dimen/spacing_10"
                 style="@style/Widget.MaterialComponents.Button.TextButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -52,12 +70,8 @@
                 android:backgroundTint="@null"
                 android:text="인센티브 지급"
                 android:textAppearance="@style/body2"
-                android:textColor="@color/deepBlack"
-                app:backgroundTint="@color/lightGray"
-                app:icon="@drawable/ic_stock"
-                app:iconGravity="start"
-                app:iconPadding="8dp"
-                app:iconTint="@color/lightGray"
+                android:textColor="@color/mainOrange"
+                app:backgroundTint="@color/lightOrange"
                 app:strokeWidth="2dp" />
 
             <com.google.android.material.button.MaterialButton
@@ -69,11 +83,7 @@
                 android:text="학생 등록"
                 android:textAppearance="@style/body2"
                 android:textColor="@color/white"
-                app:backgroundTint="@color/mainOrange"
-                app:icon="@drawable/ic_stock"
-                app:iconGravity="start"
-                app:iconPadding="8dp"
-                app:iconTint="@color/lightOrange" />
+                app:backgroundTint="@color/mainOrange"/>
 
         </LinearLayout>
 

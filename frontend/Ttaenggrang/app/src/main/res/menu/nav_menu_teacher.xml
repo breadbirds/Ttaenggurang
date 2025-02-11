@@ -12,6 +12,11 @@
             android:title="학생 관리"
             android:background="@drawable/nav_item_selector"/>
         <item
+            android:id="@+id/navStudentsJob"
+            android:icon="@drawable/ic_job"
+            android:title="직업 관리"
+            android:background="@drawable/nav_item_selector"/>
+        <item
             android:id="@+id/navCountryInfo"
             android:icon="@drawable/ic_country_info"
             android:title="국가 정보"
