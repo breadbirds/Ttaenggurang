@@ -16,5 +16,6 @@ class RetrofitUtil {
         val teacherService = ApplicationClass.retrofit.create(TeacherService::class.java)
         val taxService = ApplicationClass.retrofit.create(TaxService::class.java)
         val salariesService = ApplicationClass.retrofit.create(SalariesService::class.java)
+        val stockService = ApplicationClass.retrofit.create(StockService::class.java)
     }
 }
