@@ -7,10 +7,12 @@ import com.ladysparks.ttaenggrang.domain.stock.dto.StockDTO;
 import com.ladysparks.ttaenggrang.domain.stock.service.StockService;
 import com.ladysparks.ttaenggrang.global.response.ApiResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -77,43 +79,52 @@ public class StockController implements StockApiSpecification {
         return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.created(dto));
     }
 
-//    // 가격 변동 (관리자가 호출)
-//    @PostMapping("/{stockId}/update-price")
-//    public ResponseEntity<ApiResponse<StockDTO>> updateStockPrice(
-//            @PathVariable("stockId") Long stockId) {
-//
-//        // 주식 가격 업데이트 서비스 호출
-//        StockDTO updatedStock = stockService.updateStockPrice(stockId);
-//        return ResponseEntity.status(HttpStatus.OK).body(ApiResponse.success(updatedStock));
-//    }
-//
 
-    // 주식장 열기
-//    @PostMapping("/open")
-//    public ResponseEntity<String> openMarket() {
-//        stockService.openMarket();
-//        return ResponseEntity.ok("주식장이 열렸습니다.");
-//    }
-//
-//    // 주식장 닫기
-//    @PostMapping("/close")
-//    public ResponseEntity<String> closeMarket() {
-//        stockService.closeMarket();
-//        return ResponseEntity.ok("주식장이 닫혔습니다.");
-    // 주식장 열기
+
     @PostMapping("/open")
     public ResponseEntity<String> openMarket() {
-        stockService.manageMarket(false);  // false는 주식장을 닫는 플래그
+        boolean result = stockService.manageMarket(true);  // false는 주식장을 닫는 플래그
         return ResponseEntity.ok("주식장이 열렸습니다");
     }
 
     // 주식장 닫기
+
     @PostMapping("/close")
     public ResponseEntity<String> closeMarket() {
-        stockService.manageMarket(false);  // false는 주식장을 닫는 플래그
+        boolean result = stockService.manageMarket(false);  // false는 주식장을 닫는 플래그
         return ResponseEntity.ok("주식장이 닫혔습니다.");
     }
+
+
+
+    @PutMapping("/update-market-time")
+    public ResponseEntity<ApiResponse<StockDTO>> updateMarketTimeForAllStocks(@RequestBody StockDTO stockDTO) {
+        LocalTime newOpenTime = stockDTO.getOpenTime();
+        LocalTime newCloseTime = stockDTO.getCloseTime();
+
+        // 시간 값이 제대로 파싱되었는지 확인
+        if (newOpenTime == null || newCloseTime == null) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        stockService.updateMarketTimeForAllStocks(newOpenTime, newCloseTime);
+
+        // 성공적으로 변경된 StockDTO 객체 반환
+        stockDTO.setOpenTime(newOpenTime);
+        stockDTO.setCloseTime(newCloseTime);
+        return ResponseEntity.ok(ApiResponse.success(stockDTO));
+    }
+    // 주식의 폐장 시간만 변경하는 메서드
+//    @PutMapping("/{stockId}/update-close-time")
+//    public ResponseEntity<String> updateCloseTime(
+//            @PathVariable Long stockId,
+//            @RequestParam("closeTime") @DateTimeFormat(pattern = "HH:mm") LocalTime newCloseTime) {
+//
+//        stockService.updateCloseTime(stockId, newCloseTime);
+//        return ResponseEntity.ok(stockId + "의 폐장 시간이 " + newCloseTime + "로 변경되었습니다.");
+//    }
 }
+
 
 
 
