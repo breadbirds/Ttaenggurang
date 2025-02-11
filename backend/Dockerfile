@@ -13,6 +13,6 @@ ENV LC_ALL=ko_KR.UTF-8
 WORKDIR /app
 
 # 애플리케이션 복사 및 실행 설정
-COPY build/libs/*SNAPSHOT.jar ttgr.jar
+COPY build/libs/*SNAPSHOT.jar ttaenggrang.jar
 
-ENTRYPOINT ["java", "-jar", "ttgr.jar"]
+ENTRYPOINT ["java", "-jar", "ttaenggrang.jar"]
