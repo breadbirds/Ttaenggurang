@@ -408,6 +408,21 @@ public class StockService {
         }
     }
 
+
+    // 주식 시장이 열렸는지 닫혔는지 확인
+    public boolean isMarketOpen() {
+        // 시장이 열려있는지 여부를 판단하는 로직
+        List<Stock> stocks = stockRepository.findAll();
+
+        // 주식 목록이 비어있으면 기본적으로 시장이 닫힌 상태로 간주
+        if (stocks.isEmpty()) {
+            return false;
+        }
+
+        // 첫 번째 주식의 시장 상태로 전체 시장 상태를 판단
+        return stocks.get(0).getIsMarketActive();
+    }
+
     // 주식의 개장 시간과 폐장 시간을 변경
     @Transactional
     public void updateMarketTimeForAllStocks(LocalTime newOpenTime, LocalTime newCloseTime) {
