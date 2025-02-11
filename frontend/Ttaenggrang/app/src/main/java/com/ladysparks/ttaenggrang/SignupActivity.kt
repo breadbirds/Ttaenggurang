@@ -4,14 +4,14 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.InputType
 import android.util.Log
-import android.widget.EditText
-import android.widget.ImageView
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.ladysparks.ttaenggrang.base.BaseActivity
+import com.ladysparks.ttaenggrang.data.dummy.JobDummyData.jobList
+import com.ladysparks.ttaenggrang.data.dummy.TaxDummyData.taxList
 import com.ladysparks.ttaenggrang.data.model.request.TeacherSignUpRequest
 import com.ladysparks.ttaenggrang.data.remote.RetrofitUtil
 import com.ladysparks.ttaenggrang.databinding.ActivitySignupBinding
+import com.ladysparks.ttaenggrang.util.showErrorDialog
 import com.ladysparks.ttaenggrang.util.showToast
 import kotlinx.coroutines.launch
 import java.util.Date
@@ -100,40 +100,40 @@ class SignupActivity : BaseActivity() {
                 showToast("회원 가입 완료 ! ${data}")
                 setBaseJobData()
             }.onFailure { exception ->
-                showToast("회원가입 실패 ! ${exception}")
-                Log.e("AlarmViewModel", "Error fetching alarms ${exception}")
+                showErrorDialog(exception)
             }
         }
     }
 
     /**
-     * 직업 정보, 세금 정보 더미 데이터 생성
+     * 교사가 사용하기 위한 기본 데이터 추가 : 직업 + 세금
      */
 
     private fun setBaseJobData() {
         lifecycleScope.launch {
             runCatching {
-//                RetrofitUtil.teacherService.registerJob("")
-//                RetrofitUtil.teacherService.registerJob("")
-//                RetrofitUtil.teacherService.registerJob("")
-//                RetrofitUtil.teacherService.registerJob("")
-//                RetrofitUtil.teacherService.registerJob("")
-//                RetrofitUtil.teacherService.registerJob("")
-//                RetrofitUtil.teacherService.registerJob("")
-//                RetrofitUtil.teacherService.registerJob("")
-//                RetrofitUtil.teacherService.registerJob("")
-//                RetrofitUtil.teacherService.registerJob("")
-//                RetrofitUtil.teacherService.registerJob("")
-//                RetrofitUtil.teacherService.registerJob("")
-//                RetrofitUtil.teacherService.registerJob("")
-//                RetrofitUtil.teacherService.registerJob("")
-//                RetrofitUtil.teacherService.registerJob("")
-
+                jobList.forEach { job ->
+                    RetrofitUtil.teacherService.registerJob(job)
+                }
             }.onSuccess {
-                showToast("기본 직업 데이터 생성 완료")
+                setBaseTaxData()
+            }.onFailure {
+                showErrorDialog(it)
+            }
+        }
+    }
+
+    private fun setBaseTaxData(){
+        lifecycleScope.launch {
+            runCatching {
+                taxList.forEach { tax ->
+                    RetrofitUtil.taxService.registerTax(tax)
+                }
+            }.onSuccess {
+                showToast("모든 데이터 생성이 끝났습니다.")
                 startActivity(Intent(this@SignupActivity, LoginActivity::class.java))
             }.onFailure {
-                showToast("기본 직업 데이터 생성 실패 ${it}")
+                showErrorDialog(it)
             }
         }
     }
