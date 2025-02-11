@@ -6,9 +6,11 @@ import com.ladysparks.ttaenggrang.domain.stock.dto.StockTransactionDTO;
 import com.ladysparks.ttaenggrang.global.response.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalTime;
 import java.util.List;
 @Tag(name = "Stock", description = "주식 API")
 public interface StockApiSpecification {
@@ -57,5 +59,11 @@ public interface StockApiSpecification {
     @Operation(summary = "주식 CLOSE", description = "💡주식장 닫힘")
     @PostMapping("/close")
     public ResponseEntity<String> closeMarket();
+
+    @Operation(summary = "주식 개장시간, 폐장 시간 변경", description = "💡주식 개장시간, 폐장 시간 변경")
+    public ResponseEntity<ApiResponse<StockDTO>> updateMarketTimeForAllStocks(@RequestBody StockDTO stockDTO);
+
+
+
 
 }
