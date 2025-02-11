@@ -21,8 +21,7 @@
             android:datePickerMode="calendar"
             android:theme="@style/CustomCalendarStyle"
             android:calendarViewShown="false"
-            android:headerTextColor="@color/mainOrange"
-            android:headerBackground="@color/white"
+            android:headerBackground="@color/mainOrange"
             />
 
         <LinearLayout
