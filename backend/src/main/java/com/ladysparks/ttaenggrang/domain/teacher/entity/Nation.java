@@ -31,7 +31,6 @@ public class Nation {
     @Column(nullable = false)
     private Integer savingsGoalAmount;
 
-    @Column(nullable = false)
     private int nationalTreasury;
 
     @Column(nullable = false)

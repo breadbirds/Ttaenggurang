@@ -15,7 +15,7 @@ import java.sql.Timestamp;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@JsonIgnoreProperties(value={"id", "publicFunds", "establishedDate", "profileImageUrl"}, allowGetters=true)
+@JsonIgnoreProperties(value={"id", "establishedDate", "profileImageUrl"}, allowGetters=true)
 public class NationDTO {
 
     private Long id;
