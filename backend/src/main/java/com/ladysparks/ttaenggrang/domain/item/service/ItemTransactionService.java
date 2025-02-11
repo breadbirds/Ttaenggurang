@@ -1,7 +1,6 @@
 package com.ladysparks.ttaenggrang.domain.item.service;
 
 import com.ladysparks.ttaenggrang.domain.bank.dto.BankTransactionDTO;
-import com.ladysparks.ttaenggrang.domain.bank.entity.BankTransaction;
 import com.ladysparks.ttaenggrang.domain.bank.entity.BankTransactionType;
 import com.ladysparks.ttaenggrang.domain.bank.service.BankTransactionService;
 import com.ladysparks.ttaenggrang.domain.item.entity.Item;
@@ -10,10 +9,9 @@ import com.ladysparks.ttaenggrang.domain.item.dto.ItemTransactionDTO;
 import com.ladysparks.ttaenggrang.domain.item.mapper.ItemTransactionMapper;
 import com.ladysparks.ttaenggrang.domain.item.repository.ItemRepository;
 import com.ladysparks.ttaenggrang.domain.item.repository.ItemTransactionRepository;
-import com.ladysparks.ttaenggrang.domain.user.service.StudentService;
+import com.ladysparks.ttaenggrang.domain.student.service.StudentService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

@@ -1,10 +1,10 @@
 package com.ladysparks.ttaenggrang.domain.weekly_report.service;
 
 import com.ladysparks.ttaenggrang.domain.bank.service.BankTransactionService;
-import com.ladysparks.ttaenggrang.domain.user.dto.StudentResponseDTO;
-import com.ladysparks.ttaenggrang.domain.user.dto.TeacherResponseDTO;
-import com.ladysparks.ttaenggrang.domain.user.service.StudentService;
-import com.ladysparks.ttaenggrang.domain.user.service.TeacherService;
+import com.ladysparks.ttaenggrang.domain.student.dto.StudentResponseDTO;
+import com.ladysparks.ttaenggrang.domain.teacher.dto.TeacherResponseDTO;
+import com.ladysparks.ttaenggrang.domain.student.service.StudentService;
+import com.ladysparks.ttaenggrang.domain.teacher.service.TeacherService;
 import com.ladysparks.ttaenggrang.domain.weekly_report.dto.FinancialGrowthDTO;
 import com.ladysparks.ttaenggrang.domain.weekly_report.dto.StudentFinancialSummaryDTO;
 import com.ladysparks.ttaenggrang.domain.weekly_report.dto.WeeklyFinancialSummaryDTO;
@@ -17,7 +17,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import org.webjars.NotFoundException;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;

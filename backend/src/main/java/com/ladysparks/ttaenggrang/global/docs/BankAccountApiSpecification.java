@@ -19,6 +19,7 @@ public interface BankAccountApiSpecification {
     @Operation(summary = "은행 계좌 [조회]", description = """
             💡 학생의 은행 계좌 정보를 조회합니다.
 
+            **[ 응답 필드 ]**
             - **id** : 은행 계좌 ID
             - **accountNumber** : 계좌 번호
             - **balance** : 계좌 잔액

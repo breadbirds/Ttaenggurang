@@ -1,15 +1,12 @@
 package com.ladysparks.ttaenggrang.domain.stock.repository;
 
-import com.ladysparks.ttaenggrang.domain.stock.entity.Stock;
 import com.ladysparks.ttaenggrang.domain.stock.entity.StockTransaction;
 import com.ladysparks.ttaenggrang.domain.stock.entity.TransType;
-import com.ladysparks.ttaenggrang.domain.user.entity.Student;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.sql.Timestamp;
-import java.time.LocalDate;
 import java.util.List;
 
 public interface StockTransactionRepository extends JpaRepository<StockTransaction, Integer> {

@@ -2,8 +2,8 @@ package com.ladysparks.ttaenggrang.domain.vote.service;
 
 import com.ladysparks.ttaenggrang.domain.bank.entity.BankAccount;
 import com.ladysparks.ttaenggrang.domain.bank.repository.BankAccountRepository;
-import com.ladysparks.ttaenggrang.domain.user.entity.Student;
-import com.ladysparks.ttaenggrang.domain.user.repository.StudentRepository;
+import com.ladysparks.ttaenggrang.domain.student.entity.Student;
+import com.ladysparks.ttaenggrang.domain.student.repository.StudentRepository;
 import com.ladysparks.ttaenggrang.domain.vote.entity.Vote;
 import com.ladysparks.ttaenggrang.domain.vote.entity.VoteItem;
 import com.ladysparks.ttaenggrang.domain.vote.entity.VoteStatus;

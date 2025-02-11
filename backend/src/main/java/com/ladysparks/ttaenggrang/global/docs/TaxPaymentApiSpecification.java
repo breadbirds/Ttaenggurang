@@ -17,7 +17,7 @@ public interface TaxPaymentApiSpecification {
     @Operation(summary = "세금 납부 [등록]", description = """
             💡 학생이 세금을 납부합니다.
             
-            **[ 필드 설명 ]**
+            **[ 요청 필드 ]**
             - **taxId** : 세금 ID
             - **amount** : 납부 금액
             - **status**: 납부 상태
@@ -34,6 +34,7 @@ public interface TaxPaymentApiSpecification {
     @Operation(summary = "학생 세금 납부 내역 (학생) [조회]", description = """
             💡 특정 학생의 세금 납부 내역을 조회합니다.
             
+            **[ 응답 필드 ]**
             - **id** : 세금 납부 ID
             - **studentId** : 학생 ID
             - **taxId** : 세금 ID
@@ -47,6 +48,7 @@ public interface TaxPaymentApiSpecification {
     @Operation(summary = "세금 유형별 납부 내역 [조회]", description = """
             💡 학급 내 특정 세금 유형에 대한 납부 내역을 조회합니다.
             
+            **[ 응답 필드 ]**
             - **id** : 세금 납부 ID
             - **studentId** : 학생 ID
             - **taxId** : 세금 ID
@@ -60,6 +62,7 @@ public interface TaxPaymentApiSpecification {
     @Operation(summary = "학생 세금 납부 내역 (교사) [조회]", description = """
             💡 특정 교사가 담당하는 학생들의 세금 납부 내역을 조회합니다.
             
+            **[ 응답 필드 ]**
             - **id** : 세금 납부 ID
             - **studentId** : 학생 ID
             - **taxId** : 세금 ID

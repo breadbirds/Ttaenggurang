@@ -7,7 +7,7 @@ import lombok.*;
 
 import java.sql.Timestamp;
 
-@JsonIgnoreProperties(value = {"id", "sellerId", "createdAt", "updatedAt", "approved"}, allowGetters = true)
+@JsonIgnoreProperties(value = {"id", "sellerId", "sellerName", "createdAt", "updatedAt", "approved"}, allowGetters = true)
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -17,6 +17,8 @@ public class ItemDTO {
     private Long id;
 
     private Long sellerId;
+
+    private String sellerName;
 
     @NotNull(message = "상품명(name)은 필수 항목입니다.")
     private String name;

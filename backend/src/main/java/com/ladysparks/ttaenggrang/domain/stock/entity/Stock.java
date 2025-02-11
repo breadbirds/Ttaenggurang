@@ -1,8 +1,8 @@
 package com.ladysparks.ttaenggrang.domain.stock.entity;
 
-import com.ladysparks.ttaenggrang.category.Category;
+import com.ladysparks.ttaenggrang.domain.stock.category.Category;
 import com.ladysparks.ttaenggrang.domain.etf.entity.Etf;
-import com.ladysparks.ttaenggrang.domain.user.entity.Teacher;
+import com.ladysparks.ttaenggrang.domain.teacher.entity.Teacher;
 import jakarta.persistence.*;
 import lombok.*;
 

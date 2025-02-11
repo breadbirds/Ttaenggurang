@@ -4,10 +4,9 @@ import com.ladysparks.ttaenggrang.domain.bank.dto.BankAccountDTO;
 import com.ladysparks.ttaenggrang.domain.bank.entity.BankAccount;
 import com.ladysparks.ttaenggrang.domain.bank.mapper.BankAccountMapper;
 import com.ladysparks.ttaenggrang.domain.bank.repository.BankAccountRepository;
-import com.ladysparks.ttaenggrang.domain.user.service.StudentService;
+import com.ladysparks.ttaenggrang.domain.student.service.StudentService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.boot.model.naming.IllegalIdentifierException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
