@@ -13,6 +13,7 @@ public interface WeeklyReportApiSpecification {
     @Operation(summary = "학생 주간 금융 리포트 [조회]", description = """
             💡 특정 학생의 이번주 금융 활동을 분석하여 주간 리포트를 제공합니다.
     
+            **[ 응답 필드 ]**
             - **studentId** : 학생 ID
             - **reportDate** : 주간 통계 생성일
             - **totalIncome** : 총 수입 (입금, 급여, 아이템 판매, 주식·ETF 매도, 적금 이자, 은행 이자, 인센티브)
@@ -29,6 +30,7 @@ public interface WeeklyReportApiSpecification {
     @Operation(summary = "이번주 내 금융 성적표 [조회]", description = """
            💡 특정 학생의 **지난주, 이번주, 반 평균** 저축 증가율, 투자 수익율, 지출 증가율을 반환합니다.
     
+           **[ 응답 필드 ]**
            - **lastWeekSummary**: 해당 학생의 지난주 저축 증가율, 투자 수익율, 지출 증가율
            - **thisWeekSummary**: 해당 학생의 이번주 저축 증가율, 투자 수익율, 지출 증가율
            - **classAverageSummary**: 해당 학생이 속한 반의 평균 저축 증가율, 투자 수익율, 지출 증가율

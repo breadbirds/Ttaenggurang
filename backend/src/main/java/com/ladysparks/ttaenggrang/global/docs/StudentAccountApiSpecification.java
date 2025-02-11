@@ -1,6 +1,8 @@
 package com.ladysparks.ttaenggrang.global.docs;
 
-import com.ladysparks.ttaenggrang.domain.user.dto.*;
+import com.ladysparks.ttaenggrang.domain.student.dto.StudentLoginRequestDTO;
+import com.ladysparks.ttaenggrang.domain.student.dto.StudentLoginResponseDTO;
+import com.ladysparks.ttaenggrang.domain.student.dto.StudentResponseDTO;
 import com.ladysparks.ttaenggrang.global.response.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -9,7 +11,6 @@ import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 

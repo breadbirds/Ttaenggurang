@@ -1,16 +1,11 @@
 package com.ladysparks.ttaenggrang.global.docs;
 
-import com.ladysparks.ttaenggrang.domain.bank.dto.BankAccountDTO;
+import com.ladysparks.ttaenggrang.domain.stock.dto.OpenResponseDTO;
 import com.ladysparks.ttaenggrang.domain.stock.dto.StockDTO;
 import com.ladysparks.ttaenggrang.domain.stock.dto.StockTransactionDTO;
-import com.ladysparks.ttaenggrang.domain.stock.repository.StockRepository;
-import com.ladysparks.ttaenggrang.domain.stock.service.StockService;
 import com.ladysparks.ttaenggrang.global.response.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -53,8 +48,14 @@ public interface StockApiSpecification {
 //    @Operation(summary = "주식장 닫기", description = "💡 주식장 닫혀라 참께")
 //    @PostMapping("/close")
 //    public ResponseEntity<String> closeMarket();
+//
 
+    @Operation(summary = "주식 OPEN", description = "💡 주식장 열림")
+    @PostMapping("/open")
+    public ResponseEntity<String> openMarket();
 
-
+    @Operation(summary = "주식 CLOSE", description = "💡주식장 닫힘")
+    @PostMapping("/close")
+    public ResponseEntity<String> closeMarket();
 
 }

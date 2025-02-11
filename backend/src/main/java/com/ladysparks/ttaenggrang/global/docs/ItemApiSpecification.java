@@ -17,7 +17,7 @@ public interface ItemApiSpecification {
     @Operation(summary = "학급 내 판매 아이템 [등록]", description = """
             💡 학생이 판매할 아이템을 등록합니다.
 
-            **[ 필드 설명 ]**
+            **[ 요청 필드 ]**
             - **name** : 상품명
             - **description** : 상품 설명
             - **image** : 상품 이미지 URL (S3 URL)
@@ -33,8 +33,10 @@ public interface ItemApiSpecification {
     @Operation(summary = "학급 내 판매 아이템 (학생) [전체 조회]", description = """
             💡 학생이 학급 내 전체 판매 아이템을 조회합니다.
             
+            **[ 응답 필드 ]**
             - **id** : 아이템 ID
-            - **sellerId** : 판매 학생 ID
+            - **sellerId** : 판매자 학생 ID
+            - **sellerName** : 판매자 학생 이름
             - **name** : 상품명
             - **description** : 상품 설명
             - **image** : 상품 이미지 URL (S3 URL)
@@ -49,8 +51,10 @@ public interface ItemApiSpecification {
     @Operation(summary = "학급 내 판매 아이템 [상세 조회]", description = """
             💡 판매 중인 아이템을 조회합니다.
             
+            **[ 응답 필드 ]**
             - **id** : 아이템 ID
-            - **sellerId** : 판매 학생 ID
+            - **sellerId** : 판매자 학생 ID
+            - **sellerName** : 판매자 학생 이름
             - **name** : 상품명
             - **description** : 상품 설명
             - **image** : 상품 이미지 URL (S3 URL)
@@ -65,8 +69,10 @@ public interface ItemApiSpecification {
     @Operation(summary = "학생의 판매 아이템 [전체 조회]", description = """
             💡 해당 학생이 판매 중인 전체 아이템을 조회합니다.
             
+            **[ 응답 필드 ]**
             - **id** : 아이템 ID
-            - **sellerId** : 판매 학생 ID
+            - **sellerId** : 판매자 학생 ID
+            - **sellerName** : 판매자 학생 이름
             - **name** : 상품명
             - **description** : 상품 설명
             - **image** : 상품 이미지 URL (S3 URL)
@@ -81,8 +87,10 @@ public interface ItemApiSpecification {
     @Operation(summary = "학급 내 판매 아이템 (교사) [전체 조회]", description = """
             💡 교사가 학급 내 전체 판매 아이템을 조회합니다.
             
+            **[ 응답 필드 ]**
             - **id** : 아이템 ID
-            - **sellerId** : 판매 학생 ID
+            - **sellerId** : 판매자 학생 ID
+            - **sellerName** : 판매자 학생 이름
             - **name** : 상품명
             - **description** : 상품 설명
             - **image** : 상품 이미지 URL (S3 URL)

@@ -1,9 +1,9 @@
 package com.ladysparks.ttaenggrang.domain.vote.service;
 
-import com.ladysparks.ttaenggrang.domain.user.dto.StudentResponseDTO;
-import com.ladysparks.ttaenggrang.domain.user.entity.Student;
-import com.ladysparks.ttaenggrang.domain.user.repository.StudentRepository;
-import com.ladysparks.ttaenggrang.domain.user.repository.TeacherRepository;
+import com.ladysparks.ttaenggrang.domain.student.dto.StudentResponseDTO;
+import com.ladysparks.ttaenggrang.domain.student.entity.Student;
+import com.ladysparks.ttaenggrang.domain.student.repository.StudentRepository;
+import com.ladysparks.ttaenggrang.domain.teacher.repository.TeacherRepository;
 import com.ladysparks.ttaenggrang.domain.vote.dto.VoteCreateDTO;
 import com.ladysparks.ttaenggrang.domain.vote.entity.Vote;
 import com.ladysparks.ttaenggrang.domain.vote.entity.VoteItem;

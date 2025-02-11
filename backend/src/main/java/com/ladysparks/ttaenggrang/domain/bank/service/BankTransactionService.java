@@ -9,10 +9,12 @@ import com.ladysparks.ttaenggrang.domain.bank.entity.BankTransactionType;
 import com.ladysparks.ttaenggrang.domain.bank.mapper.BankAccountMapper;
 import com.ladysparks.ttaenggrang.domain.bank.mapper.BankTransactionMapper;
 import com.ladysparks.ttaenggrang.domain.bank.repository.BankTransactionRepository;
-import com.ladysparks.ttaenggrang.domain.user.dto.StudentResponseDTO;
-import com.ladysparks.ttaenggrang.domain.user.service.StudentService;
-import com.ladysparks.ttaenggrang.domain.user.service.TeacherService;
+import com.ladysparks.ttaenggrang.domain.student.dto.SavingsAchievementDTO;
+import com.ladysparks.ttaenggrang.domain.student.dto.StudentResponseDTO;
+import com.ladysparks.ttaenggrang.domain.student.service.StudentService;
+import com.ladysparks.ttaenggrang.domain.teacher.service.TeacherService;
 import com.ladysparks.ttaenggrang.domain.weekly_report.dto.WeeklyReportDTO;
+import com.ladysparks.ttaenggrang.global.redis.RedisGoalService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,16 +34,22 @@ public class BankTransactionService {
     private final TeacherService teacherService;
     private final StudentService studentService;
     private final BankAccountService bankAccountService;
-
+    private final RedisGoalService redisGoalService;
 
     @Transactional
     public BankTransactionDTO addBankTransaction(BankTransactionDTO bankTransactionDTO) {
-        // 송금(Transfer) 타입이면 출금+입금 트랜잭션 처리
-        if (bankTransactionDTO.getType() == BankTransactionType.TRANSFER || bankTransactionDTO.getType() == BankTransactionType.ITEM) {
-            return processTransfer(bankTransactionDTO);
-        } else {
-            return processSingleTransaction(bankTransactionDTO);
-        }
+        // 기존 거래 처리
+        BankTransactionDTO result = (bankTransactionDTO.getType() == BankTransactionType.TRANSFER || bankTransactionDTO.getType() == BankTransactionType.ITEM)
+                ? processTransfer(bankTransactionDTO)
+                : processSingleTransaction(bankTransactionDTO);
+
+        // 목표 달성률 업데이트 & Redis 저장
+        SavingsAchievementDTO savingsAchievementDTO = studentService.calculateSavingsAchievementRate();
+
+        Long teacherId = studentService.findTeacherIdByStudentId(savingsAchievementDTO.getStudentId());
+        redisGoalService.saveOrUpdateGoalAchievement(teacherId, savingsAchievementDTO);
+
+        return result;
     }
 
     public BankTransactionDTO processSingleTransaction(BankTransactionDTO bankTransactionDTO) {

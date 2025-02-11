@@ -7,12 +7,11 @@ import com.ladysparks.ttaenggrang.domain.bank.entity.*;
 import com.ladysparks.ttaenggrang.domain.bank.mapper.SavingsDepositMapper;
 import com.ladysparks.ttaenggrang.domain.bank.repository.SavingsDepositRepository;
 import com.ladysparks.ttaenggrang.domain.bank.repository.SavingsSubscriptionRepository;
-import com.ladysparks.ttaenggrang.domain.user.service.StudentService;
+import com.ladysparks.ttaenggrang.domain.student.service.StudentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;

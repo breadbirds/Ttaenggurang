@@ -1,7 +1,7 @@
 package com.ladysparks.ttaenggrang.domain.vote.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.ladysparks.ttaenggrang.domain.user.dto.StudentResponseDTO;
+import com.ladysparks.ttaenggrang.domain.student.dto.StudentResponseDTO;
 import com.ladysparks.ttaenggrang.domain.vote.entity.VoteMode;
 import com.ladysparks.ttaenggrang.domain.vote.entity.VoteStatus;
 import lombok.Data;

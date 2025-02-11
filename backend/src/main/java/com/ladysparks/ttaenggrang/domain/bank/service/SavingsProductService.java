@@ -4,7 +4,7 @@ import com.ladysparks.ttaenggrang.domain.bank.dto.SavingsProductDTO;
 import com.ladysparks.ttaenggrang.domain.bank.entity.SavingsProduct;
 import com.ladysparks.ttaenggrang.domain.bank.mapper.SavingsProductMapper;
 import com.ladysparks.ttaenggrang.domain.bank.repository.SavingsProductRepository;
-import com.ladysparks.ttaenggrang.domain.user.service.TeacherService;
+import com.ladysparks.ttaenggrang.domain.teacher.service.TeacherService;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
