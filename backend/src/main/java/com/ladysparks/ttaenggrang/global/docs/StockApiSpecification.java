@@ -23,7 +23,7 @@ public interface StockApiSpecification {
 
     @Operation(summary = "주식 상세 조회", description = "💡 주식 ID로 주식을 조회합니다.")
     @GetMapping
-    public ResponseEntity<StockDTO> getStock(@PathVariable("stockId") Long stockId);
+    public ResponseEntity<ApiResponse<StockDTO>> getStock(@PathVariable("stockId") Long stockId);
 
     @Operation(summary = "주식 등록", description = "주식을 등록 합니다")
     @PostMapping
@@ -42,25 +42,15 @@ public interface StockApiSpecification {
                                                                      @RequestParam("share_count") int shareCount,
                                                                      @RequestParam("studentId") Long studentId);
 
-//    @Operation(summary = "변동률", description = "💡 주식 변동률 조회")
-//    public ResponseEntity<ApiResponse<StockDTO>> updateStockPrice(
-//            @PathVariable("stockId") Long stockId);
-//    @Operation(summary = "주식장 열기", description = "💡 주식장 열려라 참께")
-//    @PostMapping("/open")
-//    public ResponseEntity<String> openMarket();
-//
-//    @Operation(summary = "주식장 닫기", description = "💡 주식장 닫혀라 참께")
-//    @PostMapping("/close")
-//    public ResponseEntity<String> closeMarket();
-//
+
 
     @Operation(summary = "주식장 활성화/비활성화", description = "💡 주식장 활성화/비활성화")
     @PostMapping("/manage")
     public ResponseEntity<Map<String, Boolean>> manageStockMarket(@RequestParam boolean openMarket);
 
-//    @Operation(summary = "주식 CLOSE", description = "💡주식장 닫힘")
-//    @PostMapping("/close")
-//    public ResponseEntity<String> closeMarket();
+    @Operation(summary = "주식장 활성화/비활성화 조회", description = "💡 주식장 활성화/비활성화 조회")
+    @GetMapping("/status")
+    public ResponseEntity<ApiResponse<Boolean>> checkMarketStatus();
 
     @Operation(summary = "주식 개장시간, 폐장 시간 변경", description = "💡주식 개장시간, 폐장 시간 변경")
     public ResponseEntity<ApiResponse<StockDTO>> updateMarketTimeForAllStocks(@RequestBody StockDTO stockDTO);
