@@ -24,7 +24,7 @@
 
             <!-- 배너 1-->
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="659dp"
+                android:layout_width="696dp"
                 android:layout_height="wrap_content"
                 android:background="@drawable/img_banner">
                 <LinearLayout
@@ -78,7 +78,7 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
             <!--배너 2-->
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="326dp"
+                android:layout_width="288dp"
                 android:layout_height="127dp"
                 android:background="@drawable/img_banner_green"
                 android:layout_marginLeft="@dimen/spacing_20">
