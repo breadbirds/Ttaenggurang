@@ -10,8 +10,6 @@ import com.ladysparks.ttaenggrang.R
 import com.ladysparks.ttaenggrang.base.BaseFragment
 import com.ladysparks.ttaenggrang.data.model.dto.StockDto
 import com.ladysparks.ttaenggrang.databinding.FragmentStockTeacherBinding
-import com.ladysparks.ttaenggrang.ui.home.OnStockClickListener
-import com.ladysparks.ttaenggrang.ui.home.StockAdapter
 import java.util.Calendar
 
 class StockTeacherFragment : BaseFragment<FragmentStockTeacherBinding>(
@@ -21,6 +19,7 @@ class StockTeacherFragment : BaseFragment<FragmentStockTeacherBinding>(
 
     private val viewModel: StockViewModel by viewModels()
     private lateinit var stockAdapter: StockAdapter
+
 
     private var startTime: String = ""
     private var endTime: String = ""

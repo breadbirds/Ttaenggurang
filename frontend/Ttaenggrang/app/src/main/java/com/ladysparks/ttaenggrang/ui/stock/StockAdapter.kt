@@ -1,16 +1,12 @@
-package com.ladysparks.ttaenggrang.ui.home
+package com.ladysparks.ttaenggrang.ui.stock
 
-import android.text.format.DateUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.ladysparks.ttaenggrang.R
-import com.ladysparks.ttaenggrang.data.model.dto.AlarmDto
 import com.ladysparks.ttaenggrang.data.model.dto.StockDto
-import com.ladysparks.ttaenggrang.util.DataUtil
-import org.w3c.dom.Text
 
 class StockAdapter(
     private var list: List<StockDto>,
