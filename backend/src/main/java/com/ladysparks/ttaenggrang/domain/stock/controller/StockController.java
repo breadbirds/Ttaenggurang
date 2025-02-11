@@ -46,12 +46,12 @@ public class StockController implements StockApiSpecification {
 
     // 주식 상세 조회
     @GetMapping("/{stockId}")
-    public ResponseEntity<StockDTO> getStock(@PathVariable("stockId") Long stockId) {
+    public ResponseEntity<ApiResponse<StockDTO>> getStock(@PathVariable("stockId") Long stockId) {
         Optional<StockDTO> result = stockService.findStock(stockId);
 
         // 값이 없으면 404 Not Found 반환
         if (result.isPresent()) {
-            return ResponseEntity.ok(result.get()); // 값이 있으면 200 OK와 함께 결과 반환
+            return ResponseEntity.ok(ApiResponse.success(result.get())); // 값이 있으면 200 OK와 함께 결과 반환
         } else {
             return ResponseEntity.notFound().build(); // 값이 없으면 404 Not Found 반환
         }
@@ -83,20 +83,7 @@ public class StockController implements StockApiSpecification {
 
 
 
-//    @PostMapping("/open")
-//    public ResponseEntity<String> openMarket() {
-//        boolean result = stockService.manageMarket(true);  // false는 주식장을 닫는 플래그
-//        return ResponseEntity.ok("주식장이 열렸습니다");
-//    }
-//
-//    // 주식장 닫기
-//
-//    @PostMapping("/close")
-//    public ResponseEntity<String> closeMarket() {
-//        boolean result = stockService.manageMarket(false);  // false는 주식장을 닫는 플래그
-//        return ResponseEntity.ok("주식장이 닫혔습니다.");
-//    }
-
+    // 주식장 활성화 / 비활성화
     @PostMapping("/manage")
     public ResponseEntity<Map<String, Boolean>> manageStockMarket(@RequestParam boolean openMarket) {
         // 주식 시장 관리 서비스 호출
@@ -110,8 +97,15 @@ public class StockController implements StockApiSpecification {
         return ResponseEntity.ok(response);
     }
 
+    // 주식 활성화/ 비활성화 버튼 조회
+    @GetMapping("/status")
+    public ResponseEntity<ApiResponse<Boolean>> checkMarketStatus() {
+        boolean isMarketOpen = stockService.isMarketOpen();
+        return ResponseEntity.ok(ApiResponse.success(isMarketOpen)); // true이면 열림, false이면 닫힘
+    }
 
 
+    // 주식 개장, 폐장 시장 변경
     @PutMapping("/update-market-time")
     public ResponseEntity<ApiResponse<StockDTO>> updateMarketTimeForAllStocks(@RequestBody StockDTO stockDTO) {
         LocalTime newOpenTime = stockDTO.getOpenTime();
