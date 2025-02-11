@@ -8,6 +8,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.naming.Name;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -47,7 +48,8 @@ public class Teacher{
 
     // 국가 (1:1 관계, Nation 엔티티에서 teacher_id를 관리)
 //    @JsonIgnore  // 순환 참조 방지
-    @OneToOne(mappedBy = "teacher", cascade = CascadeType.ALL)
+    @OneToOne
+    @JoinColumn(name = "nation_id")
     private Nation nation;
 
     public Teacher(Long id) {
