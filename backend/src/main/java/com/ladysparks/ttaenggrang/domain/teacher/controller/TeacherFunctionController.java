@@ -70,7 +70,6 @@ public class TeacherFunctionController implements TeacherFunctionApiSpecificatio
     // 국가 정보 [등록]
     @PostMapping("/nations")
     public ResponseEntity<ApiResponse<NationDTO>> createNation(@RequestBody @Valid NationDTO nationDTO) {
-
         // 로그인한 교사의 ID 가져오기
         Long teacherId = getTeacherIdFromSecurityContext();
 
@@ -81,10 +80,7 @@ public class TeacherFunctionController implements TeacherFunctionApiSpecificatio
     // 국가 정보 [조회]
     @GetMapping("/nations")
     public ResponseEntity<ApiResponse<NationDTO>> getNationByTeacher() {
-        // 현재 로그인한 교사 ID 가져오기
-        long teacherId = getTeacherIdFromSecurityContext();
-
-        ApiResponse<NationDTO> response = nationService.getNationByTeacherId(teacherId);
+        ApiResponse<NationDTO> response = nationService.getNationByTeacherId();
         return ResponseEntity.status(response.getStatusCode()).body(response);
     }
 
