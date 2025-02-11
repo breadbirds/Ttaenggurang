@@ -98,7 +98,7 @@ class StockTeacherFragment : BaseFragment<FragmentStockTeacherBinding>(
     override fun onStockClick(stock: StockDto) {
         Toast.makeText(requireContext(), "선택한 주식: ${stock.name}", Toast.LENGTH_SHORT).show()
         binding.textHeadStockName.text = stock.name.substringBefore(" ")
-        binding.textHeadStockPrice.text = stock.price_per.toString()
+        binding.textHeadStockPrice.text = stock.pricePer.toString()
         binding.textHeadStockChange.text = "${stock.changeRate}%"
     }
 
