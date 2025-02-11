@@ -13,7 +13,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -81,18 +83,31 @@ public class StockController implements StockApiSpecification {
 
 
 
-    @PostMapping("/open")
-    public ResponseEntity<String> openMarket() {
-        boolean result = stockService.manageMarket(true);  // false는 주식장을 닫는 플래그
-        return ResponseEntity.ok("주식장이 열렸습니다");
-    }
+//    @PostMapping("/open")
+//    public ResponseEntity<String> openMarket() {
+//        boolean result = stockService.manageMarket(true);  // false는 주식장을 닫는 플래그
+//        return ResponseEntity.ok("주식장이 열렸습니다");
+//    }
+//
+//    // 주식장 닫기
+//
+//    @PostMapping("/close")
+//    public ResponseEntity<String> closeMarket() {
+//        boolean result = stockService.manageMarket(false);  // false는 주식장을 닫는 플래그
+//        return ResponseEntity.ok("주식장이 닫혔습니다.");
+//    }
 
-    // 주식장 닫기
+    @PostMapping("/manage")
+    public ResponseEntity<Map<String, Boolean>> manageStockMarket(@RequestParam boolean openMarket) {
+        // 주식 시장 관리 서비스 호출
+        boolean marketStatus = stockService.manageMarket(openMarket);
 
-    @PostMapping("/close")
-    public ResponseEntity<String> closeMarket() {
-        boolean result = stockService.manageMarket(false);  // false는 주식장을 닫는 플래그
-        return ResponseEntity.ok("주식장이 닫혔습니다.");
+        // 응답 데이터 준비
+        Map<String, Boolean> response = new HashMap<>();
+        response.put("isMarketActive", marketStatus);
+
+        // 응답 반환
+        return ResponseEntity.ok(response);
     }
 
 
