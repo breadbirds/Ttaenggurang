@@ -3,18 +3,21 @@ package com.ladysparks.ttaenggrang.ui.stock
 import android.app.TimePickerDialog
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.ladysparks.ttaenggrang.R
 import com.ladysparks.ttaenggrang.base.BaseFragment
+import com.ladysparks.ttaenggrang.data.model.dto.StockDto
 import com.ladysparks.ttaenggrang.databinding.FragmentStockTeacherBinding
+import com.ladysparks.ttaenggrang.ui.home.OnStockClickListener
 import com.ladysparks.ttaenggrang.ui.home.StockAdapter
 import java.util.Calendar
 
 class StockTeacherFragment : BaseFragment<FragmentStockTeacherBinding>(
     FragmentStockTeacherBinding::bind,
     R.layout.fragment_stock_teacher
-) {
+), OnStockClickListener {
 
     private val viewModel: StockViewModel by viewModels()
     private lateinit var stockAdapter: StockAdapter
@@ -80,16 +83,24 @@ class StockTeacherFragment : BaseFragment<FragmentStockTeacherBinding>(
     }
 
     private fun initAdapter() {
-        stockAdapter = StockAdapter(arrayListOf())
+        stockAdapter = StockAdapter(arrayListOf(), this)
         binding.recyclerStockList.adapter = stockAdapter
     }
 
     private fun observeViewModel() {
         viewModel.stockList.observe(viewLifecycleOwner, Observer { stockList ->
-            stockList?.let {
+            stockList?.takeIf { it.isNotEmpty() }?.let {
                 stockAdapter.updateData(it)  // 어댑터 데이터 업데이트
             }
         })
+    }
+
+    // 아이템 클릭 이벤트 처리
+    override fun onStockClick(stock: StockDto) {
+        Toast.makeText(requireContext(), "선택한 주식: ${stock.name}", Toast.LENGTH_SHORT).show()
+        binding.textHeadStockName.text = stock.name.substringBefore(" ")
+        binding.textHeadStockPrice.text = stock.price_per.toString()
+        binding.textHeadStockChange.text = "${stock.changeRate}%"
     }
 
 
