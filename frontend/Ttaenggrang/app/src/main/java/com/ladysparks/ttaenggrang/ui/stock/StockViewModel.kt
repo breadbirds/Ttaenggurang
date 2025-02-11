@@ -1,23 +1,33 @@
 package com.ladysparks.ttaenggrang.ui.stock
-//
-//class StockViewModel : ViewModel() {
-//    private val stockService = RetrofitUtil.stockService
-//
-//    private val _stockList = MutableLiveData<List<StockDto>>()
-//    val stockList: LiveData<List<StockDto>> get() = _stockList
-//
-//    // 주식 데이터 조회
-//    fun fetchAllStocks() {
-//        viewModelScope.launch {
-//            try {
-//                val stocks = stockService.getAllStocks()
-//                _stockList.postValue(stocks)
-//            } catch (e: Exception) {
-//                Log.e("StockViewModel", "주식 목록 불러오기 실패", e)
-//            }
-//        }
-//    }
-//}
+
+import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.ladysparks.ttaenggrang.data.model.dto.StockDto
+import com.ladysparks.ttaenggrang.data.remote.RetrofitUtil
+import kotlinx.coroutines.launch
+
+class StockViewModel : ViewModel() {
+    private val stockService = RetrofitUtil.stockService
+
+    //주식 전체조회
+    private val _stockList = MutableLiveData<List<StockDto>>()
+    val stockList: LiveData<List<StockDto>> get() = _stockList
+
+    // 주식 데이터 조회
+    fun fetchAllStocks() {
+        viewModelScope.launch {
+            try {
+                val stocks = stockService.getAllStocks()
+                _stockList.postValue(stocks)
+            } catch (e: Exception) {
+                Log.e("StockViewModel", "주식 목록 불러오기 실패", e)
+            }
+        }
+    }
+}
 
 
 //class StockViewModel(private val apiService: ApiService) : ViewModel() {

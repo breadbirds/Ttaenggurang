@@ -23,8 +23,8 @@ class StockAdapter(
 
         fun bind(item: StockDto) {
             title.text = item.name
-            price.text = item.pricePer.toString()
-            changeRate.text = "${item.changeRate}"
+            price.text = item.price_per.toString()
+            changeRate.text = "${item.changeRate}%"
         }
     }
 
