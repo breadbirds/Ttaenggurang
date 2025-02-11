@@ -5,6 +5,7 @@ import com.ladysparks.ttaenggrang.domain.bank.dto.BankAccountDTO;
 import com.ladysparks.ttaenggrang.domain.bank.entity.BankAccount;
 import com.ladysparks.ttaenggrang.domain.bank.mapper.BankAccountMapper;
 import com.ladysparks.ttaenggrang.domain.bank.repository.BankAccountRepository;
+import com.ladysparks.ttaenggrang.domain.teacher.dto.JobInfoDTO;
 import com.ladysparks.ttaenggrang.domain.teacher.entity.Nation;
 import com.ladysparks.ttaenggrang.domain.student.dto.SavingsAchievementDTO;
 import com.ladysparks.ttaenggrang.domain.student.dto.StudentLoginRequestDTO;
@@ -212,6 +213,7 @@ public class StudentService {
                     student.getProfileImageUrl(),
                     student.getTeacher(),
                     student.getBankAccount(),
+                    null,
                     null  // 초기 생성 시 토큰은 null로 설정
 
             ));
@@ -223,6 +225,7 @@ public class StudentService {
     // 단일 학생 계정 생성
     @Transactional
     public StudentResponseDTO createStudent(Long teacherId, SingleStudentCreateDTO studentCreateDTO) {
+
         // 1. 교사 확인
         Teacher teacher = teacherRepository.findById(teacherId)
                 .orElseThrow(() -> new IllegalArgumentException("교사를 찾을 수 없습니다."));
@@ -260,9 +263,10 @@ public class StudentService {
                 student.getId(),
                 student.getUsername(),
                 student.getName(),
-                null,  // 프로필 이미지 초기값
+                student.getProfileImageUrl(),
                 teacher,
                 bankAccount,
+                null,
                 null  // 토큰 값은 로그인 후 부여
         );
     }
@@ -310,6 +314,7 @@ public class StudentService {
                         student.getProfileImageUrl(),
                         student.getTeacher(),
                         student.getBankAccount(),
+                        null,
                         jwtTokenProvider.createToken(student.getUsername()) // ✅ JWT 토큰 포함
                 ))
                 .collect(Collectors.toList());
@@ -330,6 +335,15 @@ public class StudentService {
                     // ✅ JWT 토큰 생성 (학생의 username 기반)
                     String token = jwtTokenProvider.createToken(student.getUsername());
 
+                    // Job 정보 변환 (null 체크)
+                    JobInfoDTO jobInfo = null;
+                    if (student.getJob() != null) {
+                        jobInfo = JobInfoDTO.builder()
+                                .jobName(student.getJob().getJobName())
+                                .baseSalary(student.getJob().getBaseSalary())
+                                .build();
+                    }
+
                     // 학생 정보 DTO로 변환
                     return new StudentResponseDTO(
                             student.getId(),
@@ -338,6 +352,7 @@ public class StudentService {
                             student.getProfileImageUrl(),
                             student.getTeacher(),
                             student.getBankAccount(),
+                            jobInfo,
                             token
                     );
                 })
@@ -361,6 +376,14 @@ public class StudentService {
         // 2️⃣ JWT 토큰 생성 (학생의 username 기반)
         String token = jwtTokenProvider.createToken(student.getUsername()); // ✅ JWT 생성
 
+        JobInfoDTO jobInfo = null;
+        if (student.getJob() != null) {
+            jobInfo = JobInfoDTO.builder()
+                    .jobName(student.getJob().getJobName())
+                    .baseSalary(student.getJob().getBaseSalary())
+                    .build();
+        }
+
         // 3️⃣ 학생 정보를 DTO로 변환하여 반환 (Base64 인코딩 포함)
         StudentResponseDTO responseDTO = new StudentResponseDTO(
                 student.getId(),
@@ -369,6 +392,7 @@ public class StudentService {
                 student.getProfileImageUrl(),
                 student.getTeacher(),
                 student.getBankAccount(),
+                jobInfo,
                 token
         );
 
@@ -390,15 +414,27 @@ public class StudentService {
         }
 
         List<StudentResponseDTO> responseDTOs = students.stream()
-                .map(student -> new StudentResponseDTO(
-                        student.getId(),
-                        student.getUsername(),
-                        student.getName(),
-                        student.getProfileImageUrl(),
-                        student.getTeacher(),
-                        student.getBankAccount(),
-                        jwtTokenProvider.createToken(student.getUsername())
-                ))
+                .map(student -> {
+                    JobInfoDTO jobInfo = null;
+                    if (student.getJob() != null) {
+                        jobInfo = JobInfoDTO.builder()
+                                .jobName(student.getJob().getJobName())
+                                .baseSalary(student.getJob().getBaseSalary())
+                                .build();
+                    }
+
+                    // StudentResponseDTO 반환
+                    return new StudentResponseDTO(
+                            student.getId(),
+                            student.getUsername(),
+                            student.getName(),
+                            student.getProfileImageUrl(),
+                            student.getTeacher(),
+                            student.getBankAccount(),
+                            jobInfo,
+                            jwtTokenProvider.createToken(student.getUsername())
+                    );
+                })
                 .collect(Collectors.toList());
 
         return ApiResponse.success("학생 목록 조회 성공", responseDTOs);
@@ -430,6 +466,14 @@ public class StudentService {
                     // ✅ JWT 토큰 생성 (학생의 username 기반)
                     String token = jwtTokenProvider.createToken(student.getUsername());
 
+                    JobInfoDTO jobInfo = null;
+                    if (student.getJob() != null) {
+                        jobInfo = JobInfoDTO.builder()
+                                .jobName(student.getJob().getJobName())
+                                .baseSalary(student.getJob().getBaseSalary())
+                                .build();
+                    }
+
                     // 학생 정보 DTO로 변환
                     return new StudentResponseDTO(
                             student.getId(),
@@ -438,6 +482,7 @@ public class StudentService {
                             student.getProfileImageUrl(),
                             student.getTeacher(),
                             student.getBankAccount(),
+                            jobInfo,
                             token
                     );
                 })
