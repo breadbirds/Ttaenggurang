@@ -3,6 +3,7 @@ package com.ladysparks.ttaenggrang.domain.vote.service;
 import com.ladysparks.ttaenggrang.domain.student.dto.StudentResponseDTO;
 import com.ladysparks.ttaenggrang.domain.student.entity.Student;
 import com.ladysparks.ttaenggrang.domain.student.repository.StudentRepository;
+import com.ladysparks.ttaenggrang.domain.teacher.dto.JobInfoDTO;
 import com.ladysparks.ttaenggrang.domain.teacher.repository.TeacherRepository;
 import com.ladysparks.ttaenggrang.domain.vote.dto.VoteCreateDTO;
 import com.ladysparks.ttaenggrang.domain.vote.entity.Vote;
@@ -80,32 +81,43 @@ public class VoteService {
 
             // ✅ 학생 리스트를 DTO로 변환하고 변수에 저장
             studentResponseList = studentList.stream()
-                    .map(student -> new StudentResponseDTO(
-                            student.getId(),
-                            student.getUsername(),
-                            student.getName(),
-                            student.getProfileImageUrl(),
-                            student.getTeacher(),
-                            student.getBankAccount(),
-                            null  // 토큰 값은 필요 시 추가
-                    ))
+                    .map(student -> {
+                        JobInfoDTO jobInfo = null;
+                        if (student.getJob() != null) {
+                            jobInfo = JobInfoDTO.builder()
+                                    .jobName(student.getJob().getJobName())
+                                    .baseSalary(student.getJob().getBaseSalary())
+                                    .build();
+                        }
+
+                        // StudentResponseDTO
+                        return new StudentResponseDTO(
+                                student.getId(),
+                                student.getUsername(),
+                                student.getName(),
+                                student.getProfileImageUrl(),
+                                student.getTeacher(),
+                                student.getBankAccount(),
+                                jobInfo,
+                                null  // 토큰 값은 필요 시 추가
+                        );
+                    })
                     .collect(Collectors.toList());
+            }
+
+            // 5. 투표 정보 + 학생 리스트를 DTO로 변환해서 반환
+            VoteCreateDTO response = new VoteCreateDTO();
+            response.setTitle(vote.getTitle());
+            response.setStartDate(vote.getStartDate());
+            response.setEndDate(vote.getEndDate());
+            response.setVoteMode(vote.getVoteMode());
+            response.setVoteStatus(vote.getStatus());
+            response.setStudents(studentResponseList);  // ✅ 학생 리스트 포함 (null일 수도 있음)
+
+            return ApiResponse.success("새 투표가 성공적으로 생성되었습니다!", response);
         }
 
-        // 5. 투표 정보 + 학생 리스트를 DTO로 변환해서 반환
-        VoteCreateDTO response = new VoteCreateDTO();
-        response.setTitle(vote.getTitle());
-        response.setStartDate(vote.getStartDate());
-        response.setEndDate(vote.getEndDate());
-        response.setVoteMode(vote.getVoteMode());
-        response.setVoteStatus(vote.getStatus());
-        response.setStudents(studentResponseList);  // ✅ 학생 리스트 포함 (null일 수도 있음)
-
-        return ApiResponse.success("새 투표가 성공적으로 생성되었습니다!", response);
-    }
-
     // ✅ 진행 중인 투표 조회 메서드
-    @Transactional(readOnly = true)
     public ApiResponse<VoteCreateDTO> getCurrentVote() {
         Optional<Vote> currentVote = voteRepository.findByStatus(VoteStatus.IN_PROGRESS);
 
@@ -144,3 +156,5 @@ public class VoteService {
     }
 
 }
+
+

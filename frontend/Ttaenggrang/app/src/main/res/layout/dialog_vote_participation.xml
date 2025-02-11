@@ -31,15 +31,27 @@
         app:layout_constraintTop_toBottomOf="@+id/textVoteTitle" />
 
 
-    <EditText
+<!--    <EditText-->
+<!--        android:layout_marginTop="@dimen/spacing_20"-->
+<!--        android:layout_marginHorizontal="@dimen/spacing_40"-->
+<!--        android:id="@+id/selectStudent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/textVoteDate"-->
+<!--        app:layout_constraintStart_toStartOf="@+id/textVoteDate"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:hint="드롭 다운으로 변경 필요"/>-->
+    <Spinner
         android:layout_marginTop="@dimen/spacing_20"
-        android:layout_marginHorizontal="@dimen/spacing_40"
         android:id="@+id/selectStudent"
-        app:layout_constraintTop_toBottomOf="@+id/textVoteDate"
-        app:layout_constraintStart_toStartOf="@+id/textVoteDate"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="드롭 다운으로 변경 필요"/>
+        android:background="@drawable/spinner_background"
+        app:layout_constraintTop_toBottomOf="@+id/textVoteDate"
+        app:layout_constraintStart_toStartOf="@+id/textVoteDate"
+        android:spinnerMode="dropdown"
+        android:popupBackground="@color/white"
+        android:dropDownHeight="wrap_content"
+        android:overlapAnchor="false"/> <!-- ✅ 드롭다운 위치 조정 -->
 
     <LinearLayout
         android:layout_width="match_parent"

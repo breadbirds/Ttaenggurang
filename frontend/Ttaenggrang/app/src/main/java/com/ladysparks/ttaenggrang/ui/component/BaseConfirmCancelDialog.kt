@@ -3,6 +3,7 @@ package com.ladysparks.ttaenggrang.ui.component
 import android.app.Dialog
 import android.content.Context
 import android.view.View
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatButton
@@ -25,7 +26,7 @@ class BaseTwoButtonDialog(
         setContentView(R.layout.dialog_base_confirm_cancel)
 
         val imgStatus = findViewById<ImageView>(R.id.imgDialogStatus)
-        val btnClose = findViewById<AppCompatButton>(R.id.btnDialogClose)
+        val btnClose = findViewById<ImageButton>(R.id.btnDialogClose)
         val textTitle = findViewById<TextView>(R.id.textDialogTitle)
         val textMessage = findViewById<TextView>(R.id.textDialogContent)
         val btnPositive = findViewById<AppCompatButton>(R.id.btnDialogConfirm)

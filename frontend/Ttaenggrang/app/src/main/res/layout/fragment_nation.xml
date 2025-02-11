@@ -17,7 +17,7 @@
             style="@style/heading1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="대한민국"
+            android:text="-"
             app:layout_constraintBottom_toTopOf="@+id/constraintClassPhoto"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -129,14 +129,15 @@
                         style="@style/body2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="2025.01.03 ~ 2025.01.15"
+                        tools:text="2025.01.03 ~ 2025.01.15"
+                        android:text="-"
                         android:textColor="@color/lightGray" />
 
                     <TextView
                         style="@style/heading2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="이번주 우수 학급 투표" />
+                        android:text="-" />
 
                     <TextView
                         android:id="@+id/textVoteNow"
@@ -238,7 +239,7 @@
                         style="@style/heading3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="2025.01.03" />
+                        android:text="-" />
 
                     <TextView
                         style="@style/body2"
@@ -252,7 +253,7 @@
                         style="@style/heading3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="미소" />
+                        android:text="-" />
 
                     <TextView
                         style="@style/body2"
@@ -266,7 +267,7 @@
                         style="@style/heading3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="32명" />
+                        android:text="-" />
                 </LinearLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -347,7 +348,7 @@
                         style="@style/heading3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="1,000,000 미소" />
+                        android:text="-" />
 
                     <TextView
                         style="@style/body2"
@@ -373,7 +374,7 @@
                             style="@style/body1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="김철수: 342,000 미소" />
+                            android:text="-" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -391,7 +392,7 @@
                             style="@style/body1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="김철수: 342,000 미소" />
+                            android:text="-" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -409,7 +410,7 @@
                             style="@style/body1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="김철수: 342,000 미소" />
+                            android:text="-" />
                     </LinearLayout>
                 </LinearLayout>
 

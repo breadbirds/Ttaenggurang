@@ -38,11 +38,30 @@
             android:text="투표 제목"
             android:textColor="@color/deepBlack" />
 
-        <EditText
+<!--        <EditText-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginTop="@dimen/spacing_10"-->
+<!--            android:hint="투표 제목을 입력하세요" />-->
+
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/spacing_10"
-            android:hint="투표 제목을 입력하세요" />
+            android:background="@drawable/bg_rounded_20"
+            android:textColorHint="@color/lightGray"
+            app:boxStrokeColor="@color/lightGray"
+            app:hintTextColor="@color/lightGray"
+            app:boxStrokeWidth="1dp">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/editAddName"
+                style="@style/body1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="투표 제목을 입력하세요"
+                android:textColorHint="@color/lightGray"
+                android:paddingStart="14dp"
+                android:textColor="@color/lightGray" />
+        </com.google.android.material.textfield.TextInputLayout>
 
 
         <!-- 투표 기간 -->

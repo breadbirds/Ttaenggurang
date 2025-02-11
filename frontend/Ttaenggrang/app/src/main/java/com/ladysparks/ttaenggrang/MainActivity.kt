@@ -4,7 +4,7 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.view.WindowInsets
-import androidx.appcompat.app.AppCompatActivity
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.ladysparks.ttaenggrang.base.BaseActivity
@@ -14,6 +14,7 @@ import com.ladysparks.ttaenggrang.ui.bank.BankStudentFragment
 import com.ladysparks.ttaenggrang.ui.bank.BankTeacherFragment
 import com.ladysparks.ttaenggrang.ui.home.HomeStudentFragment
 import com.ladysparks.ttaenggrang.ui.home.HomeTeacherFragment
+import com.ladysparks.ttaenggrang.ui.job.JobFragment
 import com.ladysparks.ttaenggrang.ui.nation.NationFragment
 import com.ladysparks.ttaenggrang.ui.revenue.RevenueStudentFragment
 import com.ladysparks.ttaenggrang.ui.revenue.RevenueTeacherFragment
@@ -40,6 +41,7 @@ class MainActivity : BaseActivity() {
             window.insetsController?.hide(WindowInsets.Type.statusBars() or WindowInsets.Type.navigationBars())
         }
 
+        initData()
         initEvent()
 
 //         학생, 교사 구분해서 카테고리 변경
@@ -65,6 +67,7 @@ class MainActivity : BaseActivity() {
                 // Teacher
                 R.id.navHomeTeacher -> replaceFragment(HomeTeacherFragment())
                 R.id.navStudentsTeacher -> replaceFragment(StudentsFragment())
+                R.id.navStudentsJob -> replaceFragment(JobFragment())
                 R.id.navRevenueTeacher -> replaceFragment(RevenueTeacherFragment())
                 R.id.navBankTeacher -> replaceFragment(BankTeacherFragment())
                 R.id.navStockTeacher -> replaceFragment(StockTeacherFragment())
@@ -79,6 +82,19 @@ class MainActivity : BaseActivity() {
             }
             true
         }
+    }
+
+    private fun initData() {
+        val headerView = binding.navigationView.getHeaderView(0)
+
+        // Email + Name
+        val headerEmailTextView = headerView.findViewById<TextView>(R.id.navHeaderEmail)
+        headerEmailTextView.text = SharedPreferencesUtil.getValue(SharedPreferencesUtil.USER_ACCOUNT, "정보없음")
+
+        // 타입 구분
+        val headerUserRole = headerView.findViewById<TextView>(R.id.navHeaderUserRole)
+        val isTeacher = SharedPreferencesUtil.getValue(SharedPreferencesUtil.IS_TEACHER, false)
+        headerUserRole.text = if (isTeacher) "교사" else "학생"
     }
 
     // Fragment 이동을 위한 함수

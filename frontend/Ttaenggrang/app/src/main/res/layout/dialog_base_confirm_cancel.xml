@@ -14,21 +14,32 @@
         android:id="@+id/imgDialogStatus"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:layout_marginTop="@dimen/spacing_10"
+        android:layout_marginTop="@dimen/spacing_30"
         android:background="@android:color/transparent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
 
-    <androidx.appcompat.widget.AppCompatButton
+<!--    <androidx.appcompat.widget.AppCompatButton-->
+<!--        android:id="@+id/btnDialogClose"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="@dimen/spacing_10"-->
+<!--        android:background="@drawable/ic_close"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent" />-->
+
+    <ImageButton
+        android:layout_marginTop="@dimen/spacing_20"
         android:id="@+id/btnDialogClose"
-        android:layout_width="44dp"
-        android:layout_height="44dp"
-        android:layout_marginTop="@dimen/spacing_10"
-        android:background="@drawable/ic_close"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_marginEnd="@dimen/spacing_10"
+        android:src="@drawable/ic_close"
+        android:background="@android:color/transparent"/>
 
     <TextView
         android:id="@+id/textDialogTitle"
@@ -52,7 +63,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textDialogTitle"
-        tools:text="내용 테스트\n중앙 정렬 테스트\n실제 화면에는 보이지 않습니다" />
+        tools:text="내용 테스트" />
 
     <LinearLayout
         android:layout_width="match_parent"
