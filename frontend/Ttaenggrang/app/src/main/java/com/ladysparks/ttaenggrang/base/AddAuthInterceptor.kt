@@ -20,7 +20,8 @@ class AddAuthInterceptor : Interceptor {
 
         //  `Authorization` 헤더 추가하지 않는 경우 : 회원가입, 로그인
         if (request.url.encodedPath.contains("/teachers/signup") ||
-            request.url.encodedPath.contains("/teachers/login")
+            request.url.encodedPath.contains("/teachers/login") ||
+            request.url.encodedPath.contains("/students/login")
         ) {
             return chain.proceed(request)
         }
