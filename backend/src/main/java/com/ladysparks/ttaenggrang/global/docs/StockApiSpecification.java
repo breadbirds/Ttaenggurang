@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Map;
+
 @Tag(name = "Stock", description = "주식 API")
 public interface StockApiSpecification {
 
@@ -52,13 +54,13 @@ public interface StockApiSpecification {
 //    public ResponseEntity<String> closeMarket();
 //
 
-    @Operation(summary = "주식 OPEN", description = "💡 주식장 열림")
-    @PostMapping("/open")
-    public ResponseEntity<String> openMarket();
+    @Operation(summary = "주식장 활성화/비활성화", description = "💡 주식장 활성화/비활성화")
+    @PostMapping("/manage")
+    public ResponseEntity<Map<String, Boolean>> manageStockMarket(@RequestParam boolean openMarket);
 
-    @Operation(summary = "주식 CLOSE", description = "💡주식장 닫힘")
-    @PostMapping("/close")
-    public ResponseEntity<String> closeMarket();
+//    @Operation(summary = "주식 CLOSE", description = "💡주식장 닫힘")
+//    @PostMapping("/close")
+//    public ResponseEntity<String> closeMarket();
 
     @Operation(summary = "주식 개장시간, 폐장 시간 변경", description = "💡주식 개장시간, 폐장 시간 변경")
     public ResponseEntity<ApiResponse<StockDTO>> updateMarketTimeForAllStocks(@RequestBody StockDTO stockDTO);
