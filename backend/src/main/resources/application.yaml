@@ -41,6 +41,9 @@ spring:
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
+  data:
+    redis:
+      timeout: 6000
 
 jwt:
   secret: "dF8hX29jVnMbQ3pA6xYzK8eU4pTfH2vN"  # ✅ 반드시 안전한 키로 설정

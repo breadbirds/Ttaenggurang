@@ -19,6 +19,7 @@ import com.ladysparks.ttaenggrang.domain.teacher.repository.TeacherRepository;
 import com.ladysparks.ttaenggrang.domain.teacher.service.TeacherService;
 import com.ladysparks.ttaenggrang.domain.weekly_report.service.InvestmentService;
 import com.ladysparks.ttaenggrang.global.config.JwtTokenProvider;
+import com.ladysparks.ttaenggrang.global.redis.RedisGoalService;
 import com.ladysparks.ttaenggrang.global.response.ApiResponse;
 import com.ladysparks.ttaenggrang.global.utill.SecurityUtil;
 import lombok.RequiredArgsConstructor;
@@ -51,6 +52,7 @@ public class StudentService {
     private final TeacherRepository teacherRepository;
     private final TeacherService teacherService;
     private final InvestmentService investmentService;
+    private final RedisGoalService redisGoalService;
     private final PasswordEncoder passwordEncoder;
     private final BankAccountRepository bankAccountRepository; // ✅ 추가
     private final JwtTokenProvider jwtTokenProvider;
@@ -418,6 +420,23 @@ public class StudentService {
     }
 
     /**
+     * 특정 학생의 저축 목표 달성률을 조회
+     */
+    public SavingsAchievementDTO getSavingsAchievementRate() {
+        // 학생 정보 조회
+        Long studentId = getCurrentStudentId();
+        Long teacherId = findTeacherIdByStudentId(studentId);
+
+        // Redis에서 목표 달성률 조회
+        SavingsAchievementDTO cacheSavingsAchievementDTO = redisGoalService.getGoalAchievement(teacherId, studentId);
+        if (cacheSavingsAchievementDTO.getSavingsAchievementRate() != null) {
+            return cacheSavingsAchievementDTO;
+        } else { // Redis에 없으면 DB에서 계산 후 Redis에 저장
+            return calculateSavingsAchievementRate();
+        }
+    }
+
+    /**
      * 특정 학생의 저축 목표 달성률을 계산
      */
     public SavingsAchievementDTO calculateSavingsAchievementRate() {
@@ -437,10 +456,9 @@ public class StudentService {
                 .build();
 
         int savingsGoalAmount = nation.getSavingsGoalAmount(); // 국가에서 설정한 목표 저축 금액
+        double achievementRate = 0.0; // 목표 저축 금액이 0이면 달성률도 0
 
-        if (savingsGoalAmount == 0) {
-            savingsAchievementDTO.setSavingsAchievementRate(0.0); // 목표 저축 금액이 0이면 달성률도 0
-        } else {
+        if (savingsGoalAmount != 0) {
             int bankBalance = student.getBankAccount().getBalance(); // 학생의 은행 잔고
             int investmentValue = investmentService.getCurrentInvestmentValue(studentId); // 현재 투자 평가액
 
@@ -448,8 +466,14 @@ public class StudentService {
             int totalAssets = bankBalance + investmentValue;
 
             // 목표 달성률 계산
-            savingsAchievementDTO.setSavingsAchievementRate(((double) totalAssets / savingsGoalAmount) * 100);
+            achievementRate = ((double) totalAssets / savingsGoalAmount) * 100;
         }
+
+        savingsAchievementDTO.setSavingsAchievementRate(achievementRate);
+
+        // Redis에 저장
+        int rank = redisGoalService.saveOrUpdateGoalAchievement(student.getTeacher().getId(), savingsAchievementDTO);
+        savingsAchievementDTO.setRank(rank);
 
         return savingsAchievementDTO;
     }

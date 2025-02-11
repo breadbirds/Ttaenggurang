@@ -33,6 +33,7 @@ public interface SavingsProductApiSpecification {
     @Operation(summary = "적금 상품 [조회]", description = """
             💡 교사가 등록한 전체 적금 상품을 조회합니다.
 
+            **[ 응답 필드 ]**
             - **name** : 적금 상품명
             - **interestRate** : 이자율
             - **earlyInterestRate** : 중도 해지시 적용되는 이자율

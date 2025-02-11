@@ -50,6 +50,7 @@ public interface BankTransactionApiSpecification {
     @Operation(summary = "은행 계좌 거래 내역 [전체 조회]", description = """
             💡 학생의 은행 계좌 거래 내역을 조회합니다.
 
+            **[ 응답 필드 ]**
             - **id** : 은행 계좌 거래 ID
             - **bankAccountId** : 은행 계좌 ID
             - **type** : 거래 타입
