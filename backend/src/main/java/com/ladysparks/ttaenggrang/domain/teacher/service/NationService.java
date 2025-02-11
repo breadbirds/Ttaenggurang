@@ -50,7 +50,6 @@ public class NationService {
                                 : new Timestamp(System.currentTimeMillis())  // 현재 시각으로 기본값 설정
                 )
                 .nationalTreasury(0)
-                .teacher(teacher)
                 .build();
         Nation savedNation = nationRepository.save(nation);
 
