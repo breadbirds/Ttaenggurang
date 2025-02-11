@@ -82,8 +82,6 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <!--주식 그래프-->
-
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintStockGraphArea"
         android:layout_width="696dp"
