@@ -16,6 +16,7 @@ import org.webjars.NotFoundException;
 
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -32,6 +33,11 @@ public class TeacherService {
         return teacherRepository.findByEmail(email)
                 .orElseThrow(() -> new IllegalArgumentException("해당 이메일을 가진 교사를 찾을 수 없습니다."))
                 .getId();
+    }
+
+    public Optional<Long> getOptionalCurrentTeacherId() {
+        String email = securityUtil.getCurrentUser();
+        return teacherRepository.findByEmail(email).map(Teacher::getId);
     }
 
     // 회원가입
