@@ -36,6 +36,7 @@ public interface SavingsSubscriptionApiSpecification {
     @Operation(summary = "적금 가입 내역 [전체 조회]", description = """
             💡 학생의 적금 가입 내역을 조회합니다.
             
+            **[ 응답 필드 ]**
             - **id** : 적금 가입 ID
             - **savingsProductId** : 적금 상품 ID
             - **studentId** : 학생 ID

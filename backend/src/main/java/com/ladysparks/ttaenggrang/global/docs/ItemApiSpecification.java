@@ -33,6 +33,7 @@ public interface ItemApiSpecification {
     @Operation(summary = "학급 내 판매 아이템 (학생) [전체 조회]", description = """
             💡 학생이 학급 내 전체 판매 아이템을 조회합니다.
             
+            **[ 응답 필드 ]**
             - **id** : 아이템 ID
             - **sellerId** : 판매자 학생 ID
             - **sellerName** : 판매자 학생 이름
@@ -50,6 +51,7 @@ public interface ItemApiSpecification {
     @Operation(summary = "학급 내 판매 아이템 [상세 조회]", description = """
             💡 판매 중인 아이템을 조회합니다.
             
+            **[ 응답 필드 ]**
             - **id** : 아이템 ID
             - **sellerId** : 판매자 학생 ID
             - **sellerName** : 판매자 학생 이름
@@ -67,6 +69,7 @@ public interface ItemApiSpecification {
     @Operation(summary = "학생의 판매 아이템 [전체 조회]", description = """
             💡 해당 학생이 판매 중인 전체 아이템을 조회합니다.
             
+            **[ 응답 필드 ]**
             - **id** : 아이템 ID
             - **sellerId** : 판매자 학생 ID
             - **sellerName** : 판매자 학생 이름
@@ -84,6 +87,7 @@ public interface ItemApiSpecification {
     @Operation(summary = "학급 내 판매 아이템 (교사) [전체 조회]", description = """
             💡 교사가 학급 내 전체 판매 아이템을 조회합니다.
             
+            **[ 응답 필드 ]**
             - **id** : 아이템 ID
             - **sellerId** : 판매자 학생 ID
             - **sellerName** : 판매자 학생 이름

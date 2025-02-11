@@ -30,6 +30,7 @@ public interface ItemTransactionApiSpecification {
     @Operation(summary = "아이템 판매 내역 [전체 조회]", description = """
             💡학생의 아이템 판매 내역을 조회합니다.
             
+            **[ 응답 필드 ]**
             - **id** : 아이템 거래 ID
             - **buyerId** : 구매자 학생 ID
             - **buyerName** : 구매자 학생 이름
@@ -41,6 +42,7 @@ public interface ItemTransactionApiSpecification {
     @Operation(summary = "아이템 구매 내역 [전체 조회]", description = """
             💡학생의 아이템 구매 내역을 조회합니다.
 
+            **[ 응답 필드 ]**
             - **id** : 아이템 거래 ID
             - **buyerId** : 구매자 학생 ID
             - **buyerName** : 구매자 학생 이름

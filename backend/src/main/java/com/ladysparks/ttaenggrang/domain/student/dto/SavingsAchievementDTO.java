@@ -10,6 +10,7 @@ import lombok.*;
 public class SavingsAchievementDTO {
 
     private Long studentId;
-    private double savingsAchievementRate;
+    private Double savingsAchievementRate;
+    private int rank;
 
 }
