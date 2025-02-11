@@ -40,4 +40,8 @@ public class Nation {
     @Column(length = 2083)
     private String profileImageUrl;  // ✅ AWS S3 이미지 URL 저장 필드
 
+    @OneToOne
+    @JoinColumn(name = "teacher_id")
+    private Teacher teacher;
+
 }
