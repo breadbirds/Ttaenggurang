@@ -13,7 +13,8 @@ import com.ladysparks.ttaenggrang.util.DataUtil
 import org.w3c.dom.Text
 
 class StockAdapter(
-    private var list: List<StockDto>
+    private var list: List<StockDto>,
+    private val listener: OnStockClickListener
 ) : RecyclerView.Adapter<StockAdapter.StockViewHolder>() {
 
     inner class StockViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -22,7 +23,7 @@ class StockAdapter(
         private val changeRate = itemView.findViewById<TextView>(R.id.textStockChangeRate)
 
         fun bind(item: StockDto) {
-            title.text = item.name
+            title.text = item.name.substringBefore(" ")
             price.text = item.price_per.toString()
             changeRate.text = "${item.changeRate}%"
         }
@@ -34,7 +35,13 @@ class StockAdapter(
     }
 
     override fun onBindViewHolder(holder: StockViewHolder, position: Int) {
-        holder.bind(list[position])
+        val stock = list[position]
+        holder.bind(stock)
+
+        // 클릭한 주식 정보 전달
+        holder.itemView.setOnClickListener {
+            listener.onStockClick(stock)
+        }
     }
 
     override fun getItemCount(): Int = list.size
@@ -43,4 +50,8 @@ class StockAdapter(
         list = newList
         notifyDataSetChanged()
     }
+}
+
+interface OnStockClickListener {
+    fun onStockClick(stock: StockDto)
 }

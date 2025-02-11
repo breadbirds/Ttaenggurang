@@ -8,16 +8,22 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.Toast
 import androidx.lifecycle.Observer
 import com.ladysparks.ttaenggrang.R
 import com.ladysparks.ttaenggrang.base.BaseFragment
+import com.ladysparks.ttaenggrang.data.model.dto.StockDto
 import com.ladysparks.ttaenggrang.databinding.DialogStockTradingBinding
 import com.ladysparks.ttaenggrang.databinding.DialogueBinding
 import com.ladysparks.ttaenggrang.databinding.FragmentStockStudentBinding
 import com.ladysparks.ttaenggrang.ui.home.AlarmAdapter
+import com.ladysparks.ttaenggrang.ui.home.OnStockClickListener
 import com.ladysparks.ttaenggrang.ui.home.StockAdapter
 
-class StockStudentFragment : BaseFragment<FragmentStockStudentBinding>(FragmentStockStudentBinding::bind, R.layout.fragment_stock_student) {
+class StockStudentFragment : BaseFragment<FragmentStockStudentBinding>(
+    FragmentStockStudentBinding::bind,
+    R.layout.fragment_stock_student
+),OnStockClickListener {
 
     private val viewModel: StockViewModel by viewModels()
     private lateinit var stockAdapter: StockAdapter
@@ -57,10 +63,8 @@ class StockStudentFragment : BaseFragment<FragmentStockStudentBinding>(FragmentS
     }
 
 
-
-
     private fun initAdapter() {
-        stockAdapter = StockAdapter(arrayListOf())
+        stockAdapter = StockAdapter(arrayListOf(), this)
         binding.recyclerStockList.adapter = stockAdapter
     }
 
@@ -70,6 +74,13 @@ class StockStudentFragment : BaseFragment<FragmentStockStudentBinding>(FragmentS
                 stockAdapter.updateData(it)  // 어댑터 데이터 업데이트
             }
         })
+    }
+
+    override fun onStockClick(stock: StockDto) {
+        Toast.makeText(requireContext(), "선택한 주식: ${stock.name}", Toast.LENGTH_SHORT).show()
+        binding.textHeadStockName.text = stock.name.substringBefore(" ")
+        binding.textHeadStockPrice.text = stock.price_per.toString()
+        binding.textHeadStockChange.text = "${stock.changeRate}%"
     }
 
 }
