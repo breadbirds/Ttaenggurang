@@ -1,15 +1,19 @@
 package com.ladysparks.ttaenggrang.domain.stock.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.ladysparks.ttaenggrang.domain.stock.entity.Button;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalTimeDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalTimeSerializer;
 import com.ladysparks.ttaenggrang.domain.stock.entity.Stock;
-import jakarta.persistence.Column;
 import lombok.*;
 
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 @Data
 @NoArgsConstructor
@@ -25,6 +29,14 @@ public class StockDTO {
     private Timestamp created_at; // 생성일
     private Timestamp updated_at;  // 수정일
     private Integer changeRate;   // 주식 변동률
+
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm")
+    private LocalTime openTime;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm")
+    private LocalTime closeTime;
+
     private Boolean isMarketActive;  // 시장 활성화 여부 (Boolean으로 변경)
     private LocalDateTime priceChangeTime;  // 가격 변동 시간
     private BigDecimal weight;  // 주식 비중 (각 주식의 비중을 따로 저장)
@@ -47,6 +59,8 @@ public class StockDTO {
                 .created_at(stockDto.getCreated_at())
                 .updated_at(stockDto.getUpdated_at())
                 .changeRate(stockDto.getChangeRate())
+                .openTime(stockDto.getOpenTime())
+                .closeTime(stockDto.getCloseTime())
                 .isMarketActive(stockDto.getIsMarketActive())  // 주식장 활성화 여부
                 .priceChangeTime(stockDto.getPriceChangeTime())  // 가격 변동 시
                 .build();
@@ -64,6 +78,8 @@ public class StockDTO {
                 .created_at(stock.getCreated_at())
                 .updated_at(stock.getUpdated_at())
                 .changeRate(stock.getChangeRate())
+                .openTime(stock.getOpenTime())
+                .closeTime(stock.getCloseTime())
                 .isMarketActive(stock.getIsMarketActive())  // 주식장 활성화 여부
                 .priceChangeTime(stock.getPriceChangeTime());  // 가격 변동 시
 
