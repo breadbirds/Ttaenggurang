@@ -102,12 +102,6 @@ public class TeacherService {
         return ApiResponse.success("교사 목록 조회 성공", responseDTOs);
     }
 
-    public Long findById(Long teacherId) {
-        Teacher teacher = teacherRepository.findById(teacherId)
-                .orElseThrow(() -> new IllegalArgumentException("해당 ID의 교사가 존재하지 않습니다."));
-        return teacher.getNation() == null ? -1 : teacher.getNation().getId();
-    }
-
     public List<TeacherResponseDTO> findAllTeachers() {
         List<Teacher> teachers = teacherRepository.findAll();
 
