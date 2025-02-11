@@ -1,5 +1,6 @@
 package com.ladysparks.ttaenggrang.domain.stock.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.ladysparks.ttaenggrang.domain.stock.category.Category;
 import com.ladysparks.ttaenggrang.domain.etf.entity.Etf;
 import com.ladysparks.ttaenggrang.domain.teacher.entity.Teacher;
@@ -10,6 +11,7 @@ import lombok.*;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 @AllArgsConstructor //모든 필드를 매개변수로 받는 생성자를 자동으로 생성
 @NoArgsConstructor //기본 생성자(매개변수가 없는 생성자)를 자동으로 생성 , Entity 사용 하면 사용 해줘야함!
@@ -44,18 +46,22 @@ public class Stock {
     private Timestamp updated_at;  // 수정일
 
     @Column
-    private String categoryName;
+    private String categoryName;  //카테고리 이름
 
+    @Column(nullable = false, columnDefinition = "TIME DEFAULT '10:00:00'")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm")
+    private LocalTime openTime = LocalTime.of(10, 00);  // 기본값: 10시  주식 오픈 시간
 
-
-
+    @Column(nullable = false, columnDefinition = "TIME DEFAULT '15:00:00'")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm")
+    private LocalTime closeTime = LocalTime.of(15, 00); // 기본값: 15시  주식 닫는 시간
 
 
     @Column
     private Integer changeRate; //가격 변동률
 
     @Column(nullable = false)
-    private Boolean isMarketActive;
+    private Boolean isMarketActive;  //주식장 활성화
 
     @Column
     private LocalDateTime priceChangeTime;  // 가격 변동 시간
@@ -89,20 +95,6 @@ public class Stock {
     @JoinColumn(name = "category_id") // 외래 키 컬럼 설정
     private Category category; // 카테고리
 
-//    // 주식장 활성화 메소드
-//    public void activateMarket() {
-//        this.isMarketActive = true;
-//        this.priceChangeTime = LocalDateTime.now().plusMinutes(1); // 예시로 1분 후 가격 변동
-//    }
-//
-//    // 주식장 비활성화 메소드
-//    public void deactivateMarket() {
-//        this.isMarketActive = false;
-//    }
-//
-//    @ManyToOne(fetch = FetchType.LAZY)  // 카테고리와의 관계 설정
-//    @JoinColumn(name = "category_id", nullable = false)  // 외래 키
-//    private Category category;  // 카테고리와의 관계
 
 
 }

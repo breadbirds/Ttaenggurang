@@ -34,6 +34,7 @@ public interface TeacherFunctionApiSpecification {
             - **population** : 인구 수 (학생 수)
             - **currency** : : 통화 단위
             - **savingsGoalAmount** : 학급 별 목표 저축액
+            - **nationalTreasury** : 국고
             - **establishedDate** : 설립일 (국가 정보 등록한 날짜로 자동 생성)
             
             **[ 규칙 ]**
@@ -49,6 +50,7 @@ public interface TeacherFunctionApiSpecification {
             - **population** : 인구 수 (학생 수)
             - **currency** : 통화 단위
             - **savingsGoalAmount** : 학급 별 목표 저축액
+            - **nationalTreasury** : 국고
             - **establishedDate** : 설립일 (국가 정보 등록한 날짜로 자동 생성)
             """)
     ResponseEntity<ApiResponse<NationDTO>> getNationByTeacher();
