@@ -361,6 +361,9 @@ public class StudentService {
         return ApiResponse.success("직업을 가진 학생 목록 조회 성공", responseDTOs);
     }
 
+    // 우리 반에 있는 직업 정보 조회
+
+
     // ✅ 교사 ID로 우리반 학생 전체 조회
     public ApiResponse<List<StudentResponseDTO>> getMyClassStudents(Long teacherId) {
         List<Student> students = studentRepository.findAllByTeacherId(teacherId);
