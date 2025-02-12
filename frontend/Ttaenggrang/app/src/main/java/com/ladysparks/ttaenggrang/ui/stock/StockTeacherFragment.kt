@@ -46,8 +46,11 @@ class StockTeacherFragment : BaseFragment<FragmentStockTeacherBinding>(
             showTimePickerDialog(isStartTime = false)
         }
 
-//        // 스위치 설정
-//        setupSwitchListener()
+        //주식장 오픈
+        binding.btnStockOpen.setOnCheckedChangeListener { _, isChecked ->
+            viewModel.updateMarketStatus(isChecked) // 서버로 true/false 전송
+        }
+
         initData()
     }
 
@@ -87,11 +90,17 @@ class StockTeacherFragment : BaseFragment<FragmentStockTeacherBinding>(
     }
 
     private fun observeViewModel() {
+        // 어댑터 데이터 업데이트
         viewModel.stockList.observe(viewLifecycleOwner, Observer { stockList ->
             stockList?.takeIf { it.isNotEmpty() }?.let {
-                stockAdapter.updateData(it)  // 어댑터 데이터 업데이트
+                stockAdapter.updateData(it)
             }
         })
+
+        //주식장 열림 감지
+        viewModel.isMarketActive.observe(viewLifecycleOwner) { isActive ->
+            binding.btnStockOpen.isChecked = isActive
+        }
     }
 
     // 아이템 클릭 이벤트 처리
@@ -105,17 +114,5 @@ class StockTeacherFragment : BaseFragment<FragmentStockTeacherBinding>(
 
 
 
-//    private fun setupSwitchListener() {
-//        binding.btnStockOpen.setOnCheckedChangeListener { _, isChecked ->
-//            if (isChecked) {
-//                // 스위치가 ON일 때 track, thumb이 selector 파일의 ON 상태를 따라감
-//                binding.btnStockOpen.trackTintList = requireContext().getColorStateList(R.color.foundation_green_500)
-//                binding.btnStockOpen.thumbTintList = requireContext().getColorStateList(R.color.white)
-//            } else {
-//                // 스위치가 OFF일 때 track, thumb이 selector 파일의 OFF 상태를 따라감
-//                binding.btnStockOpen.trackTintList = requireContext().getColorStateList(R.color.backgroundGray)
-//                binding.btnStockOpen.thumbTintList = requireContext().getColorStateList(R.color.black200)
-//            }
-//        }
-//    }
+//
 }

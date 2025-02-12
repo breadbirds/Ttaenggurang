@@ -40,6 +40,10 @@ class StockViewModel : ViewModel() {
     private val _selectedStock = MutableLiveData<StockDto?>()
     val selectedStock: LiveData<StockDto?> get() = _selectedStock
 
+    // 주식 열림 확인
+    private val _isMarketActive = MutableLiveData<Boolean>()
+    val isMarketActive: LiveData<Boolean> get() = _isMarketActive
+
 
     // 주식 데이터 조회
     fun fetchAllStocks() {
@@ -175,6 +179,37 @@ class StockViewModel : ViewModel() {
     // ✅ 특정 주식 선택 (리사이클러뷰에서 클릭 시 호출됨)
     fun selectStock(stock: StockDto) {
         _selectedStock.value = stock
+    }
+
+    //주식장 열림(교사)
+    fun updateMarketStatus(openMarket: Boolean) {
+        viewModelScope.launch {
+            try {
+                val response = stockService.setMarketStatus(openMarket) // API 호출
+                if (response.isSuccessful) {
+                    _isMarketActive.value = response.body()?.isMarketActive // 응답 값 반영
+                } else {
+                    _isMarketActive.value = false // 실패 시 기본값 설정
+                }
+            } catch (e: Exception) {
+                _isMarketActive.value = false // 오류 발생 시 기본값 설정
+            }
+        }
+    }
+    // 주식장 열림 확인(학생)
+    fun fetchMarketStatus() {
+        viewModelScope.launch {
+            try {
+                val response = stockService.getMarketStatus()
+                if (response.isSuccessful) {
+                    _isMarketActive.value = response.body()?.isMarketActive ?: false
+                } else {
+                    _isMarketActive.value = false
+                }
+            } catch (e: Exception) {
+                _isMarketActive.value = false
+            }
+        }
     }
 
 

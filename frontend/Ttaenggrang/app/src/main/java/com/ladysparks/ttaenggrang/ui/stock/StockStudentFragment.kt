@@ -43,6 +43,8 @@ class StockStudentFragment : BaseFragment<FragmentStockStudentBinding>(
 
         // 서버에서 주식 데이터 가져오기
         viewModel.fetchAllStocks()
+        // 서버에서 주식 열림 여부 확인
+        viewModel.fetchMarketStatus()
 
         //거래 버튼
         binding.btnTrade.setOnClickListener {
@@ -118,7 +120,7 @@ class StockStudentFragment : BaseFragment<FragmentStockStudentBinding>(
                 Toast.makeText(requireContext(), "매수 완료: ${it.shareCount}주", Toast.LENGTH_SHORT).show()
             }
         }
-        //ui업데이트
+        // ui업데이트
         viewModel.selectedStock.observe(viewLifecycleOwner) { stock ->
             stock?.let {
                 binding.textHeadStockName.text = it.name.substringBefore(" ")
@@ -128,7 +130,7 @@ class StockStudentFragment : BaseFragment<FragmentStockStudentBinding>(
         }
 
 
-        // ✅ 매도 응답 처리
+        // 매도 응답 처리
 //        viewModel.sellTransaction.observe(viewLifecycleOwner) { transaction ->
 //            transaction?.let {
 //                binding.textHeadStockName.text = it.ownedQty.toString() + "주 보유 중"
@@ -140,13 +142,27 @@ class StockStudentFragment : BaseFragment<FragmentStockStudentBinding>(
             }
         }
 
-        // ✅ 에러 메시지 처리
+        // 에러 메시지 처리
         viewModel.errorMessage.observe(viewLifecycleOwner) { message ->
             message?.let {
                 Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
             }
         }
+
+        // 주식장 열림 확인
+        viewModel.isMarketActive.observe(viewLifecycleOwner, Observer { isActive ->
+            if (isActive) {
+                binding.btnTrade.isEnabled = true // 주식 거래 버튼 활성화
+                Toast.makeText(requireContext(), "주식 시장이 열렸습니다!", Toast.LENGTH_SHORT).show()
+            } else {
+                binding.btnTrade.isEnabled = false // 주식 거래 버튼 비활성화
+                Toast.makeText(requireContext(), "주식 시장이 닫혔습니다!", Toast.LENGTH_SHORT).show()
+            }
+        })
     }
+
+
+
 
 
 
