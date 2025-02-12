@@ -1,20 +1,21 @@
 package com.ladysparks.ttaenggrang.domain.student.service;
 
+import com.google.common.collect.Table;
 import com.ladysparks.ttaenggrang.domain.bank.dto.BankAccountDTO;
 import com.ladysparks.ttaenggrang.domain.bank.entity.BankAccount;
 import com.ladysparks.ttaenggrang.domain.bank.mapper.BankAccountMapper;
 import com.ladysparks.ttaenggrang.domain.bank.repository.BankAccountRepository;
-import com.ladysparks.ttaenggrang.domain.teacher.dto.JobInfoDTO;
-import com.ladysparks.ttaenggrang.domain.teacher.dto.NationDTO;
+import com.ladysparks.ttaenggrang.domain.teacher.dto.*;
+import com.ladysparks.ttaenggrang.domain.teacher.entity.Job;
+import com.ladysparks.ttaenggrang.domain.teacher.entity.Nation;
 import com.ladysparks.ttaenggrang.domain.student.dto.SavingsAchievementDTO;
 import com.ladysparks.ttaenggrang.domain.student.dto.StudentLoginRequestDTO;
 import com.ladysparks.ttaenggrang.domain.student.dto.StudentLoginResponseDTO;
 import com.ladysparks.ttaenggrang.domain.student.dto.StudentResponseDTO;
-import com.ladysparks.ttaenggrang.domain.teacher.dto.MultipleStudentCreateDTO;
-import com.ladysparks.ttaenggrang.domain.teacher.dto.SingleStudentCreateDTO;
 import com.ladysparks.ttaenggrang.domain.student.entity.Student;
 import com.ladysparks.ttaenggrang.domain.teacher.entity.Teacher;
 import com.ladysparks.ttaenggrang.domain.student.repository.StudentRepository;
+import com.ladysparks.ttaenggrang.domain.teacher.repository.JobRespository;
 import com.ladysparks.ttaenggrang.domain.teacher.repository.TeacherRepository;
 import com.ladysparks.ttaenggrang.domain.teacher.service.NationService;
 import com.ladysparks.ttaenggrang.domain.teacher.service.TeacherService;
@@ -50,13 +51,14 @@ public class StudentService {
     private final StudentRepository studentRepository;
     private final TeacherRepository teacherRepository;
     private final TeacherService teacherService;
+    private final NationService nationService;
     private final InvestmentService investmentService;
     private final RedisGoalService redisGoalService;
     private final PasswordEncoder passwordEncoder;
     private final BankAccountRepository bankAccountRepository; // ✅ 추가
     private final JwtTokenProvider jwtTokenProvider;
     private final SecurityUtil securityUtil;
-    private final NationService nationService;
+    private final JobRespository jobRespository;
 
     public Long getCurrentStudentId() {
         String username = securityUtil.getCurrentUser();
@@ -200,6 +202,15 @@ public class StudentService {
             // 🔥 파일에서 이름이 있는 경우, 해당 이름 사용
             String studentName = (i <= namesFromFile.size()) ? namesFromFile.get(i - 1) : null;
 
+            // 4. 기본 직업 "시민"으로 설정
+            Job defaultJob = jobRespository.findByJobName("시민")
+                    .orElseGet(() -> {
+                        Job newJob = Job.builder()
+                                .jobName("시민")
+                                .baseSalary(1000)
+                                .build();
+                        return jobRespository.save(newJob);
+                    });
 
             // 5️⃣ 학생 계정 생성 (은행 계좌 연결)
             Student student = Student.builder()
@@ -208,9 +219,16 @@ public class StudentService {
                     .teacher(teacher)
                     .bankAccount(bankAccount) // ✅ **저장된 계좌 연결**
                     .name(studentName)  // 이름 저장
+                    .job(defaultJob)
                     .build();
 
             studentRepository.save(student); // ✅ **저장된 bankAccount를 참조하는 상태에서 저장**
+
+            // 6. 직업 정보 jobinfoDTO로 변환
+            JobInfoDTO jobInfoDTO = JobInfoDTO.builder()
+                    .jobName(defaultJob.getJobName())
+                    .baseSalary(defaultJob.getBaseSalary())
+                    .build();
 
             // 6️⃣ 생성된 계정 리스트에 추가
             createdStudents.add(new StudentResponseDTO(
@@ -220,7 +238,7 @@ public class StudentService {
                     student.getProfileImageUrl(),
                     student.getTeacher(),
                     student.getBankAccount(),
-                    null,
+                    jobInfoDTO,
                     null  // 초기 생성 시 토큰은 null로 설정
 
             ));
@@ -254,17 +272,34 @@ public class StudentService {
         BankAccount bankAccount = BankAccountMapper.INSTANCE.toEntity(bankAccountDTO);
         bankAccount = bankAccountRepository.save(bankAccount);
 
-        // 4. 학생 계정 생성 (은행 계좌 연결)
+        // 4. 기본 직업 "시민"으로 설정
+        Job defaultJob = jobRespository.findByJobName("시민")
+                .orElseGet(() -> {
+                    Job newJob = Job.builder()
+                            .jobName("시민")
+                            .baseSalary(1000)
+                            .build();
+                    return jobRespository.save(newJob);
+                });
+
+        // 5. 학생 계정 생성 (은행 계좌 연결)
         Student student = Student.builder()
                 .username(username)
                 .password(passwordEncoder.encode(password))
                 .teacher(teacher)
                 .bankAccount(bankAccount)
+                .job(defaultJob)
                 .build();
 
         studentRepository.save(student);
 
-        // 5. 생성된 학생 정보 반환
+        // 6. 직업 정보 jobinfoDTO로 변환
+        JobInfoDTO jobInfoDTO = JobInfoDTO.builder()
+                .jobName(defaultJob.getJobName())
+                .baseSalary(defaultJob.getBaseSalary())
+                .build();
+
+        // 6. 생성된 학생 정보 반환
         return new StudentResponseDTO(
                 student.getId(),
                 student.getUsername(),
@@ -272,7 +307,7 @@ public class StudentService {
                 student.getProfileImageUrl(),
                 teacher,
                 bankAccount,
-                null,
+                jobInfoDTO,
                 null  // 토큰 값은 로그인 후 부여
         );
     }
