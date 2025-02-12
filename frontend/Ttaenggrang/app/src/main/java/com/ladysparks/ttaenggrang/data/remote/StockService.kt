@@ -1,9 +1,7 @@
 package com.ladysparks.ttaenggrang.data.remote
 
 import com.ladysparks.ttaenggrang.data.model.dto.StockDto
-import com.ladysparks.ttaenggrang.data.model.dto.StockTransactionDto
-import com.ladysparks.ttaenggrang.data.model.response.ApiResponse
-import com.ladysparks.ttaenggrang.data.model.response.StockOpenResponse
+import com.ladysparks.ttaenggrang.data.model.response.OpenMarketResponse
 import com.ladysparks.ttaenggrang.data.model.response.StockTransactionResponse
 import retrofit2.Response
 import retrofit2.http.GET
@@ -29,13 +27,18 @@ interface StockService {
         @Query("studentId") studentId: Long
     ): Response<StockTransactionResponse>
 
-
-    // 주식장 열기 (교사)
-    @POST("stocks/open")
-    suspend fun openMarket(): ApiResponse<StockOpenResponse>
-
     // 주식 전체 조회
     @GET("stocks")
     suspend fun getAllStocks(): List<StockDto>
+
+    //주식장 열림(교사)
+    @POST("stocks/manage")
+    suspend fun setMarketStatus(
+        @Query("openMarket") openMarket: Boolean // true 또는 false 값을 보냄
+    ): Response<OpenMarketResponse>
+
+    //주식장 열림 확인(학생)
+    @GET("stocks/status")
+    suspend fun getMarketStatus(): Response<OpenMarketResponse>
 
 }
