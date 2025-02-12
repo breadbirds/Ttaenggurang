@@ -183,15 +183,19 @@ class StockViewModel : ViewModel() {
 
     //주식장 열림(교사)
     fun updateMarketStatus(openMarket: Boolean) {
+        Log.d("TAG", "updateMarketStatus: 1단계!!!!")
         viewModelScope.launch {
             try {
                 val response = stockService.setMarketStatus(openMarket) // API 호출
                 if (response.isSuccessful) {
+                    Log.d("TAG", "updateMarketStatus: 성공!!!!")
                     _isMarketActive.value = response.body()?.data // 응답 값 반영
                 } else {
+                    Log.d("TAG", "updateMarketStatus: 실패!!!!")
                     _isMarketActive.value = false // 실패 시 기본값 설정
                 }
             } catch (e: Exception) {
+                Log.d("TAG", "updateMarketStatus: 에러!!!!")
                 _isMarketActive.value = false // 오류 발생 시 기본값 설정
             }
         }
