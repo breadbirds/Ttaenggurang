@@ -3,6 +3,8 @@ package com.ladysparks.ttaenggrang.ui.stock
 import android.annotation.SuppressLint
 import android.app.Dialog
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import androidx.fragment.app.viewModels
 import android.view.View
@@ -10,6 +12,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
 import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import com.ladysparks.ttaenggrang.R
@@ -17,8 +20,10 @@ import com.ladysparks.ttaenggrang.base.BaseFragment
 import com.ladysparks.ttaenggrang.data.model.dto.StockDto
 import com.ladysparks.ttaenggrang.data.model.dto.StockTransactionDto
 import com.ladysparks.ttaenggrang.data.model.dto.StudentStockDto
+import com.ladysparks.ttaenggrang.data.model.dto.TransType
 import com.ladysparks.ttaenggrang.data.model.request.StudentSignInRequest
 import com.ladysparks.ttaenggrang.data.remote.RetrofitUtil
+import com.ladysparks.ttaenggrang.databinding.DialogStockConfirmBinding
 import com.ladysparks.ttaenggrang.databinding.DialogStockTradingBinding
 import com.ladysparks.ttaenggrang.databinding.FragmentStockStudentBinding
 import com.ladysparks.ttaenggrang.util.SharedPreferencesUtil
@@ -109,39 +114,132 @@ class StockStudentFragment : BaseFragment<FragmentStockStudentBinding>(
         dialogBinding.textDialogStockTitle.setText(stock.name.substringBefore(" "))
         dialogBinding.textDialogStockPrice.setText("${stock.pricePer}")
         dialogBinding.textDialogMyStock.setText("$ownedQty 주")
-//        viewModel.ownedStockQty.observe(viewLifecycleOwner, Observer { ownedQty ->
-//            dialogBinding.textDialogMyStock.setText("$ownedQty 주")
-//        })
 
-        // 매도 버튼 클릭 시, 사용자가 입력한 수량을 가져와서 `sellStock()` 호출
+
+        // ✅ 사용자가 거래할 주식 수 입력 시, 즉시 계산값 변경
+        dialogBinding.textDialogStockTrade.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                val inputAmount = s.toString().toIntOrNull() ?: 0
+                val expectedPayment = stock.pricePer * inputAmount // ✅ 현재 주가 * 입력한 주식 수
+                dialogBinding.textContent1.text = "$expectedPayment" //
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+        })
+
+
+//        viewModel.myAsset.observe(dialogBinding.root.context as LifecycleOwner) { asset ->
+//            dialogBinding.textContent2.text = "$asset" // ✅ 결제 후 내 자산 표시
+//        }
+//
+//        viewModel.updatedOwnedStock.observe(dialogBinding.root.context as LifecycleOwner) { newStock ->
+//            val tradeAmount = viewModel.tradeAmount.value ?: 0
+//
+//            val afterSellStock = ownedQty - tradeAmount // ✅ 매도 후 예상 보유량
+//            val afterBuyStock = ownedQty + tradeAmount // ✅ 매수 후 예상 보유량
+//
+//            dialogBinding.textContent3.text = "$afterSellStock 주"
+//            dialogBinding.textContent4.text = "$afterBuyStock 주"
+//        }
+
+
         dialogBinding.btnSell.setOnClickListener {
-            val inputText =
-                dialogBinding.textDialogStockTrade.text.toString().trim() // 사용자가 입력한 값 가져오기
-            val sellCount = inputText.toIntOrNull() ?: 0 // 숫자로 변환, 실패 시 0
+            val inputText = dialogBinding.textDialogStockTrade.text.toString().trim()
+            val sellCount = inputText.toIntOrNull() ?: 0
 
-            Log.d("StockStudentFragment", "사용자가 입력한 sellCount 값: $sellCount") // ✅ 값 확인
-
-            if (sellCount > 0) { // ✅ 유효한 값인지 확인
-                viewModel.sellStock(stock.id, sellCount, studentId) // ✅ DTO가 아닌 값만 전달
-                dialog.dismiss()
-            } else {
-                Toast.makeText(requireContext(), "올바른 수량을 입력하세요.", Toast.LENGTH_SHORT).show()
+            when {
+                sellCount <= 0 -> {
+                    Toast.makeText(requireContext(), "올바른 수량을 입력하세요.", Toast.LENGTH_SHORT).show()
+                }
+                sellCount > ownedQty -> { // ✅ 보유한 주식보다 많은 수량을 입력하면 예외 처리
+                    Toast.makeText(requireContext(), "보유한 주식보다 많은 수량을 매도할 수 없습니다.", Toast.LENGTH_SHORT).show()
+                }
+                else -> {
+                    // ✅ 정상적인 경우 LiveData 업데이트 후 다이얼로그 실행
+                    viewModel.updateTradeAmount(sellCount, stock.pricePer, ownedQty, TransType.SELL)
+                    dialog.dismiss()
+                    showConfirmDialog(stock, sellCount, TransType.SELL)
+                }
             }
         }
 
-        // 매수 버튼 클릭 시
+
         dialogBinding.btnBuy.setOnClickListener {
             val inputText = dialogBinding.textDialogStockTrade.text.toString().trim()
             val buyCount = inputText.toIntOrNull() ?: 0
 
-            if (buyCount > 0) { // ✅ 유효한 값인지 확인
-                viewModel.buyStock(stock.id, buyCount, studentId)
-                dialog.dismiss()
-            } else {
-                Toast.makeText(requireContext(), "올바른 수량을 입력하세요.", Toast.LENGTH_SHORT).show()
+            val totalCost = stock.pricePer * buyCount // ✅ 총 매수 예상 비용
+            val myAsset = viewModel.myAsset.value ?: 0 // ✅ 현재 보유 현금
+
+            when {
+                buyCount <= 0 -> {
+                    Toast.makeText(requireContext(), "올바른 수량을 입력하세요.", Toast.LENGTH_SHORT).show()
+                }
+                totalCost > myAsset -> { // ✅ 보유 현금보다 많은 금액을 매수하려 하면 예외 처리
+                    Toast.makeText(requireContext(), "보유 현금이 부족합니다.", Toast.LENGTH_SHORT).show()
+                }
+                else -> {
+                    // ✅ 정상적인 경우 LiveData 업데이트 후 다이얼로그 실행
+                    viewModel.updateTradeAmount(buyCount, stock.pricePer, ownedQty, TransType.BUY)
+                    dialog.dismiss()
+                    showConfirmDialog(stock, buyCount, TransType.BUY)
+                }
             }
         }
         dialog.show()
+    }
+
+    private fun showConfirmDialog(stock: StockDto, tradeAmount: Int, transactionType: TransType) {
+        val confirmDialogBinding = DialogStockConfirmBinding.inflate(layoutInflater)
+        val confirmDialog = Dialog(requireContext())
+        confirmDialog.setContentView(confirmDialogBinding.root)
+
+        // 다이얼로그 크기 조정
+        confirmDialog.window?.setLayout(
+            (resources.displayMetrics.widthPixels * 0.4).toInt(),
+            ViewGroup.LayoutParams.WRAP_CONTENT
+        )
+
+        // ✅ 다이얼로그 타이틀 설정 (매도 or 매수)
+        confirmDialogBinding.textDialogTitle.text = if (transactionType == TransType.SELL) "매도 하시겠습니까?" else "매수 하시겠습니까?"
+
+        // 예상 결제 금액
+        viewModel.expectedPayment.observe(confirmDialogBinding.root.context as LifecycleOwner) { amount ->
+            confirmDialogBinding.textContent1.text = "$amount" // ✅ 예상 결제 금액 표시
+        }
+
+        // ✅ 거래 후 보유 현금 표시
+        viewModel.updatedMyAsset.observe(confirmDialogBinding.root.context as LifecycleOwner) { updatedAsset ->
+            confirmDialogBinding.textContent2.text = "$updatedAsset"
+        }
+
+        // ✅ 거래 후 보유 주식 업데이트
+        viewModel.updatedOwnedStock.observe(confirmDialogBinding.root.context as LifecycleOwner) { newStock ->
+            if (transactionType == TransType.SELL) {
+                confirmDialogBinding.textContent3.text = "${newStock} 주"
+
+            } else {
+                confirmDialogBinding.textContent3.text = "${newStock} 주"
+            }
+        }
+
+        // ✅ "거래하기" 버튼 클릭 시, 매도 또는 매수 실행
+        confirmDialogBinding.btnYes.setOnClickListener {
+            if (transactionType == TransType.SELL) {
+                viewModel.sellStock(stock.id, tradeAmount, studentId)
+            } else {
+                viewModel.buyStock(stock.id, tradeAmount, studentId)
+            }
+            confirmDialog.dismiss()
+        }
+
+        // ✅ "취소" 버튼 클릭 시 다이얼로그 닫기
+        confirmDialogBinding.btnNo.setOnClickListener {
+            confirmDialog.dismiss()
+        }
+
+        confirmDialog.show()
     }
 
     override fun onStockClick(stock: StockDto) {
