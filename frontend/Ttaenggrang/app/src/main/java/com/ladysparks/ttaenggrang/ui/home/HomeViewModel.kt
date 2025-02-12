@@ -36,13 +36,18 @@ class HomeViewModel : ViewModel(){
             runCatching {
                 RetrofitUtil.teacherService.getNationInfo()
             }.onSuccess {
-                _nationInfoList.value = it.data
-                _nationInfoList.value!!.isPossible = false
+                _nationInfoList.value = _nationInfoList.value?.copy(isPossible = false)
             }.onFailure {
-//                Log.d("TAG", "fetchNationData: ${it.}")
-//                if(ApiErrorParser.extractErrorMessage(it).contains("등록된 국가가 없습니다.")){
-//                    _nationInfoList.value!!.isPossible = true
-//                }
+                val errorMessage = ApiErrorParser.extractErrorMessage(it)
+                if (errorMessage.contains("등록된 국가가 없습니다.")) {
+                    _nationInfoList.value = NationInfoResponse(
+                        treasuryIncome = 0,
+                        averageStudentBalance = 0.0,
+                        activeItemCount = 0,
+                        classSavingsGoal = 0,
+                        isPossible = false // 국가 정보 없음
+                    )
+                }
             }
         }
     }
