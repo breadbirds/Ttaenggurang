@@ -36,11 +36,13 @@
             android:orientation="vertical"
             android:layout_marginStart="18dp">
             <TextView
+                android:id="@+id/textMyItemPrice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="50,000"
                 style="@style/heading3"/>
             <TextView
+                android:id="@+id/textMyItemName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="미지미지 교환권"
