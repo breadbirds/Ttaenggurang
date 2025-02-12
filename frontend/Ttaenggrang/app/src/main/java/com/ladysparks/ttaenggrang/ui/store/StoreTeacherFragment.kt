@@ -49,7 +49,6 @@ class StoreTeacherFragment : BaseFragment<FragmentStoreTeacherBinding>(FragmentS
             val itemPrice = dialogBinding.textLayoutContent3.editText?.text.toString().trim().toIntOrNull()
             val itemCount = dialogBinding.textLayoutContent4.editText?.text.toString().trim().toIntOrNull()
             // 만들어야 함
-            val itemImage = null
 
             if (itemName.isEmpty()) {
                 showToast("상품명은 필수 입력 정보입니다")
@@ -69,12 +68,11 @@ class StoreTeacherFragment : BaseFragment<FragmentStoreTeacherBinding>(FragmentS
             val itemRegister = StoreRegisterRequest(
                 name = itemName,
                 description = itemDescription,
-                image = itemImage,
                 price = itemPrice,
                 quantity = itemCount
             )
 
-            registerItem(itemRegister)
+            registerThisItem(itemRegister)
 
             dialog.dismiss()
         }
@@ -86,7 +84,7 @@ class StoreTeacherFragment : BaseFragment<FragmentStoreTeacherBinding>(FragmentS
     private fun getTeacherItemList() {
         lifecycleScope.launch {
             runCatching {
-                RetrofitUtil.storeService.getTeacherItemList()
+                RetrofitUtil.storeService.getStudentItemList()
             }.onSuccess {
                 Log.d("test", "등록된 아이템 조회 성공${it}")
                 val registeredItems = it.data?: emptyList()
@@ -106,7 +104,7 @@ class StoreTeacherFragment : BaseFragment<FragmentStoreTeacherBinding>(FragmentS
         }
     }
 
-    private fun registerItem(itemRegister: StoreRegisterRequest) {
+    private fun registerThisItem(itemRegister: StoreRegisterRequest) {
         lifecycleScope.launch {
             runCatching {
                 Log.d("test", "${itemRegister}")
@@ -115,8 +113,8 @@ class StoreTeacherFragment : BaseFragment<FragmentStoreTeacherBinding>(FragmentS
                 Log.d("test", "상품 등록 성공 ${it}")
                 showToast("상품이 성공적으로 등록되었습니다")
                 getTeacherItemList()
-            }.onFailure {
-                Log.e("test", "item register failure")
+            }.onFailure { throwable ->
+                Log.e("test", "item register failure ${throwable}")
             }
         }
     }
