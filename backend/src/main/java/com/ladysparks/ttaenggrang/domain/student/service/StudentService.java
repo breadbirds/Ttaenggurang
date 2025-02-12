@@ -501,6 +501,16 @@ public class StudentService {
         return student.getTeacher().getId();
     }
 
+    public void getAllSavingsAchievementRates(Long studentId, Long teacherId) {
+        List<Student> students = studentRepository.findAllByTeacherId(teacherId);
+        for (Student student : students) {
+            SavingsAchievementDTO cacheSavingsAchievementDTO = redisGoalService.getGoalAchievement(teacherId, student.getId());
+            if (cacheSavingsAchievementDTO.getSavingsAchievementRate() == null) {
+                calculateSavingsAchievementRate();
+            }
+        }
+    }
+
     /**
      * 특정 학생의 저축 목표 달성률을 조회
      */
