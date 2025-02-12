@@ -1,6 +1,9 @@
 spring:
   jackson:
     time-zone: Asia/Seoul
+  spring:
+    datasource:
+      url: jdbc:mysql://localhost:3306/your_database?serverTimezone=Asia/Seoul
   profiles:
     active: prod
   application:
