@@ -128,4 +128,10 @@ public class TeacherService {
         return responseDTOs;
     }
 
+    public String findNameById(Long teacherId) {
+        return teacherRepository.findById(teacherId)
+                .map(Teacher::getName)
+                .orElseThrow(() -> new NotFoundException("등록된 교사가 없습니다."));
+    }
+
 }
