@@ -52,7 +52,6 @@ public class NationService {
                                 : new Timestamp(System.currentTimeMillis())  // 현재 시각으로 기본값 설정
                 )
                 .nationalTreasury(0)
-                .teacher(teacher)
                 .build();
         Nation savedNation = nationRepository.save(nation);
 
@@ -63,9 +62,9 @@ public class NationService {
     }
 
     // 국가 [조회]
-    public ApiResponse<NationDTO> getNationByTeacherId() {
+    public ApiResponse<NationDTO> getNationByTeacherId(Long teacherId) {
         // 1. 교사 엔티티 조회
-        Long teacherId = teacherService.getCurrentTeacherId();
+//        Long teacherId = teacherService.getCurrentTeacherId();
 
         // 2. 교사가 이미 국가를 가지고 있는지 확인
         NationDTO nationDTO = findNationByTeacherId(teacherId);
