@@ -57,5 +57,3 @@ server:
       enabled: true
       force: true
 
-news:
-  api-key: "***REMOVED***"
