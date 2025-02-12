@@ -20,6 +20,7 @@ import com.ladysparks.ttaenggrang.databinding.DialogStockTradingBinding
 import com.ladysparks.ttaenggrang.databinding.FragmentStockStudentBinding
 import com.ladysparks.ttaenggrang.util.SharedPreferencesUtil
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -43,20 +44,35 @@ class StockStudentFragment : BaseFragment<FragmentStockStudentBinding>(
 
         // 서버에서 주식 데이터 가져오기
         viewModel.fetchAllStocks()
-        // 서버에서 주식 열림 여부 확인
-        viewModel.fetchMarketStatus()
+
 
         //거래 버튼
         binding.btnTrade.setOnClickListener {
-            val selectedStock = viewModel.selectedStock.value
-            selectedStock?.let { stock ->
-                showDialog(stock)
-            } ?: Toast.makeText(requireContext(), "먼저 주식을 선택해주세요.", Toast.LENGTH_SHORT).show()
+            lifecycleScope.launch {
+                viewModel.fetchMarketStatus() // ✅ 주식장 상태 최신화 요청
+                delay(500) // ✅ 서버 응답 대기 (필요 시 조정)
+
+                // ✅ 최신 주식장 상태를 가져와서 확인
+                if (viewModel.isMarketActive.value == true) {
+                    val selectedStock = viewModel.selectedStock.value
+                    selectedStock?.let { stock ->
+                        showDialog(stock) // ✅ 주식장이 열려 있으면 다이얼로그 실행
+                    } ?: Toast.makeText(requireContext(), "먼저 주식을 선택해주세요.", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(requireContext(), "주식 시장이 닫혀 있습니다!", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+
+
+
         }
 
 
 
     }
+
+
 
     private fun showDialog(stock: StockDto) {
         val dialogBinding = DialogStockTradingBinding.inflate(layoutInflater)
@@ -149,17 +165,10 @@ class StockStudentFragment : BaseFragment<FragmentStockStudentBinding>(
             }
         }
 
-        // 주식장 열림 확인
-        viewModel.isMarketActive.observe(viewLifecycleOwner, Observer { isActive ->
-            if (isActive) {
-                binding.btnTrade.isEnabled = true // 주식 거래 버튼 활성화
-                Toast.makeText(requireContext(), "주식 시장이 열렸습니다!", Toast.LENGTH_SHORT).show()
-            } else {
-                binding.btnTrade.isEnabled = false // 주식 거래 버튼 비활성화
-                Toast.makeText(requireContext(), "주식 시장이 닫혔습니다!", Toast.LENGTH_SHORT).show()
-            }
-        })
+
     }
+
+
 
 
 
