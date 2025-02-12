@@ -68,8 +68,6 @@ class HomeTeacherFragment : BaseFragment<FragmentHomeTeacherBinding>(FragmentHom
         homeViewModel.nationInfoData.observe(viewLifecycleOwner) { response ->
             response?.let {
                 if(it.isPossible == false){
-                    showToast("국가 정보 등록이 필요합니다!")
-
                     BaseTwoButtonDialog(
                         context = requireContext(),
                         title = "국가 정보 등록 필요",
@@ -77,10 +75,9 @@ class HomeTeacherFragment : BaseFragment<FragmentHomeTeacherBinding>(FragmentHom
                         showCloseButton = false,
                         positiveButtonText = "확인",
                         onPositiveClick = {
-                          //  startActivity()
                             NavigationManager.moveFragment(NavigationManager.FRAGMENT_NATION)
                         }
-                    )
+                    ).show()
 
                 }else{
                     showToast("국가 정보 있음")

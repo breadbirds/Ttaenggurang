@@ -5,5 +5,5 @@ data class NationInfoResponse(
     val averageStudentBalance : Double,
     val activeItemCount : Int,
     val classSavingsGoal : Int,
-    var isPossible: Boolean? = null // 국가 정보가 있는지 여부를 보기 위한 확인용 변수
+    val isPossible: Boolean? = null // 국가 정보가 있는지 여부를 보기 위한 확인용 변수
 )
