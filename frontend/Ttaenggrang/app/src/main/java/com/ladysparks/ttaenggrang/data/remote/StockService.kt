@@ -14,9 +14,9 @@ interface StockService {
     // 주식 매도
     @POST("stocks/{stockId}/sell")  // ✅ 경로 확인
     suspend fun sellStock(
-        @Path("stockId") stockId: Long,
+        @Path("stockId") stockId: Int,
         @Query("share_count") shareCount: Int,
-        @Query("studentId") studentId: Long
+        @Query("studentId") studentId: Int
     ): Response<StockTransactionResponse>
 
     // 주식 매수

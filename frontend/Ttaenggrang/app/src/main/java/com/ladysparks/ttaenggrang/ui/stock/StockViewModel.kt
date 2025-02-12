@@ -11,6 +11,7 @@ import com.ladysparks.ttaenggrang.data.model.request.StudentSignInRequest
 import com.ladysparks.ttaenggrang.data.remote.RetrofitUtil
 import com.ladysparks.ttaenggrang.data.remote.RetrofitUtil.Companion.authService
 import com.ladysparks.ttaenggrang.data.remote.StockService
+import com.ladysparks.ttaenggrang.util.SharedPreferencesUtil
 import kotlinx.coroutines.launch
 
 class StockViewModel : ViewModel() {
@@ -64,7 +65,7 @@ class StockViewModel : ViewModel() {
     }
 
     // 학생 ID 조회 후 보유 주식 수 가져오기
-    fun fetchOwnedStockQty(stockId: Long) {
+    fun fetchOwnedStockQty(stockId: Int) {
 
         viewModelScope.launch {
             try {
@@ -74,7 +75,7 @@ class StockViewModel : ViewModel() {
                 )
 
                 if (loginResponse.statusCode == 200) {
-                    val studentId = loginResponse.data?.id?.toLong()
+                    val studentId = loginResponse.data?.id
                         ?: throw IllegalStateException("학생 ID 없음")
 
                     Log.d("StockViewModel", "서버에서 가져온 studentId: $studentId")
@@ -101,45 +102,76 @@ class StockViewModel : ViewModel() {
     }
 
     // 학생 ID 조회 후 주식 매도 요청
-    fun sellStock(stockId: Long, shareCount: Int) {
+    fun sellStock(stockId: Int, shareCount: Int) {
         viewModelScope.launch {
             try {
-                // ✅ 서버에서 로그인된 학생 ID 가져오기
-                val loginResponse = authService.loginStudent(
-                    StudentSignInRequest(username = "hello1", password = "ssafy123") // 🔴 실제 로그인 정보로 변경 필요
-                )
+                // ✅ SharedPreferences에서 studentId 가져오기
+                val studentId = SharedPreferencesUtil.getUserId()
 
-                if (loginResponse.statusCode == 200) {
-                    val studentId = loginResponse.data?.id?.toLong()
-                        ?: throw IllegalStateException("학생 ID 없음")
+                if (studentId == 0) { // 0L이면 studentId가 저장되지 않은 경우
+                    _errorMessage.postValue("학생 ID 없음, 로그인 필요")
+                    return@launch
+                }
 
-                    Log.d("StockViewModel", "서버에서 가져온 studentId: $studentId")
+                Log.d("StockViewModel", "SharedPreferences에서 가져온 studentId: $studentId")
 
-                    // ✅ `sellStock()` 요청 실행
-                    val sellResponse = stockService.sellStock(stockId, shareCount, studentId)
+                // ✅ `sellStock()` 요청 실행
+                val sellResponse = stockService.sellStock(stockId, shareCount, studentId)
 
-                    if (sellResponse.isSuccessful) {
-                        val transactionData = sellResponse.body()?.data
+                if (sellResponse.isSuccessful) {
+                    val transactionData = sellResponse.body()?.data
 
-                        // ✅ 매도 성공 후 보유 주식 수 업데이트
-                        _sellTransaction.postValue(transactionData)
-                        _ownedStockQty.postValue(transactionData?.ownedQty ?: 0)
+                    // ✅ 매도 성공 후 보유 주식 수 업데이트
+                    _sellTransaction.postValue(transactionData)
+                    _ownedStockQty.postValue(transactionData?.ownedQty ?: 0)
 
-                    } else {
-                        _errorMessage.postValue("매도 요청 실패 (HTTP ${sellResponse.code()})")
-                    }
+                    Log.d("StockViewModel", "매도 성공: ${transactionData?.shareCount}주")
                 } else {
-                    _errorMessage.postValue("학생 정보 조회 실패")
+                    _errorMessage.postValue("매도 요청 실패 (HTTP ${sellResponse.code()})")
                 }
             } catch (e: Exception) {
                 _errorMessage.postValue("네트워크 오류 발생: ${e.message}")
                 Log.e("StockViewModel", "네트워크 오류", e)
             }
         }
+//        viewModelScope.launch {
+//            try {
+//                // ✅ 서버에서 로그인된 학생 ID 가져오기
+//                val loginResponse = authService.loginStudent(
+//                    StudentSignInRequest(username = "hello1", password = "ssafy123") // 🔴 실제 로그인 정보로 변경 필요
+//                )
+//
+//                if (loginResponse.statusCode == 200) {
+//                    val studentId = loginResponse.data?.id?.toLong()
+//                        ?: throw IllegalStateException("학생 ID 없음")
+//
+//                    Log.d("StockViewModel", "서버에서 가져온 studentId: $studentId")
+//
+//                    // ✅ `sellStock()` 요청 실행
+//                    val sellResponse = stockService.sellStock(stockId, shareCount, studentId)
+//
+//                    if (sellResponse.isSuccessful) {
+//                        val transactionData = sellResponse.body()?.data
+//
+//                        // ✅ 매도 성공 후 보유 주식 수 업데이트
+//                        _sellTransaction.postValue(transactionData)
+//                        _ownedStockQty.postValue(transactionData?.ownedQty ?: 0)
+//
+//                    } else {
+//                        _errorMessage.postValue("매도 요청 실패 (HTTP ${sellResponse.code()})")
+//                    }
+//                } else {
+//                    _errorMessage.postValue("학생 정보 조회 실패")
+//                }
+//            } catch (e: Exception) {
+//                _errorMessage.postValue("네트워크 오류 발생: ${e.message}")
+//                Log.e("StockViewModel", "네트워크 오류", e)
+//            }
+//        }
     }
 
     // 매수 기능
-    fun buyStock(stockId: Long, shareCount: Int) {
+    fun buyStock(stockId: Int, shareCount: Int) {
         viewModelScope.launch {
             try {
                 // ✅ 서버에서 로그인된 학생 ID 가져오기
@@ -148,7 +180,7 @@ class StockViewModel : ViewModel() {
                 )
 
                 if (loginResponse.statusCode == 200) {
-                    val studentId = loginResponse.data?.id?.toLong()
+                    val studentId = loginResponse.data?.id
                         ?: throw IllegalStateException("학생 ID 없음")
 
                     Log.d("StockViewModel", "서버에서 가져온 studentId: $studentId")
@@ -181,7 +213,7 @@ class StockViewModel : ViewModel() {
         _selectedStock.value = stock
     }
 
-    //주식장 열림(교사)
+    //주식장 열기(교사)
     fun updateMarketStatus(openMarket: Boolean) {
         Log.d("TAG", "updateMarketStatus: 1단계!!!!")
         viewModelScope.launch {
