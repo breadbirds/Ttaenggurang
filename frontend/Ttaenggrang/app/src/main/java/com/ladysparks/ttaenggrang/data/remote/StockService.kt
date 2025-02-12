@@ -1,6 +1,7 @@
 package com.ladysparks.ttaenggrang.data.remote
 
 import com.ladysparks.ttaenggrang.data.model.dto.StockDto
+import com.ladysparks.ttaenggrang.data.model.dto.StudentStockDto
 import com.ladysparks.ttaenggrang.data.model.response.OpenMarketResponse
 import com.ladysparks.ttaenggrang.data.model.response.StockTransactionResponse
 import retrofit2.Response
@@ -22,9 +23,9 @@ interface StockService {
     // 주식 매수
     @POST("stocks/{stockId}/buy")  // ✅ 경로 확인
     suspend fun buyStock(
-        @Path("stockId") stockId: Long,
+        @Path("stockId") stockId: Int,
         @Query("share_count") shareCount: Int,
-        @Query("studentId") studentId: Long
+        @Query("studentId") studentId: Int
     ): Response<StockTransactionResponse>
 
     // 주식 전체 조회
@@ -40,5 +41,12 @@ interface StockService {
     //주식장 열림 확인(학생)
     @GET("stocks/status")
     suspend fun getMarketStatus(): Response<OpenMarketResponse>
+
+    // 학생 보유 주식 조회
+    @GET("stocks/student/{studentId}")
+    suspend fun getStudentStocks(
+        @Path("studentId") studentId: Int
+    ): List<StudentStockDto>
+
 
 }
