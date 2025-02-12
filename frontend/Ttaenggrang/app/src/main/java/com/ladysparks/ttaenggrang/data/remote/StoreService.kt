@@ -20,15 +20,11 @@ interface StoreService {
     @GET("item-transactions/purchase")
     suspend fun getStudentPurchaseHistory(): ApiResponse<List<StoreStudentPurchaseHistoryResponse>>
 
-    //
-//    @GET("item-products/teacher")
-//    suspend fun getTeacherItemList(): ApiResponse<List<StoreStudenItemListResponse>>
-
     // 아이템 등록 - 실행 됨
     @POST("item-products")
     suspend fun registerItem(@Body registerProduct: StoreRegisterRequest): ApiResponse<StoreRegisterResponse>
 
-    // 학생이 아이템 구매
+    // 학생이 아이템 구매 - 실행됨
     @POST("item-transactions")
     suspend fun buyItem(@Body product: StoreBuyingRequest): ApiResponse<Any>
 
