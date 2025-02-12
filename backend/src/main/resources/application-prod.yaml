@@ -1,6 +1,0 @@
-spring:
-  data:
-    redis:
-      host: redis # Docker Compose의 서비스명
-      port: 6379
-      password: "ssafy"
