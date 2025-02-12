@@ -214,7 +214,7 @@
                 android:layout_height="wrap_content"
                 android:hint="거래할 주식 수를 작성하세요"
                 android:paddingStart="14dp"
-                android:textColor="@color/lightGray" />
+                android:textColor="@color/black" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
