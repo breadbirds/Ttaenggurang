@@ -2,6 +2,7 @@ package com.ladysparks.ttaenggrang.ui.stock
 
 import android.app.TimePickerDialog
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.viewModels
@@ -49,6 +50,7 @@ class StockTeacherFragment : BaseFragment<FragmentStockTeacherBinding>(
         //주식장 오픈
         binding.btnStockOpen.setOnCheckedChangeListener { _, isChecked ->
             viewModel.updateMarketStatus(isChecked) // 서버로 true/false 전송
+            Log.d("TAG", "onViewCreated: switch 클릭!!!!")
         }
 
         initData()
@@ -98,9 +100,9 @@ class StockTeacherFragment : BaseFragment<FragmentStockTeacherBinding>(
         })
 
         //주식장 열림
-        viewModel.isMarketActive.observe(viewLifecycleOwner) { isActive ->
-            binding.btnStockOpen.isChecked = isActive
-        }
+//        viewModel.isMarketActive.observe(viewLifecycleOwner) { isActive ->
+//            binding.btnStockOpen.isChecked = isActive
+//        }
     }
 
     // 아이템 클릭 이벤트 처리
@@ -111,8 +113,4 @@ class StockTeacherFragment : BaseFragment<FragmentStockTeacherBinding>(
         binding.textHeadStockChange.text = "${stock.changeRate}%"
     }
 
-
-
-
-//
 }
