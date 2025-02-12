@@ -1,5 +1,6 @@
 package com.ladysparks.ttaenggrang.ui.stock
 
+import android.annotation.SuppressLint
 import android.app.Dialog
 import android.os.Bundle
 import android.util.Log
@@ -14,6 +15,7 @@ import androidx.lifecycle.lifecycleScope
 import com.ladysparks.ttaenggrang.R
 import com.ladysparks.ttaenggrang.base.BaseFragment
 import com.ladysparks.ttaenggrang.data.model.dto.StockDto
+import com.ladysparks.ttaenggrang.data.model.dto.StudentStockDto
 import com.ladysparks.ttaenggrang.data.model.request.StudentSignInRequest
 import com.ladysparks.ttaenggrang.data.remote.RetrofitUtil
 import com.ladysparks.ttaenggrang.databinding.DialogStockTradingBinding
@@ -32,6 +34,7 @@ class StockStudentFragment : BaseFragment<FragmentStockStudentBinding>(
     private val viewModel: StockViewModel by viewModels()
     private lateinit var stockAdapter: StockAdapter
     private var selectedStock: StockDto? = null // 선택한 주식 저장
+    private var studentId: Int = -1
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -45,33 +48,49 @@ class StockStudentFragment : BaseFragment<FragmentStockStudentBinding>(
         // 서버에서 주식 데이터 가져오기
         viewModel.fetchAllStocks()
 
+        // ✅ studentId 가져오기 (예: SharedPreferences에서 가져오기)
+        studentId = SharedPreferencesUtil.getUserId()
 
-        //거래 버튼
+        // ✅ 거래버튼 클릭 이벤트 수정
         binding.btnTrade.setOnClickListener {
             lifecycleScope.launch {
                 viewModel.fetchMarketStatus() // ✅ 주식장 상태 최신화 요청
-                delay(500) // ✅ 서버 응답 대기 (필요 시 조정)
+                delay(500) // ✅ 서버 응답 대기
 
-                // ✅ 최신 주식장 상태를 가져와서 확인
+                // ✅ 최신 주식장 상태 확인
                 if (viewModel.isMarketActive.value == true) {
                     val selectedStock = viewModel.selectedStock.value
+
                     selectedStock?.let { stock ->
-                        showDialog(stock) // ✅ 주식장이 열려 있으면 다이얼로그 실행
-                    } ?: Toast.makeText(requireContext(), "먼저 주식을 선택해주세요.", Toast.LENGTH_SHORT)
-                        .show()
+                        val stockId = stock.id // ✅ 선택한 주식 ID 가져오기
+
+                        // ✅ studentId가 유효한지 확인
+                        if (studentId != -1) {
+                            viewModel.fetchOwnedStocks(studentId) // ✅ studentId 전달
+                            delay(500) // ✅ 데이터 로딩 대기
+
+                            // ✅ 학생 보유 주식 목록에서 선택한 주식 찾기
+                            val ownedStock = viewModel.ownedStocks.value?.find { it.stockId == stockId }
+                            val ownedQty = ownedStock?.ownedQty ?: 0 // ✅ 보유량 가져오기
+
+                            showDialog(stock, ownedQty) // ✅ 다이얼로그 실행
+                        } else {
+                            Toast.makeText(requireContext(), "학생 ID를 찾을 수 없습니다.", Toast.LENGTH_SHORT).show()
+                        }
+                    } ?: Toast.makeText(requireContext(), "먼저 주식을 선택해주세요.", Toast.LENGTH_SHORT).show()
                 } else {
                     Toast.makeText(requireContext(), "주식 시장이 닫혀 있습니다!", Toast.LENGTH_SHORT).show()
                 }
             }
-
-
         }
-
-
     }
 
+
+
+
     //매도 매수 다이얼로그
-    private fun showDialog(stock: StockDto) {
+    @SuppressLint("SetTextI18n")
+    private fun showDialog(stock: StockDto, ownedQty: Int) {
         val dialogBinding = DialogStockTradingBinding.inflate(layoutInflater)
         val dialog = Dialog(requireContext())
         dialog.setContentView(dialogBinding.root)
@@ -85,22 +104,22 @@ class StockStudentFragment : BaseFragment<FragmentStockStudentBinding>(
         // ✅ 주식명 & 현재 주가 설정
         dialogBinding.textDialogStockTitle.setText(stock.name.substringBefore(" "))
         dialogBinding.textDialogStockPrice.setText("${stock.pricePer}")
+        dialogBinding.textDialogMyStock.setText("$ownedQty 주")
 //        viewModel.ownedStockQty.observe(viewLifecycleOwner, Observer { ownedQty ->
 //            dialogBinding.textDialogMyStock.setText("$ownedQty 주")
 //        })
 
         // 매도 버튼 클릭
         dialogBinding.btnSell.setOnClickListener {
-            viewModel.sellStock(stock.id, 1)
+            viewModel.sellStock(stock.id, 1, studentId)
             dialog.dismiss()
         }
 
         // 매수 버튼
         dialogBinding.btnBuy.setOnClickListener {
-            viewModel.buyStock(stock.id, 1)
+            viewModel.buyStock(stock.id, 1, studentId)
             dialog.dismiss()
         }
-
         dialog.show()
     }
 
@@ -141,11 +160,6 @@ class StockStudentFragment : BaseFragment<FragmentStockStudentBinding>(
 
 
         // 매도 응답 처리
-//        viewModel.sellTransaction.observe(viewLifecycleOwner) { transaction ->
-//            transaction?.let {
-//                binding.textHeadStockName.text = it.ownedQty.toString() + "주 보유 중"
-//            }
-//        }
         viewModel.sellTransaction.observe(viewLifecycleOwner) { transaction ->
             transaction?.let {
                 Toast.makeText(requireContext(), "매도 완료: ${it.shareCount}주", Toast.LENGTH_SHORT)
@@ -159,9 +173,5 @@ class StockStudentFragment : BaseFragment<FragmentStockStudentBinding>(
                 Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
             }
         }
-
-
     }
-
-
 }
