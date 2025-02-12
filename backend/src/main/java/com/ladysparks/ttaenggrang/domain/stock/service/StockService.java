@@ -6,6 +6,7 @@ import com.ladysparks.ttaenggrang.domain.bank.dto.BankTransactionDTO;
 import com.ladysparks.ttaenggrang.domain.bank.entity.BankTransactionType;
 import com.ladysparks.ttaenggrang.domain.bank.service.BankTransactionService;
 import com.ladysparks.ttaenggrang.domain.stock.dto.StockTransactionDTO;
+import com.ladysparks.ttaenggrang.domain.stock.dto.StudentStockDTO;
 import com.ladysparks.ttaenggrang.domain.stock.entity.Stock;
 import com.ladysparks.ttaenggrang.domain.stock.entity.StockHistory;
 import com.ladysparks.ttaenggrang.domain.stock.entity.StockTransaction;
@@ -23,8 +24,7 @@ import org.springframework.stereotype.Service;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -121,6 +121,7 @@ public class StockService {
 
 
     }
+
 
 
     // 주식 매수 로직
@@ -300,6 +301,51 @@ public class StockService {
         // DTO 변환 후 반환
         return StockTransactionDTO.fromEntity(transaction, updatedOwnedQty);
     }
+
+    //학생이 보유 하고 있는 주식 조회
+    public List<StudentStockDTO> getStudentStocks(Long studentId) {
+        List<StockTransaction> transactions = stockTransactionRepository.findByStudentId(Math.toIntExact(studentId));
+
+        Map<Stock, Integer> stockHoldings = new HashMap<>();
+        Map<Stock, Integer> stockPurchasePrice = new HashMap<>();
+        Map<Stock, LocalDateTime> stockPurchaseDate = new HashMap<>();
+
+        for (StockTransaction tx : transactions) {
+            Stock stock = tx.getStock();
+            int qty = tx.getShare_count();
+
+            if (tx.getTransType() == TransType.BUY) {
+                stockHoldings.put(stock, stockHoldings.getOrDefault(stock, 0) + qty);
+
+                // 최초 구매 가격과 날짜 저장
+                if (!stockPurchasePrice.containsKey(stock)) {
+                    stockPurchasePrice.put(stock, tx.getPurchase_prc());
+                    stockPurchaseDate.put(stock, tx.getTrans_date().toLocalDateTime());
+                }
+            } else if (tx.getTransType() == TransType.SELL) {
+                stockHoldings.put(stock, stockHoldings.getOrDefault(stock, 0) - qty);
+            }
+        }
+
+        List<StudentStockDTO> studentStocks = new ArrayList<>();
+        for (Map.Entry<Stock, Integer> entry : stockHoldings.entrySet()) {
+            Stock stock = entry.getKey();
+            int holdingQty = entry.getValue();
+
+            if (holdingQty > 0) { // 보유 수량이 있는 경우만 추가
+                studentStocks.add(new StudentStockDTO(
+                        stock.getId(),
+                        stock.getName(),
+                        holdingQty,
+                        stockPurchasePrice.get(stock), // 최초 구매 가격
+                        stockPurchaseDate.get(stock), // 최초 구매 날짜
+                        stock.getPrice_per() // 현재 주가
+                ));
+            }
+        }
+        return studentStocks;
+    }
+
 
 
 
