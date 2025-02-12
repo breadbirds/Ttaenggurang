@@ -200,21 +200,25 @@ class StockViewModel : ViewModel() {
             }
         }
     }
-    // 주식장 열림 확인(학생)
+    // 주식장 열림 확인(학생). 변경사항이 있을때만 ui 업데이트
     fun fetchMarketStatus() {
         viewModelScope.launch {
             try {
                 val response = stockService.getMarketStatus()
                 if (response.isSuccessful) {
-                    _isMarketActive.value = response.body()?.data ?: false
+                    val newStatus = response.body()?.data ?: false
+                    if (_isMarketActive.value != newStatus) {
+                        _isMarketActive.postValue(newStatus)
+                    }
                 } else {
-                    _isMarketActive.value = false
+                    _isMarketActive.postValue(false)
                 }
             } catch (e: Exception) {
-                _isMarketActive.value = false
+                _isMarketActive.postValue(false)
             }
         }
     }
+
 
 
 }
