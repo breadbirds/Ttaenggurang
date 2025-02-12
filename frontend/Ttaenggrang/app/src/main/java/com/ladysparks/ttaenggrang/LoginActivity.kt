@@ -15,6 +15,7 @@ import com.ladysparks.ttaenggrang.data.model.response.StudentSignInResponse
 import com.ladysparks.ttaenggrang.data.model.response.TeacherSignInResponse
 import com.ladysparks.ttaenggrang.data.remote.RetrofitUtil
 import com.ladysparks.ttaenggrang.databinding.ActivityLoginBinding
+import com.ladysparks.ttaenggrang.util.ErrorDialog
 import com.ladysparks.ttaenggrang.util.SharedPreferencesUtil
 import com.ladysparks.ttaenggrang.util.showErrorDialog
 import com.ladysparks.ttaenggrang.util.showToast
@@ -78,8 +79,7 @@ class LoginActivity : BaseActivity() {
                     // MainActivity 이동
                     startActivity(Intent(this@LoginActivity, MainActivity::class.java))
                 }.onFailure { error ->
-
-                    showToast("로그인 실패 ${error}")
+                    showErrorDialog(error)
                 }
             }
         }
@@ -106,7 +106,7 @@ class LoginActivity : BaseActivity() {
                     // MainActivity 이동
                     startActivity(Intent(this@LoginActivity, MainActivity::class.java))
                 }.onFailure { error ->
-                    showToast("로그인 실패 ${error}")
+                    showErrorDialog(error)
                 }
             }
         }
@@ -171,7 +171,7 @@ class LoginActivity : BaseActivity() {
                     // MainActivity 이동
                     startActivity(Intent(this@LoginActivity, MainActivity::class.java))
                 }.onFailure { error ->
-                    showToast("로그인 실패 ${error}")
+                    showErrorDialog(error)
                 }
             }
         }
