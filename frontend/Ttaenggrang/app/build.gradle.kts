@@ -84,4 +84,7 @@ dependencies {
     // Firebase
     implementation(platform("com.google.firebase:firebase-bom:32.3.1"))
     implementation("com.google.firebase:firebase-messaging-ktx")
+    // 뷰모델
+    implementation ("androidx.fragment:fragment-ktx:1.5.7")
+
 }
