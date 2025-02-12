@@ -2,6 +2,7 @@ package com.ladysparks.ttaenggrang.domain.stock.controller;
 
 import com.ladysparks.ttaenggrang.domain.stock.dto.OpenResponseDTO;
 import com.ladysparks.ttaenggrang.domain.stock.dto.StockTransactionDTO;
+import com.ladysparks.ttaenggrang.domain.stock.dto.StudentStockDTO;
 import com.ladysparks.ttaenggrang.global.docs.StockApiSpecification;
 import com.ladysparks.ttaenggrang.domain.stock.dto.StockDTO;
 import com.ladysparks.ttaenggrang.domain.stock.service.StockService;
@@ -79,6 +80,12 @@ public class StockController implements StockApiSpecification {
         StockTransactionDTO dto = stockService.sellStock(stockId, shareCount, studentId);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.created(dto));
+    }
+    //학생 보유 주식 조회
+    @GetMapping("/student/{studentId}")
+    public ResponseEntity<List<StudentStockDTO>> getStudentStocks(@PathVariable Long studentId) {
+        List<StudentStockDTO> stockList = stockService.getStudentStocks(studentId);
+        return ResponseEntity.ok(stockList);
     }
 
 
