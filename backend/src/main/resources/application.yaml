@@ -56,3 +56,7 @@ server:
       charset: UTF-8
       enabled: true
       force: true
+openai:
+  api:
+    key: "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"
+

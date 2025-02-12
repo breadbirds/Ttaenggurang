@@ -3,6 +3,7 @@ package com.ladysparks.ttaenggrang.global.docs;
 import com.ladysparks.ttaenggrang.domain.stock.dto.OpenResponseDTO;
 import com.ladysparks.ttaenggrang.domain.stock.dto.StockDTO;
 import com.ladysparks.ttaenggrang.domain.stock.dto.StockTransactionDTO;
+import com.ladysparks.ttaenggrang.domain.stock.dto.StudentStockDTO;
 import com.ladysparks.ttaenggrang.global.response.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -41,6 +42,10 @@ public interface StockApiSpecification {
     public ResponseEntity<ApiResponse<StockTransactionDTO>> sellStock(@PathVariable("stockId") Long stockId,
                                                                      @RequestParam("share_count") int shareCount,
                                                                      @RequestParam("studentId") Long studentId);
+
+    @Operation(summary = "학생 보유 주식 조회", description = "학생 보유 주식 조회")
+    @GetMapping("/student/{studentId}")
+    public ResponseEntity<List<StudentStockDTO>> getStudentStocks(@PathVariable Long studentId);
 
 
 
