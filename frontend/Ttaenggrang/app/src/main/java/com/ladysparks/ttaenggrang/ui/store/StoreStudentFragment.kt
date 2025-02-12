@@ -17,17 +17,23 @@ import com.ladysparks.ttaenggrang.databinding.FragmentStoreStudentBinding
 import kotlinx.coroutines.launch
 import com.ladysparks.ttaenggrang.ui.component.BaseTwoButtonDialog
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView.VERTICAL
 import com.ladysparks.ttaenggrang.data.model.response.StoreStudenItemListResponse
 import com.ladysparks.ttaenggrang.databinding.DialogItemBuyBinding
 import com.ladysparks.ttaenggrang.util.showToast
 import com.ladysparks.ttaenggrang.data.model.request.StoreBuyingRequest
+import com.ladysparks.ttaenggrang.data.model.response.StoreStudentPurchaseHistoryResponse
+import com.ladysparks.ttaenggrang.databinding.DialogItemMineBinding
 
 class StoreStudentFragment : BaseFragment<FragmentStoreStudentBinding>(
 
     FragmentStoreStudentBinding::bind,
     R.layout.fragment_store_student
 ) {
+    // 구매할 수 있는 아이템 리스트 어뎁터
     private lateinit var storeStudentAdapter: StoreStudentAdapter
+    // 내가 보유한 아이템 리스트 어뎁터 연결
+    private lateinit var storeStudentMyItemAdapter: StoreStudentMyItemAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -45,13 +51,16 @@ class StoreStudentFragment : BaseFragment<FragmentStoreStudentBinding>(
 
         binding.recyclerItemList.adapter =  storeStudentAdapter
 
+        // 내가 보유한 아이템 리사이클러
+        binding.recyclerMyItem.layoutManager = LinearLayoutManager(requireContext())
 
-// 구매 성공 다이얼로그
-//        val testBuying = createBuySuccessDialog()
-//        testBuying.show()
-//구매 실패 다이얼로그
-//        val testBuyingFail = createBuyFailDialog()
-//        testBuyingFail.show()
+        // 내 보유 아이템 상세
+        storeStudentMyItemAdapter = StoreStudentMyItemAdapter(emptyList()) { selectedItem ->
+            showItemDetailDialog(selectedItem)
+        }
+
+        binding.recyclerMyItem.adapter = storeStudentMyItemAdapter
+
     }
 
 //    구매할 수 있는 아이템 목록 불러오기
@@ -85,22 +94,24 @@ class StoreStudentFragment : BaseFragment<FragmentStoreStudentBinding>(
                 RetrofitUtil.storeService.getStudentPurchaseHistory()
             }.onSuccess {
                 Log.d("PurchaseHistory", "${it}")
-                val purchaseHistory = it.data ?: emptyList()
+                val myItemList = it.data ?: emptyList()
 
                 // 정확하게는 구매한 아이템 중에 구매 수량이 1 이상인 것이 있으면 아이템이 보이게 해야 한다
-                if (purchaseHistory.isNotEmpty()) {
+                if (myItemList.isNotEmpty()) {
                     binding.textNullMyItem.visibility = View.GONE
                     binding.recyclerMyItem.visibility = View.VISIBLE
+                    storeStudentMyItemAdapter.updateData(myItemList)
                 } else {
                     binding.textNullMyItem.visibility = View.VISIBLE
                     binding.recyclerMyItem.visibility = View.GONE
                 }
             }.onFailure { throwable ->
-                Log.e("API Error", "Failed to fetch myItem", throwable)
+                Log.e("PurchaseHistory", "Failed to fetch myItem", throwable)
             }
         }
     }
 
+    // 구매 다이얼로그
     private fun showBuyDialog(item: StoreStudenItemListResponse) {
         val dialogBinding = DialogItemBuyBinding.inflate(layoutInflater)
         val dialog = AlertDialog.Builder(requireContext())
@@ -126,6 +137,9 @@ class StoreStudentFragment : BaseFragment<FragmentStoreStudentBinding>(
                 }.onSuccess {
                     Log.d("BuyingTest", "${it}")
                     createBuySuccessDialog().show()
+                    // 학생이 구매 후 구매할 수 있는 아이템 리사이클러와 내 보유 아이템 리사이클러를 새로고침
+                    getStudentPurchaseHistory()
+                    getStudentItemList()
                 }.onFailure {
                     Log.e("BuyingTest", "Item Buying Failure")
                     createBuyFailDialog().show()
@@ -136,8 +150,6 @@ class StoreStudentFragment : BaseFragment<FragmentStoreStudentBinding>(
         dialog.show()
 
     }
-
-
 
     // 구매 성공 다이얼로그 생성 함수
     private fun createBuySuccessDialog(): BaseTwoButtonDialog {
@@ -170,4 +182,21 @@ class StoreStudentFragment : BaseFragment<FragmentStoreStudentBinding>(
             onCloseClick = null
         )
     }
+
+    // 보유 아이템 상세 다이얼로그
+    private fun showItemDetailDialog(item: StoreStudentPurchaseHistoryResponse) {
+        val dialogBinding = DialogItemMineBinding.inflate(layoutInflater)
+        val dialog = AlertDialog.Builder(requireContext()).setView(dialogBinding.root).create()
+
+        dialogBinding.btnCancel.setOnClickListener{ dialog.dismiss() }
+        dialogBinding.btnClose.setOnClickListener{ dialog.dismiss() }
+
+        dialogBinding.textItemName.text = item.itemName
+
+        dialogBinding.btnUse.setOnClickListener{
+            // 사용하기 구현
+        }
+        dialog.show()
+    }
+
 }
