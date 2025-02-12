@@ -97,7 +97,7 @@ class StockTeacherFragment : BaseFragment<FragmentStockTeacherBinding>(
             }
         })
 
-        //주식장 열림 감지
+        //주식장 열림
         viewModel.isMarketActive.observe(viewLifecycleOwner) { isActive ->
             binding.btnStockOpen.isChecked = isActive
         }

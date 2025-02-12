@@ -187,7 +187,7 @@ class StockViewModel : ViewModel() {
             try {
                 val response = stockService.setMarketStatus(openMarket) // API 호출
                 if (response.isSuccessful) {
-                    _isMarketActive.value = response.body()?.isMarketActive // 응답 값 반영
+                    _isMarketActive.value = response.body()?.data // 응답 값 반영
                 } else {
                     _isMarketActive.value = false // 실패 시 기본값 설정
                 }
@@ -202,7 +202,7 @@ class StockViewModel : ViewModel() {
             try {
                 val response = stockService.getMarketStatus()
                 if (response.isSuccessful) {
-                    _isMarketActive.value = response.body()?.isMarketActive ?: false
+                    _isMarketActive.value = response.body()?.data ?: false
                 } else {
                     _isMarketActive.value = false
                 }
