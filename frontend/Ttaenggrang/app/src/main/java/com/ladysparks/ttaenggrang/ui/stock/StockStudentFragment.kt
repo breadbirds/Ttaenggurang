@@ -57,23 +57,20 @@ class StockStudentFragment : BaseFragment<FragmentStockStudentBinding>(
                     val selectedStock = viewModel.selectedStock.value
                     selectedStock?.let { stock ->
                         showDialog(stock) // ✅ 주식장이 열려 있으면 다이얼로그 실행
-                    } ?: Toast.makeText(requireContext(), "먼저 주식을 선택해주세요.", Toast.LENGTH_SHORT).show()
+                    } ?: Toast.makeText(requireContext(), "먼저 주식을 선택해주세요.", Toast.LENGTH_SHORT)
+                        .show()
                 } else {
                     Toast.makeText(requireContext(), "주식 시장이 닫혀 있습니다!", Toast.LENGTH_SHORT).show()
                 }
             }
 
 
-
-
         }
-
 
 
     }
 
-
-
+    //매도 매수 다이얼로그
     private fun showDialog(stock: StockDto) {
         val dialogBinding = DialogStockTradingBinding.inflate(layoutInflater)
         val dialog = Dialog(requireContext())
@@ -108,14 +105,10 @@ class StockStudentFragment : BaseFragment<FragmentStockStudentBinding>(
     }
 
 
-
-
-
     override fun onStockClick(stock: StockDto) {
         Toast.makeText(requireContext(), "선택한 주식: ${stock.name}", Toast.LENGTH_SHORT).show()
         viewModel.selectStock(stock)
     }
-
 
 
     private fun initAdapter() {
@@ -133,7 +126,8 @@ class StockStudentFragment : BaseFragment<FragmentStockStudentBinding>(
         //매수 응답
         viewModel.buyTransaction.observe(viewLifecycleOwner) { transaction ->
             transaction?.let {
-                Toast.makeText(requireContext(), "매수 완료: ${it.shareCount}주", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "매수 완료: ${it.shareCount}주", Toast.LENGTH_SHORT)
+                    .show()
             }
         }
         // ui업데이트
@@ -154,7 +148,8 @@ class StockStudentFragment : BaseFragment<FragmentStockStudentBinding>(
 //        }
         viewModel.sellTransaction.observe(viewLifecycleOwner) { transaction ->
             transaction?.let {
-                Toast.makeText(requireContext(), "매도 완료: ${it.shareCount}주", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "매도 완료: ${it.shareCount}주", Toast.LENGTH_SHORT)
+                    .show()
             }
         }
 
@@ -167,12 +162,6 @@ class StockStudentFragment : BaseFragment<FragmentStockStudentBinding>(
 
 
     }
-
-
-
-
-
-
 
 
 }

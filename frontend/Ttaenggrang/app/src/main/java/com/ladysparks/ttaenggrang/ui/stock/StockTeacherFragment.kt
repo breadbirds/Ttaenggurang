@@ -20,6 +20,7 @@ class StockTeacherFragment : BaseFragment<FragmentStockTeacherBinding>(
 
     private val viewModel: StockViewModel by viewModels()
     private lateinit var stockAdapter: StockAdapter
+    private var selectedStock: StockDto? = null // 선택한 주식 저장
 
 
     private var startTime: String = ""
@@ -99,10 +100,14 @@ class StockTeacherFragment : BaseFragment<FragmentStockTeacherBinding>(
             }
         })
 
-        //주식장 열림
-//        viewModel.isMarketActive.observe(viewLifecycleOwner) { isActive ->
-//            binding.btnStockOpen.isChecked = isActive
-//        }
+        // ui업데이트
+        viewModel.selectedStock.observe(viewLifecycleOwner) { stock ->
+            stock?.let {
+                binding.textHeadStockName.text = it.name.substringBefore(" ")
+                binding.textHeadStockPrice.text = it.pricePer.toString()
+                binding.textHeadStockChange.text = "${it.changeRate}%"
+            }
+        }
     }
 
     // 아이템 클릭 이벤트 처리

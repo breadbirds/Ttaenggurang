@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.InputType
 import android.util.Log
+import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.FirebaseApp
@@ -15,6 +16,7 @@ import com.ladysparks.ttaenggrang.data.model.response.StudentSignInResponse
 import com.ladysparks.ttaenggrang.data.model.response.TeacherSignInResponse
 import com.ladysparks.ttaenggrang.data.remote.RetrofitUtil
 import com.ladysparks.ttaenggrang.databinding.ActivityLoginBinding
+import com.ladysparks.ttaenggrang.ui.AuthViewModel
 import com.ladysparks.ttaenggrang.util.ErrorDialog
 import com.ladysparks.ttaenggrang.util.SharedPreferencesUtil
 import com.ladysparks.ttaenggrang.util.showErrorDialog
@@ -25,6 +27,9 @@ class LoginActivity : BaseActivity() {
 
     private val binding by lazy { ActivityLoginBinding.inflate(layoutInflater) }
     private var isPasswordVisible = false
+
+    //로그인 정보 저장을 위한 뷰모델
+    private val authViewModel: AuthViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -96,9 +101,15 @@ class LoginActivity : BaseActivity() {
                         is StudentSignInResponse -> userData.token
                         else -> ""
                     }
+                    val userId = when (val userData = it.data) {
+                        is StudentSignInResponse -> userData.id
+                        else -> -1
+                    }
                     SharedPreferencesUtil.putValue(SharedPreferencesUtil.JWT_TOKEN_KEY, token)
                     SharedPreferencesUtil.putValue(SharedPreferencesUtil.IS_TEACHER, false)
                     SharedPreferencesUtil.putValue(SharedPreferencesUtil.USER_ACCOUNT, it.data!!.username)
+                    SharedPreferencesUtil.putValue(SharedPreferencesUtil.USER_ID, userId)
+
 
                     // FCM TokenUpdate
                     updateFCMToken(token)
