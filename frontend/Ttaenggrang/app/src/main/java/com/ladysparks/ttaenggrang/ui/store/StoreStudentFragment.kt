@@ -32,7 +32,7 @@ class StoreStudentFragment : BaseFragment<FragmentStoreStudentBinding>(
 ) {
     // 구매할 수 있는 아이템 리스트 어뎁터
     private lateinit var storeStudentAdapter: StoreStudentAdapter
-    // 내가 보유한 아이템 리스트 어뎁터 연결
+    // 내가 보유한 아이템 리스트 어뎁터
     private lateinit var storeStudentMyItemAdapter: StoreStudentMyItemAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -42,9 +42,10 @@ class StoreStudentFragment : BaseFragment<FragmentStoreStudentBinding>(
         getStudentPurchaseHistory()
 
 
-//        구매 가능한 아이템 리사이클러
+       // 구매 가능한 아이템 리사이클러
         binding.recyclerItemList.layoutManager = GridLayoutManager(requireContext(), 3)
 
+        // 구매 아이템 클릭 시 구매 다이얼로그
         storeStudentAdapter = StoreStudentAdapter(emptyList()) { selectedItem ->
             showBuyDialog(selectedItem)
         }
@@ -54,7 +55,7 @@ class StoreStudentFragment : BaseFragment<FragmentStoreStudentBinding>(
         // 내가 보유한 아이템 리사이클러
         binding.recyclerMyItem.layoutManager = LinearLayoutManager(requireContext())
 
-        // 내 보유 아이템 상세
+        // 내 보유 아이템 클릭 시 상세 다이얼로그
         storeStudentMyItemAdapter = StoreStudentMyItemAdapter(emptyList()) { selectedItem ->
             showItemDetailDialog(selectedItem)
         }
@@ -69,8 +70,7 @@ class StoreStudentFragment : BaseFragment<FragmentStoreStudentBinding>(
             runCatching {
                 RetrofitUtil.storeService.getStudentItemList()
             }.onSuccess {
-                // 확인 다시
-                Log.d("Success", "${it}")
+                Log.d("BuyingList Sucess", "${it}")
                 val itemList = it.data ?: emptyList()
                 if (itemList.isNotEmpty()) {
                     binding.textNullItemList.visibility = View.GONE
@@ -81,7 +81,7 @@ class StoreStudentFragment : BaseFragment<FragmentStoreStudentBinding>(
                     binding.recyclerItemList.visibility = View.GONE
                 }
             }.onFailure { throwable ->
-                Log.e("API Error", "Failed to fetch itemList", throwable)
+                Log.e("BuyingList Failure", "Failed to fetch itemList", throwable)
 
             }
         }
@@ -93,7 +93,7 @@ class StoreStudentFragment : BaseFragment<FragmentStoreStudentBinding>(
             runCatching {
                 RetrofitUtil.storeService.getStudentPurchaseHistory()
             }.onSuccess {
-                Log.d("PurchaseHistory", "${it}")
+                Log.d("PurchaseHistory Success", "${it}")
                 val myItemList = it.data ?: emptyList()
 
                 // 정확하게는 구매한 아이템 중에 구매 수량이 1 이상인 것이 있으면 아이템이 보이게 해야 한다
@@ -106,7 +106,7 @@ class StoreStudentFragment : BaseFragment<FragmentStoreStudentBinding>(
                     binding.recyclerMyItem.visibility = View.GONE
                 }
             }.onFailure { throwable ->
-                Log.e("PurchaseHistory", "Failed to fetch myItem", throwable)
+                Log.e("PurchaseHistory Failure", "Failed to fetch myItem", throwable)
             }
         }
     }
@@ -132,16 +132,16 @@ class StoreStudentFragment : BaseFragment<FragmentStoreStudentBinding>(
         dialogBinding.btnBuy.setOnClickListener {
             lifecycleScope.launch {
                 runCatching {
-                    Log.d("BuyingTest", "${itemBuying}")
+//                    Log.d("BuyingTest", "${itemBuying}")
                     RetrofitUtil.storeService.buyItem(itemBuying)
                 }.onSuccess {
-                    Log.d("BuyingTest", "${it}")
+                    Log.d("Buying Success", "${it}")
                     createBuySuccessDialog().show()
                     // 학생이 구매 후 구매할 수 있는 아이템 리사이클러와 내 보유 아이템 리사이클러를 새로고침
                     getStudentPurchaseHistory()
                     getStudentItemList()
-                }.onFailure {
-                    Log.e("BuyingTest", "Item Buying Failure")
+                }.onFailure { throwable ->
+                    Log.e("Buying Failure", "Item Buying Failure", throwable)
                     createBuyFailDialog().show()
                 }
             }
@@ -192,9 +192,16 @@ class StoreStudentFragment : BaseFragment<FragmentStoreStudentBinding>(
         dialogBinding.btnClose.setOnClickListener{ dialog.dismiss() }
 
         dialogBinding.textItemName.text = item.itemName
+        if (item.itemDescription == null || item.itemDescription.isEmpty()) {
+            dialogBinding.textItemDescription.text = ""
+        } else {
+            dialogBinding.textItemDescription.text = item.itemDescription
+        }
 
         dialogBinding.btnUse.setOnClickListener{
             // 사용하기 구현
+
+
         }
         dialog.show()
     }

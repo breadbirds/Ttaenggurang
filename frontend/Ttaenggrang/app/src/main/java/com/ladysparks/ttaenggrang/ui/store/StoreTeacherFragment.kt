@@ -107,14 +107,14 @@ class StoreTeacherFragment : BaseFragment<FragmentStoreTeacherBinding>(FragmentS
     private fun registerThisItem(itemRegister: StoreRegisterRequest) {
         lifecycleScope.launch {
             runCatching {
-                Log.d("test", "${itemRegister}")
+//                Log.d("Registered Item", "${itemRegister}")
                 RetrofitUtil.storeService.registerItem(itemRegister)
             }.onSuccess {
-                Log.d("test", "상품 등록 성공 ${it}")
+                Log.d("Registered Item", "상품 등록 성공 ${it}")
                 showToast("상품이 성공적으로 등록되었습니다")
                 getTeacherItemList()
             }.onFailure { throwable ->
-                Log.e("test", "item register failure ${throwable}")
+                Log.e("Registered Item", "item register failure", throwable)
             }
         }
     }
