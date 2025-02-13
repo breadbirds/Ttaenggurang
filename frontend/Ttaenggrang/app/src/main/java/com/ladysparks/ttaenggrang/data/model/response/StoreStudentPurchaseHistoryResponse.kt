@@ -5,5 +5,6 @@ data class StoreStudentPurchaseHistoryResponse(
     val itemId: Int,
     val quantity: Int,
     val itemName: String,
-    val itemPrice: Int
+    val itemPrice: Int,
+    val itemDescription: String
 )
