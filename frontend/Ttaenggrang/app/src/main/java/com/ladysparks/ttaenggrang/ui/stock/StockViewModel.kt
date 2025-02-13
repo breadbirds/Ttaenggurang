@@ -5,15 +5,15 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.ladysparks.ttaenggrang.data.model.dto.BankTransactionDto
 import com.ladysparks.ttaenggrang.data.model.dto.StockDto
 import com.ladysparks.ttaenggrang.data.model.dto.StockTransactionDto
 import com.ladysparks.ttaenggrang.data.model.dto.StudentStockDto
 import com.ladysparks.ttaenggrang.data.model.dto.TransType
-import com.ladysparks.ttaenggrang.data.model.request.StudentSignInRequest
+import com.ladysparks.ttaenggrang.data.model.dto.TransactionType
 import com.ladysparks.ttaenggrang.data.remote.RetrofitUtil
-import com.ladysparks.ttaenggrang.data.remote.RetrofitUtil.Companion.authService
+import com.ladysparks.ttaenggrang.data.remote.RetrofitUtil.Companion.bankService
 import com.ladysparks.ttaenggrang.data.remote.StockService
-import com.ladysparks.ttaenggrang.util.SharedPreferencesUtil
 import kotlinx.coroutines.launch
 
 class StockViewModel : ViewModel() {
@@ -67,6 +67,9 @@ class StockViewModel : ViewModel() {
     private val _updatedOwnedStock = MutableLiveData<Int>()
     val updatedOwnedStock: LiveData<Int> get() = _updatedOwnedStock
 
+    private val _balance = MutableLiveData<Int>() // ✅ 거래 가능 현금
+    val balance: LiveData<Int> get() = _balance
+
 
     // 주식 데이터 조회
     fun fetchAllStocks() {
@@ -108,8 +111,29 @@ class StockViewModel : ViewModel() {
 
                 if (sellResponse.isSuccessful) {
                     val transactionData = sellResponse.body()?.data
+                    val totalAmount = transactionData?.returnAmt ?: 0
+
+                    // ✅ 서버 요청 전에 amount 값이 올바른지 확인
+                    Log.d("StockViewModel", "매도 응답 returnAmt: $totalAmount")
                     // ✅ 매도 성공 후 보유 주식 수 업데이트
                     _sellTransaction.postValue(transactionData)
+
+                    Log.d("TAG", "sellStock: 매도요청 amount: $totalAmount")
+
+                    // ✅ 서버에 매도 내역 전송
+                    val bankTransaction = BankTransactionDto(
+                        type = TransactionType.STOCK_SELL,
+                        amount = totalAmount,
+                        description = "주식 매도: $stockId",
+                        receiverId = studentId)
+
+                    val transactionResponse = bankService.sendBankTransaction(bankTransaction)
+
+                    // ✅ 응답에서 새로운 balance 가져오기
+                    if (transactionResponse.isSuccessful) {
+                        _balance.postValue(transactionResponse.body()?.data?.amount ?: 0)
+                    }
+
                     Log.d("StockViewModel", "매도 성공: ${transactionData?.shareCount}주")
                 } else {
                     _errorMessage.postValue("매도 요청 실패 (HTTP ${sellResponse.code()})")
@@ -207,6 +231,23 @@ class StockViewModel : ViewModel() {
         } else {
             ownedStock + amount
         })
+    }
+
+    // ✅ 서버에서 거래 가능 현금 가져오기
+    fun fetchBalance() {
+        viewModelScope.launch {
+            try {
+                val response = bankService.getBankAccount()
+                Log.d("TAG", "fetchBalance: 뱅크!!!!!!${response.body()?.data}")
+                if (response.isSuccessful) {
+                    _balance.postValue(response.body()?.data?.balance ?: 0) // ✅ balance 값만 저장
+                } else {
+                    _balance.postValue(0) // ✅ 실패 시 0으로 설정
+                }
+            } catch (e: Exception) {
+                _balance.postValue(0) // ✅ 오류 발생 시 0으로 설정
+            }
+        }
     }
 }
 
