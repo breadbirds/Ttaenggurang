@@ -62,6 +62,3 @@ server:
       charset: UTF-8
       enabled: true
       force: true
-news:
-  api-key: "***REMOVED***"
-
